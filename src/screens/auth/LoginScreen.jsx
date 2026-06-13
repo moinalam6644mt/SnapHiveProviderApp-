@@ -8,10 +8,11 @@ import {
   KeyboardAvoidingView,
   Platform,
   Image,
-  ImageBackground,
+  StatusBar,
+  ScrollView,
 } from 'react-native';
-
-import { Phone } from 'lucide-react-native';
+import LinearGradient from 'react-native-linear-gradient';
+import { Phone, ArrowRight } from 'lucide-react-native';
 import styles from './LoginStyle';
 import { useNavigation } from '@react-navigation/native';
 import { AuthUser } from '../../../api/authUser.js';
@@ -130,88 +131,98 @@ const Login = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <KeyboardAvoidingView
-        style={{ flex: 1 }}
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
+      <LinearGradient
+        colors={['#134E5E', '#71B280']}
+        style={styles.gradientBg}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
       >
-        {/* TOP */}
-        <View style={styles.topSection}>
-          <ImageBackground
-            source={require('../../../assets/images/background_image.png')}
-            style={styles.topBg}
-            resizeMode="cover"
-          >
-            <Image
-              source={require('../../../assets/images/logo1.png')}
-              style={styles.logo}
-            />
-            <Text style={styles.tagline}>Powered by People</Text>
-          </ImageBackground>
-        </View>
-
-        <View style={styles.bottomSection} />
-
-        {/* CARD */}
-        <View style={styles.card}>
-          <Text style={styles.title}>Login Your Account</Text>
-
-          <Text style={styles.subtitle}>
-            Enter Mobile Number, we'll send OTP.
-          </Text>
-
-          {/* MOBILE INPUT WITH ERROR HANDLING */}
-          <View style={styles.inputContainer}>
-            <View style={[
-              styles.inputWrapper, 
-              mobileError && styles.inputError
-            ]}>
-              <Phone 
-                size={20} 
-                color={mobileError ? "#ff3b30" : "#9E9E9E"} 
+        <KeyboardAvoidingView
+          style={styles.keyboardView}
+          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        >
+          <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
+            {/* TOP */}
+            <View style={styles.topSection}>
+              <Image
+                source={require('../../../assets/images/logo1.png')}
+                style={styles.logo}
               />
-              <TextInput
-                placeholder="Mobile Number *"
-                placeholderTextColor="#9E9E9E"
-                keyboardType="number-pad"
-                maxLength={10}
-                style={styles.input}
-                value={mobileNumber}
-                onChangeText={handleMobileChange}
-                editable={!loading}
-              />
+              <Text style={styles.tagline}>Powered by People</Text>
             </View>
-            {mobileError && mobileErrorMessage && (
-              <Text style={styles.errorText}>{mobileErrorMessage}</Text>
-            )}
-          </View>
 
-          <TouchableOpacity
-            style={[styles.button, loading && { opacity: 0.7 }]}
-            activeOpacity={0.85}
-            onPress={handleContinue}
-            disabled={loading}
-          >
-            <Text style={styles.buttonText}>
-              {loading ? 'Sending OTP...' : 'Continue'}
-            </Text>
-          </TouchableOpacity>
+            {/* BOTTOM SHEET */}
+            <View style={styles.bottomSheet}>
+              <Text style={styles.title}>Welcome Back</Text>
+              <Text style={styles.subtitle}>
+                Enter your mobile number to login
+              </Text>
 
-          <TouchableOpacity
-            onPress={() => navigation.navigate('Register')}
-            disabled={loading}
-          >
-            <Text style={[styles.skip, loading && { opacity: 0.5 }]}>
-              Register now
-            </Text>
-          </TouchableOpacity>
-        </View>
+              {/* MOBILE INPUT WITH ERROR HANDLING */}
+              <View style={styles.inputContainer}>
+                <View style={[
+                  styles.inputWrapper, 
+                  mobileError && styles.inputError
+                ]}>
+                  <Phone 
+                    size={20} 
+                    color={mobileError ? "#FF6B6B" : "#6B7280"} 
+                  />
+                  <TextInput
+                    placeholder="Mobile Number"
+                    placeholderTextColor="#9CA3AF"
+                    keyboardType="number-pad"
+                    maxLength={10}
+                    style={styles.input}
+                    value={mobileNumber}
+                    onChangeText={handleMobileChange}
+                    editable={!loading}
+                  />
+                </View>
+                {mobileError && mobileErrorMessage && (
+                  <Text style={styles.errorText}>{mobileErrorMessage}</Text>
+                )}
+              </View>
 
-        <Text style={styles.terms}>
-          By Continuing, you agree to our{' '}
-          <Text style={styles.link}>T&C</Text> and{' '}
-          <Text style={styles.link}>Privacy Policy</Text>
-        </Text>
-      </KeyboardAvoidingView>
+              <TouchableOpacity
+                style={[styles.buttonContainer, loading && styles.buttonDisabled]}
+                activeOpacity={0.85}
+                onPress={handleContinue}
+                disabled={loading}
+              >
+                <LinearGradient
+                  colors={['#134E5E', '#71B280']}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={styles.buttonGradient}
+                >
+                  <Text style={styles.buttonText}>
+                    {loading ? 'Sending OTP...' : 'Continue'}
+                  </Text>
+                  {!loading && <ArrowRight size={20} color="#FFFFFF" style={{marginLeft: 8}} />}
+                </LinearGradient>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={() => navigation.navigate('Register')}
+                disabled={loading}
+              >
+                <Text style={[styles.skip, loading && { opacity: 0.5 }]}>
+                  Register now
+                </Text>
+              </TouchableOpacity>
+              <View style={styles.bottomSection}>
+                <Text style={styles.terms}>
+                  By continuing, you agree to our{' '}
+                  <Text style={styles.link}>T&C</Text> and{' '}
+                  <Text style={styles.link}>Privacy Policy</Text>
+                </Text>
+              </View>
+            </View>
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </LinearGradient>
 
       {/* STATUS MODAL - Only for API errors */}
       <StatusModal

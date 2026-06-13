@@ -16,9 +16,9 @@ const CompleteHeader = ({
   if (!calculation) {
     return (
       <View style={styles.container}>
-        <Text style={styles.title}>Payment Details</Text>
+        <Text style={[styles.title, {color: '#1E1B4B', marginBottom: 10}]}>Payment Details</Text>
         <View style={[styles.card, {alignItems: 'center', padding: 20}]}>
-          <Text style={{color: '#71717A'}}>Calculating billing details...</Text>
+          <Text style={{color: '#FFFFFF'}}>Calculating billing details...</Text>
         </View>
       </View>
     );
@@ -108,7 +108,7 @@ const CompleteHeader = ({
           {/* First Hour Rate */}
           <View style={styles.row}>
             <View style={styles.left}>
-              <Zap size={16} color="#6366F1" strokeWidth={2} />
+              <Zap size={16} color="#71B280" strokeWidth={2} />
               <Text style={styles.label}>First Hour Rate</Text>
             </View>
             <Text style={styles.value}>₹{firstHourRate}</Text>
@@ -118,7 +118,7 @@ const CompleteHeader = ({
           {parseFloat(nextHourRate) > 0 && (
             <View style={styles.row}>
               <View style={styles.left}>
-                <Wallet size={16} color="#6366F1" strokeWidth={2} />
+                <Wallet size={16} color="#71B280" strokeWidth={2} />
                 <Text style={styles.label}>Next Hour Rate</Text>
               </View>
               <Text style={styles.value}>₹{nextHourRate}</Text>
@@ -153,11 +153,11 @@ const styles = StyleSheet.create({
     borderRadius: 18,
     padding: 18,
     borderWidth: 1,
-    borderColor: '#F3F4F6',
-    elevation: 2,
+    borderColor: '#2baab1',
+    elevation: 3,
     shadowColor: '#000',
-    shadowOffset: {width: 0, height: 1},
-    shadowOpacity: 0.05,
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.1,
     shadowRadius: 5,
   },
   header: {
@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#1E1B4B',
+    color: '#FFFFFF',
   },
   status: {
     fontSize: 12,
@@ -180,12 +180,12 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   runningText: {
-    backgroundColor: '#DCFCE7',
-    color: '#16A34A',
+    backgroundColor: 'rgba(22,163,74,0.2)',
+    color: '#4ade80',
   },
   completedText: {
-    backgroundColor: '#F3F4F6',
-    color: '#6B7280',
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    color: '#FFFFFF',
   },
   timeSection: {
     flexDirection: 'row',
@@ -197,19 +197,19 @@ const styles = StyleSheet.create({
   },
   timeLabel: {
     fontSize: 11,
-    color: '#9CA3AF',
+    color: 'rgba(255,255,255,0.8)',
     textTransform: 'uppercase',
     letterSpacing: 0.5,
   },
   timeValue: {
     fontSize: 15,
     fontWeight: '700',
-    color: '#111827',
+    color: '#FFFFFF',
     marginTop: 2,
   },
   divider: {
     height: 1,
-    backgroundColor: '#F1F5F9',
+    backgroundColor: 'rgba(255,255,255,0.2)',
     marginVertical: 10,
   },
   pricingContainer: {
@@ -227,12 +227,12 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 13,
-    color: '#4B5563',
+    color: '#FFFFFF',
     fontWeight: '500',
   },
   value: {
     fontSize: 14,
     fontWeight: '700',
-    color: '#312E81',
+    color: '#FFFFFF',
   },
 });

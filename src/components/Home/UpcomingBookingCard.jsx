@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Animated, Dimensions, Modal, PanResponder, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Calendar, Clock, Info, MapPin, User, X } from 'lucide-react-native';
+import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import { BookingContext } from '../../context/BookingContext';
 
@@ -265,7 +266,7 @@ const UpcomingBookingCard = ({ bookings = [], userId }) => {
               </TouchableOpacity>
 
               <TouchableOpacity
-                style={styles.acceptBtn}
+                style={styles.acceptBtnContainer}
                 onPress={async () => {
                   const result = await acceptBooking(order_id, userId);
 
@@ -277,7 +278,14 @@ const UpcomingBookingCard = ({ bookings = [], userId }) => {
                   }
                 }}
               >
-                <Text style={styles.acceptText}>Accept Job</Text>
+                <LinearGradient
+                  colors={['#134E5E', '#71B280']}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={styles.acceptBtnGradient}
+                >
+                  <Text style={styles.acceptText}>Accept Job</Text>
+                </LinearGradient>
               </TouchableOpacity>
             </View>
           </View>
@@ -556,11 +564,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  acceptBtn: {
+  acceptBtnContainer: {
     flex: 1.5,
-    backgroundColor: '#4D7C0F',
     height: 48,
     borderRadius: 24,
+    shadowColor: '#134E5E',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 4,
+    overflow: 'hidden',
+  },
+  acceptBtnGradient: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },

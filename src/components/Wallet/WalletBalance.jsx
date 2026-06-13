@@ -7,6 +7,7 @@ import {
   Image,
   ActivityIndicator
 } from "react-native";
+import LinearGradient from "react-native-linear-gradient";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { AuthContext } from "../../context/AuthContext";
 import { AuthUser } from "../../../api/authUser";
@@ -76,10 +77,17 @@ const WalletBalance = ({ walletData }) => {
       </View>
 
       <TouchableOpacity
-        style={styles.addMoneyBtn}
+        style={styles.addMoneyBtnContainer}
         onPress={handleAddMoney}
       >
-        <Text style={styles.addMoneyText}>Add Money</Text>
+        <LinearGradient
+          colors={['#134E5E', '#71B280']}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={styles.addMoneyGradient}
+        >
+          <Text style={styles.addMoneyText}>Add Money</Text>
+        </LinearGradient>
       </TouchableOpacity>
     </View>
   );
@@ -119,11 +127,20 @@ const styles = StyleSheet.create({
     marginTop: 5,
     fontFamily: "Sora-Bold",
   },
-  addMoneyBtn: {
-    backgroundColor: "#f97316",
+  addMoneyBtnContainer: {
+    borderRadius: 30,
+    shadowColor: '#134E5E',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 4,
+    overflow: 'hidden',
+  },
+  addMoneyGradient: {
     paddingVertical: 12,
     paddingHorizontal: 20,
-    borderRadius: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   addMoneyText: {
     color: "white",

@@ -32,14 +32,12 @@ let lastUserId = null;
 
 const HomeScreen = () => {
   const { bookings } = useContext(BookingContext);
-  const { userId, userData
+  const { userId, userData } = useContext(AuthContext);
 
-  } = useContext(AuthContext);
   if (lastUserId !== userId) {
     cachedAcceptedBookingData = null;
     lastUserId = userId;
   }
-
 
   const [acceptedBookingData, setAcceptedBookingData] = useState(cachedAcceptedBookingData);
   const [loading, setLoading] = useState(!cachedAcceptedBookingData);
@@ -97,8 +95,6 @@ const HomeScreen = () => {
         },
       });
 
-
-
       if (response?.status === 1) {
         const isOffline = response?.response?.data?.is_offline;
         const serverAvailable = isOffline === 0 || isOffline === '0';
@@ -113,45 +109,40 @@ const HomeScreen = () => {
     }
   };
 
-
   // One signal call
-
-  
   useEffect(() => {
     const loadData = async () => {
       const onesignalId = await AsyncStorage.getItem('onesignal_id');
       const deviceType = await AsyncStorage.getItem('device_type');
-      if(onesignalId && deviceType&&userId){
-      const resp = await callApi({
-        method: 'CUSTOM_POST',
-        api: `/user/add_device?worker_id=${userId}`,
-        data: {
-          device_token: onesignalId,
-          device_type: deviceType,
-        },
-      });
-      console.log("resp for one signal: ",resp);
-      
-    }
+      if(onesignalId && deviceType && userId){
+        const resp = await callApi({
+          method: 'CUSTOM_POST',
+          api: `/user/add_device?worker_id=${userId}`,
+          data: {
+            device_token: onesignalId,
+            device_type: deviceType,
+          },
+        });
+        console.log("resp for one signal: ",resp);
+      }
     };
     loadData();
   }, []);
 
   const myBookingData = useMemo(() => {
     if (!userId) return [];
-
     return bookings.filter(item => item?.worker_ids?.includes(String(userId)));
   }, [bookings, userId]);
 
   return (
     <SafeAreaView style={styles.container} edges={['left', 'right', 'bottom']}>
-      <StatusBar translucent={true} backgroundColor="transparent" />
+      <StatusBar barStyle="dark-content" translucent={true} backgroundColor="transparent" />
       <HeaderSection userName={userName} joiningDate={joiningDate} />
 
       {loading ? (
         <View style={styles.loaderWrapper}>
           <View style={styles.loaderCard}>
-            <ActivityIndicator size="large" color="#ED6E0A" />
+            <ActivityIndicator size="large" color={theme.background} />
             <Text style={styles.loadingText}>Please wait...</Text>
           </View>
         </View>
@@ -191,15 +182,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F8F9FA',
   },
-
   scrollContent: {
     paddingBottom: 100,
   },
-
   mainContent: {
     padding: 20,
   },
-
   sectionTitle: {
     fontSize: 18,
     fontWeight: 'bold',
@@ -210,11 +198,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F8F9FA',
   },
-
   loaderCard: {
-    backgroundColor: theme.background,
+    backgroundColor: '#FFFFFF',
     paddingVertical: 25,
     paddingHorizontal: 35,
     borderRadius: 20,
@@ -225,7 +211,6 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     shadowOffset: { width: 0, height: 4 },
   },
-
   loadingText: {
     marginTop: 12,
     fontSize: 14,

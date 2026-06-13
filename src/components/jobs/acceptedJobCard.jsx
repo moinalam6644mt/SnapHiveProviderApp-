@@ -11,6 +11,7 @@ import {
 import {User, MapPin, Calendar} from 'lucide-react-native';
 import Toast from 'react-native-toast-message';
 import {useNavigation} from '@react-navigation/native';
+import LinearGradient from 'react-native-linear-gradient';
 import handleChat from '../../services/ChatServiceFunction';
 import {AuthUser} from '../../../api/authUser';
 
@@ -156,7 +157,8 @@ const AcceptedJobCard = ({onStartJob, acceptedBookingData, userId}) => {
               <View style={styles.iconGroup}>
                 {/* Chat Icon - Custom PNG */}
                 <TouchableOpacity
-                  style={styles.chatIconBtn}
+                  style={styles.iconCircleWrapper}
+                  activeOpacity={0.8}
                   onPress={() => {
                     handleChat(
                       userId,
@@ -168,23 +170,37 @@ const AcceptedJobCard = ({onStartJob, acceptedBookingData, userId}) => {
                       category_subchild_name,
                     );
                   }}>
-                  <Image
-                    source={require('../../../assets/app/jobs/messages-2.png')}
-                    style={styles.iconImage}
-                    resizeMode="contain"
-                  />
-                  {/* <View style={styles.onlineDot} /> */}
+                  <LinearGradient
+                    colors={['#134E5E', '#71B280']}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                    style={styles.iconCircleGradient}
+                  >
+                    <Image
+                      source={require('../../../assets/app/jobs/messages-2.png')}
+                      style={styles.iconImage}
+                      resizeMode="contain"
+                    />
+                  </LinearGradient>
                 </TouchableOpacity>
 
                 {/* Call Icon - Custom PNG */}
                 <TouchableOpacity
-                  style={styles.phoneIconBtn}
+                  style={styles.iconCircleWrapper}
+                  activeOpacity={0.8}
                   onPress={() => handleCall()}>
-                  <Image
-                    source={require('../../../assets/app/jobs/material-symbols_call.png')}
-                    style={styles.iconImage}
-                    resizeMode="contain"
-                  />
+                  <LinearGradient
+                    colors={['#134E5E', '#71B280']}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                    style={styles.iconCircleGradient}
+                  >
+                    <Image
+                      source={require('../../../assets/app/jobs/material-symbols_call.png')}
+                      style={styles.iconImage}
+                      resizeMode="contain"
+                    />
+                  </LinearGradient>
                 </TouchableOpacity>
               </View>
             </View>
@@ -225,14 +241,22 @@ const AcceptedJobCard = ({onStartJob, acceptedBookingData, userId}) => {
             <View style={styles.footerRow}>
               {/* Teal Start Job Button */}
               <TouchableOpacity
-                style={styles.startBtn}
+                style={styles.startBtnContainer}
+                activeOpacity={0.8}
                 onPress={() =>
                   navigation.navigate('JobDetailsScreen', {
                     orderId: booking_id,
                     userId: userId,
                   })
                 }>
-                <Text style={styles.startBtnText}>Start Job</Text>
+                <LinearGradient
+                  colors={['#134E5E', '#71B280']}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={styles.startBtnGradient}
+                >
+                  <Text style={styles.startBtnText}>Start Job</Text>
+                </LinearGradient>
               </TouchableOpacity>
             </View>
           </View>
@@ -263,20 +287,19 @@ const styles = StyleSheet.create({
   jobTitle: {fontSize: 15, fontWeight: 'bold', color: '#312e81'},
   iconGroup: {flexDirection: 'row', gap: 12},
 
-  // Icon Buttons
-  phoneIconBtn: {
+  iconCircleWrapper: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: '#f97316', // Orange for Call
-    justifyContent: 'center',
-    alignItems: 'center',
+    overflow: 'hidden',
+    shadowColor: '#134E5E',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 2,
   },
-  chatIconBtn: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: '#2E2E74', // Dark Blue for Chat
+  iconCircleGradient: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -324,11 +347,19 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
   },
-  startBtn: {
+  startBtnContainer: {
     flex: 1,
-    backgroundColor: '#008B8B', // Exact Teal color from image
     height: 48,
     borderRadius: 24,
+    shadowColor: '#134E5E',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 4,
+    overflow: 'hidden',
+  },
+  startBtnGradient: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },

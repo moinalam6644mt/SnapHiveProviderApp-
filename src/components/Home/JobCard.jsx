@@ -7,6 +7,7 @@ import {
   Image,
   Linking,
 } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 import {
   MessageSquare,
   Phone,
@@ -159,18 +160,32 @@ const createMeeting=async()=>{
         <View style={styles.iconRow}>
           <TouchableOpacity
             onPress={() => { handleChat(userId, booking_id, acceptedBookingData, navigation,member_name,logo,category_subchild_name); }}
-            style={[styles.iconCircle, { backgroundColor: '#1e1b4b' }]}
+            style={styles.iconCircleWrapper}
             activeOpacity={0.8}
           >
-            <MessageSquare size={18} color="white" />
+            <LinearGradient
+              colors={['#134E5E', '#71B280']}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.iconCircleGradient}
+            >
+              <MessageSquare size={18} color="white" />
+            </LinearGradient>
           </TouchableOpacity>
 
           <TouchableOpacity
             onPress={() => handleCall()}
-            style={[styles.iconCircle, { backgroundColor: '#f97316' }]}
+            style={styles.iconCircleWrapper}
             activeOpacity={0.8}
           >
-            <Phone size={18} color="white" />
+            <LinearGradient
+              colors={['#134E5E', '#71B280']}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.iconCircleGradient}
+            >
+              <Phone size={18} color="white" />
+            </LinearGradient>
           </TouchableOpacity>
         </View>
       </View>
@@ -218,7 +233,7 @@ const createMeeting=async()=>{
         </View>
 
         <TouchableOpacity
-          style={styles.startBtn}
+          style={styles.startBtnContainer}
           activeOpacity={0.8}
           onPress={() =>
             navigation.navigate('JobDetailsScreen', {
@@ -228,7 +243,14 @@ const createMeeting=async()=>{
             })
           }
         >
-          <Text style={styles.btnText}>Start Job</Text>
+          <LinearGradient
+            colors={['#134E5E', '#71B280']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.startBtnGradient}
+          >
+            <Text style={styles.btnText}>Start Job</Text>
+          </LinearGradient>
         </TouchableOpacity>
       </View>
       <OTPVerificationModal
@@ -267,10 +289,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 10,
   },
-  iconCircle: {
+  iconCircleWrapper: {
     width: 35,
     height: 35,
     borderRadius: 18,
+    overflow: 'hidden',
+    shadowColor: '#134E5E',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  iconCircleGradient: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -348,11 +379,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  startBtn: {
+  startBtnContainer: {
     flex: 1,
-    backgroundColor: '#0D9488',
     height: 48,
     borderRadius: 24,
+    shadowColor: '#134E5E',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 4,
+    overflow: 'hidden',
+  },
+  startBtnGradient: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },

@@ -30,7 +30,7 @@ const StatusModal = ({
           {isSuccess ? (
             <CheckCircle
               size={70}
-              color="#2ECC71"
+              color="#10b981"
               style={{ marginBottom: 12 }}
             />
           ) : (
@@ -83,16 +83,19 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 6,
+    color: '#1e1b4b',
+    fontFamily: 'Sora-Bold',
   },
 
   message: {
     textAlign: 'center',
-    color: '#666',
+    color: '#6b7280',
     marginBottom: 18,
+    fontFamily: 'Montserrat-Regular',
   },
 
   button: {
-    backgroundColor: theme.accent,
+    backgroundColor: theme.background,
     paddingHorizontal: 35,
     paddingVertical: 10,
     borderRadius: 10,
@@ -100,6 +103,7 @@ const styles = StyleSheet.create({
 
   buttonText: {
     color: '#FFF',
-    fontWeight: '600',
+    fontWeight: 'bold',
+    fontFamily: 'Sora-Bold',
   },
 });

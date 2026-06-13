@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { Wallet } from 'lucide-react-native';
 import { useNavigation } from '@react-navigation/native';
+import LinearGradient from 'react-native-linear-gradient';
 
 const HeaderSection = ({ userName,joiningDate }) => {
   const navigation = useNavigation();
@@ -48,7 +49,12 @@ useEffect(() => {
 }, []);
 
   return (
-    <View style={styles.headerContainer}>
+    <LinearGradient 
+      colors={['#134E5E', '#71B280']}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={styles.headerContainer}
+    >
       <StatusBar barStyle="light-content" backgroundColor="transparent" translucent={true} />
 
       <Image
@@ -79,7 +85,7 @@ useEffect(() => {
       </View>
 
       <Text style={styles.joinDateText}>Joined On : {formatDate(joiningDate)}</Text>
-    </View>
+    </LinearGradient>
   );
 };
 
@@ -87,7 +93,6 @@ export default HeaderSection;
 
 const styles = StyleSheet.create({
   headerContainer: {
-    backgroundColor: '#2E2E74',
     paddingHorizontal: 20,
     paddingTop: Platform.OS === 'android' ? 30 : 10,
     paddingBottom: 22,

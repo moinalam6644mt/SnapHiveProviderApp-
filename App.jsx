@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import RootNavigator from './src/navigation/RootNavigator';
-import Toast from 'react-native-toast-message';
+import Toast, { BaseToast, ErrorToast } from 'react-native-toast-message';
+import { theme } from './src/styles/globalStyles';
 import { BookingProvider } from './src/context/BookingContext';
 import { AuthProvider } from './src/context/AuthContext';
 import PusherService from './src/services/PusherService';
@@ -19,6 +20,62 @@ import {
 // ─── Initialize OneSignal ───────────────────────────────────────────────────
 OneSignal.Debug.setLogLevel(LogLevel.Verbose);
 OneSignal.initialize('bccab546-8d91-4499-8caf-f2a8f9d3b12e');
+
+// ─── Custom Toast Config ────────────────────────────────────────────────────
+const toastConfig = {
+  success: (props) => (
+    <BaseToast
+      {...props}
+      style={{ borderLeftColor: theme.background }}
+      contentContainerStyle={{ paddingHorizontal: 15 }}
+      text1Style={{
+        fontSize: 15,
+        fontWeight: 'bold',
+        color: '#1e1b4b',
+        fontFamily: 'Sora-Bold',
+      }}
+      text2Style={{
+        fontSize: 13,
+        color: '#6b7280',
+        fontFamily: 'Montserrat-Regular',
+      }}
+    />
+  ),
+  error: (props) => (
+    <ErrorToast
+      {...props}
+      text1Style={{
+        fontSize: 15,
+        fontWeight: 'bold',
+        color: '#1e1b4b',
+        fontFamily: 'Sora-Bold',
+      }}
+      text2Style={{
+        fontSize: 13,
+        color: '#6b7280',
+        fontFamily: 'Montserrat-Regular',
+      }}
+    />
+  ),
+  info: (props) => (
+    <BaseToast
+      {...props}
+      style={{ borderLeftColor: '#71B280' }}
+      contentContainerStyle={{ paddingHorizontal: 15 }}
+      text1Style={{
+        fontSize: 15,
+        fontWeight: 'bold',
+        color: '#1e1b4b',
+        fontFamily: 'Sora-Bold',
+      }}
+      text2Style={{
+        fontSize: 13,
+        color: '#6b7280',
+        fontFamily: 'Montserrat-Regular',
+      }}
+    />
+  )
+};
 
 // ─── Register the click listener at module scope ───────────────────────────────
 // OneSignal v5 buffers killed-state click events and replays them as soon as a
@@ -170,7 +227,7 @@ export default function App() {
               <RootNavigator />
             </NavigationContainer>
           </OtpSharedProvider>
-          <Toast />
+          <Toast config={toastConfig} />
         </BookingProvider>
       </AuthProvider>
     </CallProvider>

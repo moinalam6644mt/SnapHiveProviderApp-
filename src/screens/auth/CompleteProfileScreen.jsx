@@ -25,6 +25,7 @@ import Toast from "react-native-toast-message";
 import { ArrowLeft, User, Pencil, ChevronDown, Camera, Image as ImageIcon, Check, MapPin, Navigation } from "lucide-react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { theme } from '../../styles/globalStyles';
+import LinearGradient from "react-native-linear-gradient";
 const { width, height } = Dimensions.get("window");
 // Simple responsive scaling function
 const scale = (size) => (width / 375) * size;
@@ -374,45 +375,50 @@ export default function CompleteProfileScreen() {
 
   return (
     <SafeAreaView edges={["left", "right", "bottom"]} style={styles.container}>
-      <KeyboardAvoidingView
-        style={{ flex: 1 }}
-        behavior={Platform.OS === "ios" ? "padding" : undefined}
+      <StatusBar
+        barStyle="light-content"
+        translucent={true}
+        backgroundColor="transparent"
+      />
+      <LinearGradient
+        colors={['#134E5E', '#71B280']}
+        style={styles.gradientBg}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
       >
-        <ScrollView 
-          contentContainerStyle={styles.scrollContent}
-          showsVerticalScrollIndicator={false}
-          keyboardShouldPersistTaps="handled"
+        <KeyboardAvoidingView
+          style={{ flex: 1 }}
+          behavior={Platform.OS === "ios" ? "padding" : undefined}
         >
-          <StatusBar
-          barStyle="dark-content"
-          translucent={true}
-          backgroundColor="transparent"
-        />
-
-        <View style={styles.header}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <ArrowLeft name="arrow-back" size={24} color="#000" fontWeight={900} />
-          </TouchableOpacity>
-          <Text style={styles.headerText}>Complete your account</Text>
-        </View>
-
-        <View style={styles.profileWrapper}>
-          <View style={styles.imageContainer}>
-            {profileImage ? (
-              <Image source={{ uri: profileImage }} style={styles.profileImage} />
-            ) : (
-              <View style={styles.iconPlaceholder}>
-                <User  name="person" size={50} color="#ccc" />
-              </View>
-            )}
+          <ScrollView 
+            contentContainerStyle={styles.scrollContent}
+            showsVerticalScrollIndicator={false}
+            keyboardShouldPersistTaps="handled"
+          >
+          <View style={styles.header}>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <ArrowLeft name="arrow-back" size={24} color="#FFF" fontWeight={900} />
+            </TouchableOpacity>
+            <Text style={styles.headerText}>Complete your account</Text>
           </View>
+
+          <View style={styles.bottomSheet}>
+            <View style={styles.profileWrapper}>
+              <View style={styles.imageContainer}>
+                {profileImage ? (
+                  <Image source={{ uri: profileImage }} style={styles.profileImage} />
+                ) : (
+                  <View style={styles.iconPlaceholder}>
+                    <User  name="person" size={50} color="rgba(255,255,255,0.6)" />
+                  </View>
+                )}
+              </View>
 
           <Pressable style={styles.editIcon} onPress={() => setShowImageOptions(true)}>
             <Pencil name="pencil" size={16} color="#fff" />
           </Pressable>
         </View>
 
-        {/* SERVICE DROPDOWN */}
         <Pressable
           style={styles.inputBox}
           onPress={() => setShowServiceDropdown(!showServiceDropdown)}
@@ -423,7 +429,7 @@ export default function CompleteProfileScreen() {
                 ? selectedServices.map((s) => s.category_subchild_name).join(", ")
                 : "Select Service Category"}
             </Text>
-            <ChevronDown name="chevron-down" size={22} color="#555" />
+            <ChevronDown name="chevron-down" size={22} color="#6B7280" />
           </View>
         </Pressable>
 
@@ -478,7 +484,7 @@ export default function CompleteProfileScreen() {
           <View style={styles.mapSearchBoxInline}>
             <TextInput 
               placeholder="Search for area, street, landmark..."
-              placeholderTextColor="#888"
+              placeholderTextColor="#9CA3AF"
               style={styles.mapSearchInput}
               value={mapSearchText}
               onChangeText={handlePlaceSearch}
@@ -508,10 +514,10 @@ export default function CompleteProfileScreen() {
           disabled={isLocating}
         >
           {isLocating ? (
-            <ActivityIndicator color="#ED6E0A" size="small" />
+            <ActivityIndicator color="#2BAAB1" size="small" />
           ) : (
             <>
-              <Navigation size={18} color="#ED6E0A" />
+              <Navigation size={18} color="#2BAAB1" />
               <Text style={styles.currentLocBtnText}>Use Current Location</Text>
             </>
           )}
@@ -560,7 +566,7 @@ export default function CompleteProfileScreen() {
                 <Text style={styles.inputText}>
                   {selectedStateName || "State"}
                 </Text>
-                <ChevronDown name="chevron-down" size={20} color="#555" />
+                <ChevronDown name="chevron-down" size={20} color="#6B7280" />
               </View>
             </Pressable>
           </View>
@@ -595,16 +601,25 @@ export default function CompleteProfileScreen() {
           onChangeText={setLandmark}
         />
 
-        <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-          <Text style={styles.buttonText}>Submit</Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={styles.buttonContainer} onPress={handleSubmit} activeOpacity={0.85}>
+            <LinearGradient
+              colors={['#134E5E', '#71B280']}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.buttonGradient}
+            >
+              <Text style={styles.buttonText}>Submit</Text>
+            </LinearGradient>
+          </TouchableOpacity>
 
-        <Text style={styles.footer}>
-          By Continuing, you agree to our <Text style={styles.link}>T&C</Text> and{" "}
-          <Text style={styles.link}>Privacy Policy</Text>
-        </Text>
+          <Text style={styles.footer}>
+            By Continuing, you agree to our <Text style={styles.link}>T&C</Text> and{" "}
+            <Text style={styles.link}>Privacy Policy</Text>
+          </Text>
+          </View>
         </ScrollView>
       </KeyboardAvoidingView>
+      </LinearGradient>
 
         {/* IMAGE SELECTION MODAL */}
         <Modal visible={showImageOptions} transparent animationType="fade">
@@ -644,7 +659,7 @@ const Input = ({ style, ...props }) => (
   <View style={[styles.inputBox, style]}>
     <TextInput
       {...props}
-      placeholderTextColor="#888"
+      placeholderTextColor="#9CA3AF"
       style={styles.textInputStyle}
     />
   </View>
@@ -653,7 +668,23 @@ const Input = ({ style, ...props }) => (
 
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#fff" },
+  container: { flex: 1 },
+  gradientBg: { flex: 1 },
+  bottomSheet: {
+    backgroundColor: '#FFFFFF',
+    borderTopLeftRadius: scale(40),
+    borderTopRightRadius: scale(40),
+    paddingHorizontal: scale(24),
+    paddingTop: scale(40),
+    paddingBottom: Platform.OS === 'ios' ? scale(40) : scale(30),
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: -10 },
+    shadowOpacity: 0.1,
+    shadowRadius: 20,
+    elevation: 20,
+    flex: 1,
+    marginTop: scale(10),
+  },
   scrollContent: {
     paddingHorizontal: scale(20),
     paddingBottom: scale(40),
@@ -663,24 +694,26 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingTop: scale(40)
   },
-  headerText: { fontSize: scale(20), fontWeight: "700", color:"#000", marginLeft: scale(20) },
+  headerText: { fontSize: scale(22), fontWeight: "800", color:"#FFF", marginLeft: scale(16) },
   profileWrapper: { alignSelf: "center", marginVertical: scale(10) },
   imageContainer: {
     width: scale(100),
     height: scale(100),
     borderRadius: scale(50),
-    backgroundColor: "#f2f2f2",
+    backgroundColor: "rgba(0,0,0,0.2)",
     overflow: "hidden",
     justifyContent: "center",
     alignItems: "center",
-  },inputText:{color:"#000", fontSize: scale(15)},
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.3)",
+  },inputText:{color:"#FFF", fontSize: scale(15), fontWeight: "500"},
   profileImage: { width: "100%", height: "100%" },
   iconPlaceholder: { flex: 1, justifyContent: "center", alignItems: "center" },
   editIcon: {
     position: "absolute",
     bottom: 0,
     right: 0,
-    backgroundColor: "#f57c00",
+    backgroundColor: "#2BAAB1",
     width: scale(32),
     height: scale(32),
     borderRadius: scale(16),
@@ -688,13 +721,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   inputBox: {
-    backgroundColor: "#f4f4f4",
-    borderRadius: scale(25),
+    backgroundColor: "#F3F4F6",
+    borderRadius: scale(16),
     paddingHorizontal: scale(20),
     height: scale(55),
     justifyContent: "center",
     marginBottom: scale(15),
-    color:"#000"
+    borderWidth: 1,
+    borderColor: "transparent",
   },
   dropdownTrigger: {
     flexDirection: "row",
@@ -702,35 +736,40 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   dropdown: {
-    backgroundColor: "#f4f4f4",
+    backgroundColor: "#FFF",
     borderRadius: scale(15),
     marginBottom: scale(15),
     overflow: "hidden",
     zIndex: 999,
-    color:"#000"
   },
   dropdownItem: {
     padding: scale(15),
     borderBottomWidth: 1,
     borderBottomColor: "#eee",
-    color:"#000"
   },
-  dropdownText: { fontSize: scale(15),color:"#000" },
+  dropdownText: { fontSize: scale(15),color:"#333" },
   row: { flexDirection: "row", justifyContent: "space-between", gap: scale(10), marginBottom: scale(15) },
-  textInputStyle: { fontSize: scale(15),color:"#000" },
-  button: {
-    backgroundColor: "#f57c00",
-    height: scale(55),
-    borderRadius: scale(30),
+  textInputStyle: { fontSize: scale(15),color:"#333333", fontWeight: "600" },
+  buttonContainer: {
+    height: scale(60),
+    borderRadius: scale(16),
+    marginTop: scale(20),
+    shadowColor: "#134E5E",
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.3,
+    shadowRadius: 15,
+    elevation: 8,
+    overflow: 'hidden',
+  },
+  buttonGradient: {
+    flex: 1,
+    flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: scale(40),
   },
-  buttonText: { color: "#fff", fontSize: scale(16), fontWeight: "700" },
-  footer: { fontSize: scale(12), textAlign: "center", 
-    marginTop: scale(20)
-   },
-  link: { fontWeight: "700" },
+  buttonText: { color: "#FFFFFF", fontSize: scale(16), fontWeight: "700", letterSpacing: 0.5 },
+  footer: { fontSize: scale(12), textAlign: "center", marginTop: scale(20), color: "#9CA3AF" },
+  link: { fontWeight: "700", color: "#2BAAB1" },
   modalOverlay: {
     flex: 1,
     backgroundColor: "rgba(0,0,0,0.5)",
@@ -778,21 +817,24 @@ const styles = StyleSheet.create({
   // INLINE LOCATION SEARCH
   fieldLabelInline: {
     fontSize: scale(14),
-    color: "#333",
+    color: "#6B7280",
     fontWeight: "600",
     marginBottom: scale(8),
     marginTop: scale(5),
   },
   mapSearchBoxInline: {
-    backgroundColor: "#f4f4f4",
-    borderRadius: scale(10),
+    backgroundColor: "#F3F4F6",
+    borderRadius: scale(16),
     paddingHorizontal: scale(15),
     height: scale(50),
     justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "transparent",
   },
   mapSearchInput: {
-    color: "#000",
+    color: "#333333",
     fontSize: scale(14),
+    fontWeight: "600",
   },
   predictionsDropdown: {
     backgroundColor: "#fff",
@@ -825,9 +867,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 1.5,
-    borderColor: "#ED6E0A",
+    borderColor: "#2BAAB1",
     borderStyle: "dashed",
-    borderRadius: scale(10),
+    borderRadius: scale(16),
     height: scale(50),
     marginTop: scale(20),
     marginBottom: scale(15),
@@ -835,7 +877,7 @@ const styles = StyleSheet.create({
   },
   currentLocBtnText: {
     fontSize: scale(15),
-    color: "#ED6E0A",
+    color: "#2BAAB1",
     fontWeight: "700"
   },
   coordErrorBox: {

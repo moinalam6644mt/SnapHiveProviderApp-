@@ -193,7 +193,7 @@ const JobScreen = () => {
       {loading && (
         <View style={styles.loaderWrapper}>
           <View style={styles.loaderCard}>
-            <ActivityIndicator size="large" color="#2E2E74" />
+            <ActivityIndicator size="large" color={theme.background} />
             <Text style={styles.loadingText}>Loading...</Text>
           </View>
         </View>
@@ -392,7 +392,7 @@ const styles = StyleSheet.create({
     zIndex: 999,
   },
   loaderCard: {
-    backgroundColor: theme.background,
+    backgroundColor: '#FFFFFF',
     paddingVertical: 28,
     paddingHorizontal: 40,
     borderRadius: 20,
@@ -426,7 +426,7 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
   },
   loadMoreBtn: {
-    backgroundColor: '#2E2E74',
+    backgroundColor: theme.background,
     paddingHorizontal: 25,
     paddingVertical: 10,
     borderRadius: 20,

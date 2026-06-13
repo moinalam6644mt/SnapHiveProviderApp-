@@ -10,11 +10,13 @@ import {
   ActivityIndicator,
   PermissionsAndroid,
 } from 'react-native';
-import { User, MapPin, Calendar, X, Download } from 'lucide-react-native';
+import { User, MapPin, Calendar, X, Download, Clock } from 'lucide-react-native';
 import axios from 'axios';
+import LinearGradient from 'react-native-linear-gradient';
 import ReactNativeBlobUtil from 'react-native-blob-util';
 import Toast from 'react-native-toast-message';
 import { AuthUser } from '../../../api/authUser';
+import { theme } from '../../styles/globalStyles';
 
 const CompleteJobCard = ({ completeBookingData, userId }) => {
   const {callApi} = AuthUser();
@@ -296,45 +298,42 @@ const CompleteJobCard = ({ completeBookingData, userId }) => {
                 onPress={() => handleOpenModal(booking_id)}
               >
                 {/* Top Header Row */}
-                <View style={styles.headerRow}>
-                  <Text style={styles.jobTitle}>
+                <View style={styles.cardHeader}>
+                  <Text style={styles.title}>
                     {category_subchild_name || 'Job_Type'}
                   </Text>
                   <Text style={styles.jobId}>#{booking_id}</Text>
                 </View>
 
-                {/* Content Body */}
-                <View style={styles.contentBody}>
-                  {/* Left Side: Info */}
-                  <View style={styles.leftCol}>
-                    <View style={styles.infoRow}>
-                      <User size={18} color="#71717a" />
-                      <Text style={styles.userName}>{member_name || 'Member'}</Text>
+                {/* User Info */}
+                <View style={styles.userRow}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <View style={styles.iconBackgroundSmall}>
+                      <User size={14} color="#FFFFFF" />
                     </View>
-
-                    <View
-                      style={[styles.infoRow, { alignItems: 'flex-start' }]}
-                    >
-                      <MapPin size={18} color="#1e1b4b" />
-                      <Text style={styles.addressText}>{fullAddress}</Text>
-                    </View>
-
-                    <View style={styles.infoRow}>
-                      <Calendar size={18} color="#71717a" />
-                      <Text style={styles.dateTimeText}>
-                        {formatDateTime()}
-                      </Text>
-                    </View>
+                    <Text style={styles.userName}>{member_name || 'Member name'}</Text>
                   </View>
+                </View>
 
-                  {/* Right Side: Earnings */}
-                  <View style={styles.rightCol}>
+                {/* Location & Earning */}
+                <View style={styles.infoRow2}>
+                  <View style={styles.rowLeft}>
+                    <MapPin size={16} color="#71B280" style={styles.inlineIcon} />
+                    <Text style={styles.address}>{fullAddress}</Text>
+                  </View>
+                  <View style={{ alignItems: 'flex-end' }}>
                     <Text style={styles.earningLabel}>Total Earning</Text>
-                    <Text style={styles.priceText}>₹{rate}</Text>
-                    <Text style={styles.durationText}>
-                      Duration: {duration_hours} Hours
-                    </Text>
+                    <Text style={styles.price}>₹{rate}</Text>
                   </View>
+                </View>
+
+                {/* Time & Duration */}
+                <View style={styles.infoRow2}>
+                  <View style={styles.rowLeft}>
+                    <Calendar size={16} color="#71B280" style={styles.inlineIcon} />
+                    <Text style={styles.time}>{formatDateTime()}</Text>
+                  </View>
+                  <Text style={styles.duration}>Duration: {duration_hours} Hours</Text>
                 </View>
               </TouchableOpacity>
             </View>
@@ -419,44 +418,59 @@ const CompleteJobCard = ({ completeBookingData, userId }) => {
 
                 {jobDetails.inv_det?.invoice_url && (
                   <TouchableOpacity
-                    style={[styles.downloadButton, downloading && { opacity: 0.7 }]}
+                    style={styles.btnContainer}
                     onPress={downloadInvoice}
                     disabled={downloading}
+                    activeOpacity={0.8}
                   >
-                    {downloading ? (
-                      <>
-                        <ActivityIndicator size="small" color="white" />
-                        <Text style={styles.downloadButtonText}>Downloading...</Text>
-                      </>
-                    ) : (
-                      <>
-                        <Download size={20} color="white" />
-                        <Text style={styles.downloadButtonText}>Download Invoice</Text>
-                      </>
-                    )}
+                    <LinearGradient
+                      colors={['#134E5E', '#71B280']}
+                      start={{ x: 0, y: 0 }}
+                      end={{ x: 1, y: 1 }}
+                      style={styles.gradientButton}
+                    >
+                      {downloading ? (
+                        <>
+                          <ActivityIndicator size="small" color="white" />
+                          <Text style={styles.downloadButtonText}>Downloading...</Text>
+                        </>
+                      ) : (
+                        <>
+                          <Download size={20} color="white" />
+                          <Text style={styles.downloadButtonText}>Download Invoice</Text>
+                        </>
+                      )}
+                    </LinearGradient>
                   </TouchableOpacity>
                 )}
 
                 {/* Mark as Paid button inside modal, below invoice */}
                 {modalPaymentStatus === 1 ? (
-                  <View style={[styles.paymentButton, styles.paymentButtonDisabled, { marginTop: 12 }]}>
+                  <View style={[styles.btnContainer, styles.paymentButtonDisabled, { marginTop: 12 }]}>
                     <Text style={styles.paymentButtonTextDisabled}>Marked as Paid</Text>
                   </View>
                 ) : (
                   <TouchableOpacity
                     activeOpacity={0.8}
-                    style={[styles.paymentButton, { marginTop: 12 }]}
+                    style={[styles.btnContainer, { marginTop: 12 }]}
                     onPress={() => handleMarkAsPaid(selectedJob)}
                     disabled={markingPaidId === selectedJob}
                   >
-                    {markingPaidId === selectedJob ? (
-                      <>
-                        <ActivityIndicator size="small" color="#fff" />
-                        <Text style={styles.paymentButtonText}>Marking...</Text>
-                      </>
-                    ) : (
-                      <Text style={styles.paymentButtonText}>Mark as Paid</Text>
-                    )}
+                    <LinearGradient
+                      colors={['#134E5E', '#71B280']}
+                      start={{ x: 0, y: 0 }}
+                      end={{ x: 1, y: 1 }}
+                      style={styles.gradientButton}
+                    >
+                      {markingPaidId === selectedJob ? (
+                        <>
+                          <ActivityIndicator size="small" color="#fff" />
+                          <Text style={styles.paymentButtonText}>Marking...</Text>
+                        </>
+                      ) : (
+                        <Text style={styles.paymentButtonText}>Mark as Paid</Text>
+                      )}
+                    </LinearGradient>
                   </TouchableOpacity>
                 )}
               </ScrollView>
@@ -478,17 +492,19 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   card: {
-    backgroundColor: 'white',
+    backgroundColor: theme.background,
     borderRadius: 16,
     padding: 16,
     marginHorizontal: 20,
     marginTop: 20,
+    borderWidth: 1,
+    borderColor: '#2baab1',
     // Soft shadow logic
     ...Platform.select({
       ios: {
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.05,
+        shadowOpacity: 0.15,
         shadowRadius: 10,
       },
       android: {
@@ -496,67 +512,81 @@ const styles = StyleSheet.create({
       },
     }),
   },
-  headerRow: {
+  cardHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 15,
+    marginBottom: 8,
   },
-  jobTitle: {
-    fontSize: 15,
+  title: {
+    fontSize: 16,
     fontWeight: 'bold',
-    color: '#312e81',
+    color: '#FFFFFF',
   },
   jobId: {
     fontSize: 12,
-    color: '#71717a',
+    color: 'rgba(255,255,255,0.8)',
   },
-  contentBody: {
+  userRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-  },
-  leftCol: {
-    flex: 1.2,
-    gap: 10,
-  },
-  rightCol: {
-    flex: 0.8,
-    alignItems: 'flex-end',
-    justifyContent: 'flex-end',
-    paddingBottom: 2,
-  },
-  infoRow: {
-    flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    marginVertical: 4,
+  },
+  iconBackgroundSmall: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 8,
   },
   userName: {
-    fontSize: 13,
     fontWeight: '600',
-    color: '#3f3f46',
-  },
-  addressText: {
-    fontSize: 12,
-    color: '#52525b',
-    lineHeight: 16,
-  },
-  dateTimeText: {
+    color: '#FFFFFF',
     fontSize: 13,
-    color: '#52525b',
+  },
+  infoRow2: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    marginTop: 6,
+  },
+  rowLeft: {
+    flexDirection: 'row',
+    flex: 0.7,
+    alignItems: 'flex-start',
+  },
+  inlineIcon: {
+    marginRight: 6,
+    marginTop: 1,
+  },
+  address: {
+    flex: 1,
+    fontSize: 12,
+    color: 'rgba(255,255,255,0.8)',
+    lineHeight: 18,
+  },
+  time: {
+    fontSize: 13,
+    color: '#FFFFFF',
+  },
+  price: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#4ade80',
+  },
+  duration: {
+    textAlign: 'right',
+    fontSize: 11,
+    color: 'rgba(255,255,255,0.8)',
+    marginTop: 5,
   },
   earningLabel: {
-    fontSize: 13,
-    color: '#71717a',
-  },
-  priceText: {
-    fontSize: 20, // Image anujayi ektu boro kora holo
-    fontWeight: 'bold',
-    color: '#18181b',
-    marginVertical: 2,
-  },
-  durationText: {
     fontSize: 11,
-    color: '#71717a',
+    color: 'rgba(255,255,255,0.8)',
+    marginBottom: 2,
   },
   // Floating Button Styling
   fab: {
@@ -677,49 +707,42 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     marginLeft: 52, // Align with text
   },
-  downloadButton: {
-    backgroundColor: '#2E2E74',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 14,
+  btnContainer: {
+    height: 48,
     borderRadius: 12,
-    gap: 8,
-    elevation: 2,
-    shadowColor: '#2E2E74',
+    shadowColor: '#134E5E',
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
+    shadowOpacity: 0.3,
     shadowRadius: 8,
+    elevation: 4,
+    overflow: 'hidden',
+  },
+  gradientButton: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 8,
   },
   downloadButtonText: {
     color: 'white',
     fontSize: 16,
     fontWeight: 'bold',
   },
-  paymentButtonWrapper: {
-    marginHorizontal: 20,
-    marginTop: 8,
-  },
-  paymentButton: {
-    backgroundColor: '#16a34a',
-    paddingVertical: 14,
-    borderRadius: 12,
-    // borderRadius: 999,
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
-    gap: 8,
-  },
   paymentButtonDisabled: {
     backgroundColor: '#e5e7eb',
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowOpacity: 0,
+    elevation: 0,
   },
   paymentButtonText: {
     color: '#fff',
-    fontSize: 14,
-    fontWeight: '600',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
   paymentButtonTextDisabled: {
-    color: '#6b7280',
+    color: '#9CA3AF',
     fontSize: 14,
     fontWeight: '600',
   },

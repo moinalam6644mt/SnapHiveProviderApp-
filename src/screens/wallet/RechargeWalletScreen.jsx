@@ -18,6 +18,7 @@ import { useNavigation } from '@react-navigation/native';
 import PaymentMethodDrawer from '../../components/Recharge/PaymentMethodDrawer';
 import { AuthUser } from '../../../api/authUser';
 import { AuthContext } from '../../context/AuthContext';
+import LinearGradient from 'react-native-linear-gradient';
 
 import { theme } from '../../styles/globalStyles';
 const RechargeWalletScreen = () => {
@@ -63,7 +64,11 @@ const RechargeWalletScreen = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container} edges={['left', 'right', 'bottom']}>
+    <LinearGradient
+      colors={[theme.background, theme.backgroundEnd]}
+      style={styles.container}
+    >
+      <SafeAreaView style={{ flex: 1 }} edges={['top', 'left', 'right']}>
       {loading && (
         <View style={styles.loaderContainer}>
           <ActivityIndicator size="large" color="#ED6E0A" />
@@ -84,14 +89,14 @@ const RechargeWalletScreen = () => {
               style={styles.backBtn}
               onPress={() => navigation.goBack()}
             >
-              <ChevronLeft size={24} color="#1e293b" strokeWidth={3} />
+              <ChevronLeft size={24} color="#FFFFFF" strokeWidth={3} />
             </TouchableOpacity>
 
             <Text style={styles.headerTitle}>Recharge Wallet</Text>
           </View>
 
-          {/* Form Content */}
-          <View style={styles.content}>
+          {/* Form Content in Bottom Sheet */}
+          <View style={styles.bottomSheet}>
             <Text style={styles.label}>Amount</Text>
 
             <View style={styles.inputContainer}>
@@ -105,23 +110,30 @@ const RechargeWalletScreen = () => {
               />
             </View>
           </View>
-
-          {/* Bottom Fixed Button */}
-          <KeyboardAvoidingView
-            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            style={styles.bottomContainer}
-          >
-            <TouchableOpacity
-              style={[styles.payBtn, { opacity: amount.length > 0 ? 1 : 0.6 }]}
-              disabled={amount.length === 0}
-              activeOpacity={0.8}
-              onPress={() => paymentFunction(amount)}
-            >
-              <Text style={styles.payBtnText}>Continue to Pay</Text>
-            </TouchableOpacity>
-          </KeyboardAvoidingView>
         </View>
       </TouchableWithoutFeedback>
+
+      {/* Bottom Fixed Button */}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.bottomContainer}
+      >
+        <TouchableOpacity
+          style={[styles.payBtn, { opacity: amount.length > 0 ? 1 : 0.6 }]}
+          disabled={amount.length === 0}
+          activeOpacity={0.8}
+          onPress={() => paymentFunction(amount)}
+        >
+          <LinearGradient
+            colors={[theme.background, theme.backgroundEnd]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.payBtnGradient}
+          >
+            <Text style={styles.payBtnText}>Continue to Pay</Text>
+          </LinearGradient>
+        </TouchableOpacity>
+      </KeyboardAvoidingView>
 
       <PaymentMethodDrawer
         orderId={orderId}
@@ -131,7 +143,8 @@ const RechargeWalletScreen = () => {
         amount={amount}
         userId={userId}
       />
-    </SafeAreaView>
+      </SafeAreaView>
+    </LinearGradient>
   );
 };
 
@@ -140,7 +153,6 @@ export default RechargeWalletScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.background,
   },
   header: {
     flexDirection: 'row',
@@ -148,6 +160,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10,
     marginTop: Platform.OS === 'android' ? 32 : 10,
+    marginBottom: 30,
   },
   backBtn: {
     marginRight: 15,
@@ -155,12 +168,21 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#1e1b4b',
+    color: '#FFFFFF',
     fontFamily: 'Sora-Bold',
   },
-  content: {
-    paddingHorizontal: 20,
-    marginTop: 30,
+  bottomSheet: {
+    flex: 1,
+    backgroundColor: '#FFFFFF',
+    borderTopLeftRadius: 35,
+    borderTopRightRadius: 35,
+    paddingTop: 40,
+    paddingHorizontal: 25,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: -4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 15,
+    elevation: 10,
   },
   label: {
     fontSize: 12,
@@ -176,7 +198,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     paddingHorizontal: 15,
     justifyContent: 'center',
-    backgroundColor: theme.background,
+    backgroundColor: '#F8FAFC',
   },
   input: {
     fontSize: 14,
@@ -189,17 +211,22 @@ const styles = StyleSheet.create({
     left: 20,
     right: 20,
     marginBottom: Platform.OS === 'android' ? 10 : 0,
+    zIndex: 10,
   },
   payBtn: {
-    backgroundColor: '#ED6E0A',
     height: 56,
     borderRadius: 30,
+    overflow: 'hidden',
+    elevation: 6,
+    shadowColor: '#134E5E',
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 4 },
+  },
+  payBtnGradient: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    elevation: 4,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
   },
   payBtnText: {
     color: 'white',

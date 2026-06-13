@@ -21,6 +21,7 @@ import { AuthUser } from '../../../api/authUser';
 import PusherService from '../../services/PusherService';
 import Toast from 'react-native-toast-message';
 import { useRoute } from '@react-navigation/native';
+import LinearGradient from 'react-native-linear-gradient';
 
 import { theme } from '../../styles/globalStyles';
 const WalletScreen = () => {
@@ -174,13 +175,17 @@ useEffect(()=>{
   }, [route.params, userId]);
 
   return (
-    <SafeAreaView style={styles.container}>
-      {/* Status Bar */}
-      <StatusBar
-        barStyle="dark-content"
-        backgroundColor="transparent"
-        translucent={true}
-      />
+    <LinearGradient
+      colors={[theme.background, theme.backgroundEnd]}
+      style={styles.container}
+    >
+      <SafeAreaView style={{ flex: 1 }} edges={['top', 'left', 'right']}>
+        {/* Status Bar */}
+        <StatusBar
+          barStyle="light-content"
+          backgroundColor="transparent"
+          translucent={true}
+        />
 
       {/* Header */}
       <View style={styles.header}>
@@ -195,13 +200,14 @@ useEffect(()=>{
           }}
           activeOpacity={0.7}
         >
-          <ChevronLeft size={24} color="#1e293b" />
+          <ChevronLeft size={24} color="#FFFFFF" />
         </TouchableOpacity>
 
         <Text style={styles.headerTitle}>Wallet</Text>
       </View>
 
-      <ScrollView
+      <View style={styles.bottomSheet}>
+        <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
       >
@@ -223,7 +229,8 @@ useEffect(()=>{
         </View>
 
         <RedeemHistory data={sevenDaysData} />
-      </ScrollView>
+        </ScrollView>
+      </View>
 
       <EarningsDrawer
         visible={earningsVisible}
@@ -232,6 +239,7 @@ useEffect(()=>{
         onClose={() => setEarningsVisible(false)}
       />
     </SafeAreaView>
+  </LinearGradient>
   );
 };
 
@@ -240,13 +248,14 @@ export default WalletScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.background,
   },
 
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 20,
+    marginTop: Platform.OS === 'android' ? 32 : 10,
+    marginBottom: 20,
   },
 
   backBtn: {
@@ -257,8 +266,21 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#3f3f46',
+    color: '#FFFFFF',
     fontFamily: 'Sora-Bold',
+  },
+
+  bottomSheet: {
+    flex: 1,
+    backgroundColor: '#FFFFFF',
+    borderTopLeftRadius: 35,
+    borderTopRightRadius: 35,
+    paddingTop: 30,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: -4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 15,
+    elevation: 10,
   },
 
   scrollContent: {

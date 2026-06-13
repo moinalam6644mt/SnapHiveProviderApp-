@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Clock, MapPin, Wallet, Info, Timer, Zap, User } from 'lucide-react-native';
+import { theme } from '../../../styles/globalStyles';
 
 const EndDetailes = ({ bookingDetails, providerDetails }) => {
   console.log('Booking Details:', bookingDetails);
@@ -64,14 +65,14 @@ const EndDetailes = ({ bookingDetails, providerDetails }) => {
       <View style={styles.content}>
         {/* Date */}
         <View style={styles.row}>
-          <Clock size={18} color="#52525B" strokeWidth={1.8} />
+          <Clock size={18} color="#FFFFFF" strokeWidth={1.8} />
           <Text style={styles.text}>{formatDateTime()}</Text>
         </View>
 
         {/* Customer Name */}
         <View style={[styles.row, { alignItems: 'center' }]}>
-          <User size={18} color="#52525B" strokeWidth={1.8} />
-          <Text style={[styles.text, { fontWeight: '700', color: '#18181B', fontSize: 15 }]}>
+          <User size={18} color="#FFFFFF" strokeWidth={1.8} />
+          <Text style={[styles.text, { fontWeight: '700', color: '#FFFFFF', fontSize: 15 }]}>
             {bookingDetails?.customer_name || 'Customer'}
           </Text>
         </View>
@@ -79,8 +80,8 @@ const EndDetailes = ({ bookingDetails, providerDetails }) => {
         {/* Address */}
         {fullAddress ? (
           <View style={[styles.row, { alignItems: 'flex-start' }]}>
-            <MapPin size={18} color="#52525B" strokeWidth={1.8} style={{ marginTop: 2 }} />
-            <Text style={[styles.text, { flex: 1, lineHeight: 20, color: '#52525B' }]}>
+            <MapPin size={18} color="#FFFFFF" strokeWidth={1.8} style={{ marginTop: 2 }} />
+            <Text style={[styles.text, { flex: 1, lineHeight: 20, color: 'rgba(255,255,255,0.8)' }]}>
               {fullAddress}
             </Text>
           </View>
@@ -90,7 +91,7 @@ const EndDetailes = ({ bookingDetails, providerDetails }) => {
 
         {/* First Hour Rate */}
         <View style={styles.row}>
-          <Zap size={18} color="#312E81" strokeWidth={1.8} />
+          <Zap size={18} color="#71B280" strokeWidth={1.8} />
           <View style={styles.rateRow}>
             <Text style={styles.text}>First Hour Rate</Text>
             <Text style={styles.rateText}>₹{firstHourRate}</Text>
@@ -100,7 +101,7 @@ const EndDetailes = ({ bookingDetails, providerDetails }) => {
         {/* Next Hour Rate */}
         {nextHourRate > 0 && (
           <View style={styles.row}>
-            <Timer size={18} color="#312E81" strokeWidth={1.8} />
+            <Timer size={18} color="#71B280" strokeWidth={1.8} />
             <View style={styles.rateRow}>
               <Text style={styles.text}>Next Hour Rate</Text>
               <Text style={styles.rateText}>₹{nextHourRate}</Text>
@@ -110,7 +111,7 @@ const EndDetailes = ({ bookingDetails, providerDetails }) => {
 
         {lateNightCharge > 0 && (
           <View style={styles.row}>
-            <Timer size={18} color="#312E81" strokeWidth={1.8} />
+            <Timer size={18} color="#71B280" strokeWidth={1.8} />
             <View style={styles.rateRow}>
               <Text style={styles.text}>Late Night Charge</Text>
               <Text style={styles.rateText}>₹{lateNightCharge}</Text>
@@ -124,7 +125,7 @@ const EndDetailes = ({ bookingDetails, providerDetails }) => {
 
       {/* Footer Info */}
       <View style={styles.footerRow}>
-        <Info size={18} color="#52525B" strokeWidth={1.8} />
+        <Info size={18} color="rgba(255,255,255,0.8)" strokeWidth={1.8} />
         <Text style={styles.footerText}>
           Total Amount will be generated after service completion based on
           actual duration.
@@ -138,17 +139,22 @@ export default EndDetailes;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#f9fafb',
+    backgroundColor: theme.background,
     borderRadius: 20,
     padding: 18,
     marginHorizontal: 20,
     borderWidth: 1,
-    borderColor: '#F3F4F6',
+    borderColor: '#2baab1',
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
   },
   title: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#312E81',
+    color: '#FFFFFF',
     marginBottom: 14,
   },
   content: {
@@ -161,7 +167,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 14,
-    color: '#52525B',
+    color: '#FFFFFF',
   },
   dot: {
     width: 4,
@@ -179,17 +185,17 @@ const styles = StyleSheet.create({
   rateText: {
     fontSize: 14,
     fontWeight: '700',
-    color: '#312E81',
+    color: '#FFFFFF',
   },
   divider: {
     marginTop: 16,
     marginBottom: 12,
     height: 1,
-    backgroundColor: '#E5E7EB',
+    backgroundColor: 'rgba(255,255,255,0.2)',
   },
   dividerLight: {
     height: 1,
-    backgroundColor: '#F1F5F9',
+    backgroundColor: 'rgba(255,255,255,0.1)',
     marginVertical: 1,
   },
   footerRow: {
@@ -201,7 +207,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 12,
     fontWeight: '500',
-    color: '#64748B',
+    color: 'rgba(255,255,255,0.8)',
     lineHeight: 16,
   },
   pccContainer: {

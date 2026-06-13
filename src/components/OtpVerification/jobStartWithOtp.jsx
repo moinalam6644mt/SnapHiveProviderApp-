@@ -11,6 +11,7 @@ import {
   Pressable,
 } from 'react-native';
 import { X } from 'lucide-react-native';
+import LinearGradient from 'react-native-linear-gradient';
 import { useOtpShared } from '../../context/OtpSharedContext';
 
 import { theme } from '../../styles/globalStyles';
@@ -131,14 +132,22 @@ const OTPVerificationModal = ({ visible, onClose }) => {
             </View>
 
             <TouchableOpacity
-              style={styles.verifyBtn}
+              style={styles.verifyBtnContainer}
+              activeOpacity={0.8}
               onPress={() => onVerify(otp.join(''))}
             >
-              {bookingDetails?.status === '2' ? (
-                <Text style={styles.verifyBtnText}>Verify OTP & Start</Text>
-              ) : (
-                <Text style={styles.verifyBtnText}>Verify OTP & End</Text>
-              )}
+              <LinearGradient
+                colors={['#134E5E', '#71B280']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={styles.verifyBtnGradient}
+              >
+                {bookingDetails?.status === '2' ? (
+                  <Text style={styles.verifyBtnText}>Verify OTP & Start</Text>
+                ) : (
+                  <Text style={styles.verifyBtnText}>Verify OTP & End</Text>
+                )}
+              </LinearGradient>
             </TouchableOpacity>
           </View>
         </Animated.View>
@@ -213,11 +222,19 @@ const styles = StyleSheet.create({
     borderColor: theme.danger, // Red border on focus
     backgroundColor: 'white',
   },
-  verifyBtn: {
-    backgroundColor: '#47970B',
+  verifyBtnContainer: {
     marginHorizontal: 20,
     height: 52,
     borderRadius: 100,
+    elevation: 4,
+    shadowColor: '#134E5E',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    overflow: 'hidden',
+  },
+  verifyBtnGradient: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },

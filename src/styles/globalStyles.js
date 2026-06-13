@@ -6,14 +6,15 @@ const { width, height } = Dimensions.get('window');
 export const theme = {
   primary: '#2BAAB1',
   accent: '#ff7a00',
-  danger: '#ef4444',
+  danger: '#ff6b6b',
   warning: '#f59e0b',
   success: '#1bb21b',
-  surface: '#f9f9f9',
-  background: '#ffffff',
-  textPrimary: '#333333',
-  textSecondary: '#777777',
-  border: '#e0e0e0',
+  surface: 'rgba(255, 255, 255, 0.15)',
+  background: '#134E5E',
+  backgroundEnd: '#71B280',
+  textPrimary: '#FFFFFF',
+  textSecondary: 'rgba(255, 255, 255, 0.8)',
+  border: 'rgba(255, 255, 255, 0.3)',
 };
 
 export default StyleSheet.create({

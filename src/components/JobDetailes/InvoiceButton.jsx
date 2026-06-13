@@ -3,6 +3,7 @@ import { StyleSheet, TouchableOpacity, Text, ActivityIndicator, View, Platform, 
 import { useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 import ReactNativeBlobUtil from 'react-native-blob-util';
+import LinearGradient from 'react-native-linear-gradient';
 
 export default function InvoiceButton({ invoiceUrl }) {
   const navigation = useNavigation();
@@ -99,32 +100,47 @@ export default function InvoiceButton({ invoiceUrl }) {
   };
   return (
     <TouchableOpacity
-      style={[styles.startBtn, isDownloading && styles.disabledBtn]}
+      style={[styles.btnContainer, isDownloading && styles.disabledBtn]}
       onPress={handleDownload}
       disabled={isDownloading}
+      activeOpacity={0.8}
     >
-      {isDownloading ? (
-        <View style={styles.loadingRow}>
-          <ActivityIndicator color="white" size="small" />
-          <Text style={[styles.startBtnText, { marginLeft: 10 }]}>Downloading...</Text>
-        </View>
-      ) : (
-        <Text style={styles.startBtnText}>Download Invoice</Text>
-      )}
+      <LinearGradient
+        colors={['#134E5E', '#71B280']}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={styles.gradientBtn}
+      >
+        {isDownloading ? (
+          <View style={styles.loadingRow}>
+            <ActivityIndicator color="white" size="small" />
+            <Text style={[styles.startBtnText, { marginLeft: 10 }]}>Downloading...</Text>
+          </View>
+        ) : (
+          <Text style={styles.startBtnText}>Download Invoice</Text>
+        )}
+      </LinearGradient>
     </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
-  startBtn: {
-    backgroundColor: '#2FCA00',
+  btnContainer: {
     height: 60,
     borderRadius: 15,
+    marginHorizontal: 20,
+    marginBottom: 10,
+    elevation: 2,
+    shadowColor: '#134E5E',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    overflow: 'hidden',
+  },
+  gradientBtn: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 10,
-
-    marginHorizontal: 20,
   },
   startBtnText: {
     color: 'white',

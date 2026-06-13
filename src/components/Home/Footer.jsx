@@ -9,6 +9,7 @@ import {
   WalletCards,
 } from 'lucide-react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
+import LinearGradient from 'react-native-linear-gradient';
 
 import { theme } from '../../styles/globalStyles';
 const Footer = () => {
@@ -24,7 +25,12 @@ const Footer = () => {
   };
 
   return (
-    <View style={styles.footer}>
+    <LinearGradient 
+      colors={['#134E5E', '#71B280']}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={styles.footer}
+    >
       <FooterItem
         label="Home"
         active={currentRoute === 'Home'}
@@ -38,12 +44,6 @@ const Footer = () => {
         IconComponent={Briefcase}
         onPress={() => handleNavigation('JobScreen')}
       />
-      {/* <FooterItem
-        label="Jobs Notification"
-        active={currentRoute === 'JobsNotification'}
-        IconComponent={Briefcase}
-        onPress={() => handleNavigation('NotificationHandling')}
-      /> */}
 
       <FooterItem
         label="Wallet"
@@ -58,7 +58,7 @@ const Footer = () => {
         IconComponent={User}
         onPress={() => handleNavigation('Profile')}
       />
-    </View>
+    </LinearGradient>
   );
 };
 
@@ -66,8 +66,8 @@ const FooterItem = ({label, active, IconComponent, onPress}) => (
   <TouchableOpacity style={styles.item} onPress={onPress} activeOpacity={0.6}>
     <IconComponent
       size={24}
-      color={active ? '#0a0620' : '#9CA3AF'}
-      strokeWidth={active ? 3 : 1.8}
+      color={active ? '#FFFFFF' : 'rgba(255,255,255,0.5)'}
+      strokeWidth={active ? 2.5 : 1.8}
     />
     <Text style={[styles.label, active && styles.activeLabel]}>{label}</Text>
   </TouchableOpacity>
@@ -79,9 +79,7 @@ const styles = StyleSheet.create({
   footer: {
     flexDirection: 'row',
     height: 75,
-    backgroundColor: theme.background,
-    borderTopWidth: 1,
-    borderTopColor: '#EEE',
+    borderTopWidth: 0,
     position: 'absolute',
     bottom: 0,
     width: '100%',
@@ -102,13 +100,13 @@ const styles = StyleSheet.create({
 
   label: {
     fontSize: 10,
-    color: '#9CA3AF',
+    color: 'rgba(255,255,255,0.5)',
     marginTop: 4,
     fontFamily: 'Sora-Regular',
   },
 
   activeLabel: {
-    color: '#0a0620',
+    color: '#FFFFFF',
     fontWeight: '700',
     fontSize: 11,
   },

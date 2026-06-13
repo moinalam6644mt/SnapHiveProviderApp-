@@ -12,8 +12,10 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Toast from "react-native-toast-message";
 import { AuthUser } from "../../../api/authUser";
+import LinearGradient from "react-native-linear-gradient";
 
 const { width } = Dimensions.get("window");
+const scale = (size) => (width / 375) * size;
 
 export default function VerificationScreen() {
   const navigation = useNavigation();
@@ -135,29 +137,38 @@ export default function VerificationScreen() {
 
 
   return (
-    <SafeAreaView style={styles.safe}>
+    <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
       <StatusBar
-        barStyle="dark-content"
+        barStyle="light-content"
         translucent={true}
         backgroundColor="transparent"
       />
 
-      <View style={styles.container}>
-        <Image
-          source={require("../../../assets/app/splashImage/verify.png")}
-          style={styles.image}
-          resizeMode="contain"
-        />
+      <LinearGradient
+        colors={['#134E5E', '#71B280']}
+        style={styles.gradientBg}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+      >
+        <View style={styles.container}>
+          <View style={styles.card}>
+            <Image
+              source={require("../../../assets/app/splashImage/verify.png")}
+              style={styles.image}
+              resizeMode="contain"
+            />
 
-        <Text style={styles.title}>Verification in progress</Text>
+            <Text style={styles.title}>Verification in progress</Text>
 
-        <Text style={styles.wait}>Please wait...</Text>
+            <Text style={styles.wait}>Please wait...</Text>
 
-        <Text style={styles.desc}>
-          We're processing your verification. The status will be updated
-          within 24 hours.
-        </Text>
-      </View>
+            <Text style={styles.desc}>
+              We're processing your verification. The status will be updated
+              within 24 hours.
+            </Text>
+          </View>
+        </View>
+      </LinearGradient>
     </SafeAreaView>
   );
 }
@@ -166,43 +177,54 @@ const styles = StyleSheet.create({
   safe: {
     flex: 1,
   },
-
+  gradientBg: {
+    flex: 1,
+  },
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    paddingHorizontal: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: scale(20),
   },
-
+  card: {
+    backgroundColor: "rgba(255, 255, 255, 0.15)",
+    borderRadius: scale(24),
+    padding: scale(30),
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: "rgba(255, 255, 255, 0.3)",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.2,
+    shadowRadius: 20,
+    elevation: 5,
+    width: '100%',
+  },
   image: {
-    width: 122,
-    height: 124,
-    marginBottom: 18,
+    width: scale(122),
+    height: scale(124),
+    marginBottom: scale(24),
   },
-
   title: {
-    fontSize: 24,
-    fontWeight: "800",
-    color: "#2E2E74",
-    textAlign: "center",
-    lineHeight: 30,
-    marginBottom: 6,
+    fontSize: scale(24),
+    fontWeight: '800',
+    color: '#FFF',
+    textAlign: 'center',
+    lineHeight: scale(30),
+    marginBottom: scale(10),
   },
-
   wait: {
-    fontSize: 18,
-    fontWeight: "700",
-    color: "#474747",
-    textAlign: "center",
-    marginBottom: 10,
+    fontSize: scale(18),
+    fontWeight: '700',
+    color: 'rgba(255,255,255,0.9)',
+    textAlign: 'center',
+    marginBottom: scale(12),
   },
-
   desc: {
-    fontSize: 14,
-    fontWeight: "400",
-    color: "#474747",
-    textAlign: "center",
-    lineHeight: 21,
-    maxWidth: width - 40,
+    fontSize: scale(14),
+    fontWeight: '500',
+    color: 'rgba(255,255,255,0.8)',
+    textAlign: 'center',
+    lineHeight: scale(21),
   },
 });

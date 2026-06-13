@@ -1,8 +1,8 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 import { theme } from '../../../styles/globalStyles';
-const StartDetails = ({bookingDetails, providerDetails}) => {
+const StartDetails = ({ bookingDetails, providerDetails }) => {
   console.log('Booking Details:', bookingDetails);
   console.log('Provider Details:', providerDetails);
   // Helper to format price
@@ -52,7 +52,7 @@ const StartDetails = ({bookingDetails, providerDetails}) => {
       {lateNightCharege > 0 && (
         <View style={styles.detailItem}>
           <Text style={styles.label}>Late Night Charge</Text>
-          <Text style={[styles.value, {color: theme.danger}]}>
+          <Text style={[styles.value, { color: theme.warning }]}>
             ₹{formatRate(lateNightCharege)}
           </Text>
         </View>
@@ -70,7 +70,7 @@ const StartDetails = ({bookingDetails, providerDetails}) => {
       {previousCancelCharge > 0 && (
         <View style={styles.detailItem}>
           <Text style={styles.label}>Previous Cancel Charge</Text>
-          <Text style={[styles.value, {color: theme.danger}]}>
+          <Text style={[styles.value, { color: theme.warning }]}>
             ₹{formatRate(previousCancelCharge)}
           </Text>
         </View>
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     borderColor: '#f0f0f0',
     elevation: 3,
     shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.05,
     shadowRadius: 5,
   },
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 15,
-    color: '#1A1A1A',
+    color: '#FFFFFF',
   },
   detailItem: {
     flexDirection: 'row',
@@ -123,13 +123,13 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   label: {
-    color: '#6b7280',
+    color: '#FFFFFF',
     fontSize: 14,
     fontWeight: '500',
   },
   value: {
     fontWeight: '700',
-    color: '#1E1E1E',
+    color: '#FFFFFF',
     fontSize: 15,
   },
   divider: {
@@ -139,17 +139,17 @@ const styles = StyleSheet.create({
   },
   estimatedLabel: {
     fontWeight: '800',
-    color: '#2d2f7f',
+    color: '#FFFFFF',
     fontSize: 16,
   },
   estimatedValue: {
     fontWeight: '900',
-    color: '#2d2f7f',
+    color: '#FFFFFF',
     fontSize: 18,
   },
   note: {
     fontSize: 11,
-    color: '#9ca3af',
+    color: '#FFFFFF',
     fontStyle: 'italic',
     marginTop: 5,
     textAlign: 'center',

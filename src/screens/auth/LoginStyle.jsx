@@ -1,266 +1,231 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions, Platform } from 'react-native';
 
-import { theme } from '../../styles/globalStyles';
+const { width, height } = Dimensions.get('window');
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.background,
+    backgroundColor: '#FFFFFF',
   },
-
-  /* TOP SECTION */
+  gradientBg: {
+    flex: 1,
+  },
+  keyboardView: {
+    flex: 1,
+  },
+  scrollContent: {
+    flexGrow: 1,
+    justifyContent: 'space-between',
+  },
   topSection: {
-    height: '42%',
-    backgroundColor: '#2E2A72',
-    borderBottomLeftRadius: 30,
-    borderBottomRightRadius: 30,
-    overflow: 'hidden',
-  },
-
-  topBg: {
-    flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
-  },
-
-  logo: {
-    width: 200,
-    height: 50,
-    resizeMode: 'contain',
-  },
-
-  tagline: {
-    marginTop: 6,
-    fontSize: 13,
-    color: '#E5E5E5',
-  },
-
-  /* SPACE BELOW HEADER */
-  bottomSection: {
+    justifyContent: 'center',
     flex: 1,
-    backgroundColor: '#F4F4F4',
+    minHeight: height * 0.35,
+    paddingTop: Platform.OS === 'ios' ? 40 : 60,
+    paddingBottom: 20,
   },
-
-  /* FLOATING CARD */
-  card: {
-    position: 'absolute',
-    top: '28%',
-    left: 15,
-    right: 15,
-    backgroundColor: theme.background,
-    borderRadius: 16,
-    padding: 18,
-
-    elevation: 1,
+  logo: {
+    width: width * 0.55,
+    height: 70,
+    resizeMode: 'contain',
+    tintColor: '#FFFFFF',
+  },
+  tagline: {
+    marginTop: 15,
+    fontSize: 16,
+    color: 'rgba(255, 255, 255, 0.9)',
+    letterSpacing: 2,
+    fontWeight: '600',
+    textTransform: 'uppercase',
+  },
+  bottomSheet: {
+    backgroundColor: '#FFFFFF',
+    borderTopLeftRadius: 40,
+    borderTopRightRadius: 40,
+    paddingHorizontal: 30,
+    paddingTop: 40,
+    paddingBottom: Platform.OS === 'ios' ? 40 : 30,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.15,
-    shadowRadius: 10,
+    shadowOffset: { width: 0, height: -10 },
+    shadowOpacity: 0.1,
+    shadowRadius: 20,
+    elevation: 20,
   },
-
   title: {
-    fontSize: 22,
-    fontWeight: '700',
-    color: '#2E2A72',
-    textAlign: 'center',
-    marginBottom: 6,
+    fontSize: 32,
+    fontWeight: '800',
+    color: '#1E1B4B',
+    marginBottom: 8,
   },
-
   subtitle: {
-    fontSize: 14,
-    color: '#8A8A8A',
-    textAlign: 'center',
-    marginBottom: 18,
-    lineHeight: 20,
+    fontSize: 15,
+    color: '#6B7280',
+    marginBottom: 35,
   },
-
-  /* INPUT */
+  inputContainer: {
+    marginBottom: 20,
+  },
   inputWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
+    backgroundColor: '#F3F4F6',
+    borderRadius: 16,
+    paddingHorizontal: 18,
+    height: 60,
     borderWidth: 1,
-    borderColor: theme.border,
-    paddingHorizontal: 12,
-    height: 50,
-    backgroundColor: '#F6F6F6',
-    borderRadius: 12,
-    marginBottom: 10,
+    borderColor: 'transparent',
   },
-
+  inputError: {
+    borderColor: '#FF6B6B',
+    backgroundColor: '#FEF2F2',
+  },
   input: {
     flex: 1,
-    marginLeft: 10,
+    marginLeft: 15,
     fontSize: 16,
-    color: '#333',
-  },
-
-  /* BUTTON */
-  button: {
-    backgroundColor: '#F58220',
-    height: 50,
-    borderRadius: 14,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 5,
-  },
-
-  buttonActive: {
-    backgroundColor: '#F58220',
-  },
-
-  buttonText: {
-    color: theme.background,
-    fontSize: 16,
+    color: '#333333',
     fontWeight: '600',
   },
-
+  errorText: {
+    color: '#FF6B6B',
+    fontSize: 13,
+    marginTop: 8,
+    marginLeft: 15,
+    fontWeight: '500',
+  },
+  buttonContainer: {
+    height: 60,
+    borderRadius: 16,
+    marginTop: 15,
+    shadowColor: '#134E5E',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.3,
+    shadowRadius: 15,
+    elevation: 8,
+    overflow: 'hidden',
+  },
+  buttonGradient: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonDisabled: {
+    opacity: 0.7,
+  },
+  buttonText: {
+    color: '#FFFFFF',
+    fontSize: 18,
+    fontWeight: '700',
+    letterSpacing: 0.5,
+  },
   skip: {
     textAlign: 'center',
-    fontSize: 14,
-    color: '#9E9E9E',
-    marginTop: 10,
+    fontSize: 15,
+    color: '#6B7280',
+    marginTop: 25,
+    fontWeight: '600',
   },
-
-  /* TERMS */
+  bottomSection: {
+    marginTop: 30,
+    alignItems: 'center',
+  },
   terms: {
-    position: 'absolute',
-    bottom: 15,
-    alignSelf: 'center',
-    fontSize: 12,
-    color: '#8A8A8A',
+    fontSize: 13,
+    color: '#9CA3AF',
+    textAlign: 'center',
   },
-
   link: {
-    color: '#2E2A72',
+    color: '#2BAAB1',
     fontWeight: '600',
   },
 
   /* ================= OTP SCREEN ================= */
-
   mobileNumberContainer: {
-    alignItems: 'center',
-    marginBottom: 15,
+    alignItems: 'flex-start',
+    marginBottom: 30,
+    backgroundColor: '#F8F9FA',
+    paddingVertical: 16,
+    paddingHorizontal: 20,
+    borderRadius: 16,
   },
-
   mobileNumberText: {
     fontSize: 14,
-    color: '#8A8A8A',
-    marginBottom: 4,
+    color: '#6B7280',
+    marginBottom: 6,
   },
-
   mobileNumberRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
+    gap: 8,
   },
-
   mobileNumber: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#2E2A72',
+    fontSize: 18,
+    fontWeight: '800',
+    color: '#1E1B4B',
   },
-
+  userNameText: {
+    fontSize: 14,
+    color: '#4B5563',
+    marginTop: 6,
+    fontWeight: '500',
+  },
+  otpContainerWrapper: {
+    marginBottom: 25,
+  },
   otpContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 8,
   },
-
-
   otpInput: {
-    width: 50,
-    height: 50,
+    width: (width - 60 - 45) / 4, // Calculate width perfectly based on padding
+    height: 65,
     borderWidth: 1,
-    borderColor: theme.border,
-    borderRadius: 8,
+    borderColor: '#E5E7EB',
+    borderRadius: 16,
     textAlign: 'center',
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#333',
-    backgroundColor: '#fff',
+    fontSize: 24,
+    fontWeight: '700',
+    color: '#1E1B4B',
+    backgroundColor: '#FFFFFF',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 5,
+    elevation: 2,
   },
   otpInputError: {
-    borderColor: '#ff3b30',
-    backgroundColor: '#fff5f5',
+    borderColor: '#FF6B6B',
+    backgroundColor: '#FEF2F2',
   },
-
   otpErrorText: {
-    color: '#ff3b30',
-    fontSize: 12,
+    color: '#FF6B6B',
+    fontSize: 13,
     textAlign: 'center',
-    marginTop: 10,
-    bottom:5
+    marginTop: 8,
+    fontWeight: '500',
   },
-
-  /* RESEND */
   resendContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 18,
+    alignItems: 'center',
+    marginBottom: 30,
   },
-
   resendText: {
-    color: '#666',
-    fontSize: 14,
+    color: '#6B7280',
+    fontSize: 15,
+    fontWeight: '500',
   },
-
   timerText: {
-    fontSize: 14,
-    color: '#2E2A72',
-    fontWeight: '600',
+    fontSize: 15,
+    color: '#2BAAB1',
+    fontWeight: '700',
   },
-
-  resendActive: {
-    color: '#F58220',
+  timerTextDisabled: {
+    color: '#9CA3AF',
   },
-  inputContainer: {
-    marginBottom: 12,
-  },
-
-  inputError: {
-    borderColor: '#ff3b30',
-    borderWidth: 1,
-    backgroundColor: '#fff5f5',
-  },
-
-  errorText: {
-    color: '#ff3b30',
-    fontSize: 12,
-    marginTop: 4,
-    marginLeft: 8,
-  },
-  scrollContent: {
-  flexGrow: 1,
-  paddingBottom: 20,
-},
-inputContainer: {
-  marginBottom: 16,
-},
-inputWrapper: {
-  flexDirection: 'row',
-  alignItems: 'center',
-  borderWidth: 1,
-  borderColor: theme.border,
-  borderRadius: 8,
-  paddingHorizontal: 12,
-  height: 50,
-  backgroundColor: '#F5F5F5',
-},
-inputError: {
-  borderColor: '#ff3b30',
-  borderWidth: 1,
-},
-input: {
-  flex: 1,
-  marginLeft: 10,
-  fontSize: 16,
-  color: '#333',
-},
-errorText: {
-  color: '#ff3b30',
-  fontSize: 12,
-  marginTop: 4,
-  marginLeft: 12,
-},
 });
 
 export default styles;

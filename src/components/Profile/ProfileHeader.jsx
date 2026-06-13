@@ -13,10 +13,10 @@ const ProfileHeader = () => {
           onPress={() => navigation.goBack()}
           style={styles.backBtn}
         >
-          <ChevronLeft size={24} color="#1e1b4b" />
+          <ChevronLeft size={24} color="#FFFFFF" />
         </TouchableOpacity>
         <Image
-          source={require("../../../assets/app/Profile/profileLogo.png")}
+          source={require("../../../assets/images/logo1.png")}
           style={styles.logoImg}
           resizeMode="contain"
         />
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   },
   logoRow: { flexDirection: "row", alignItems: "center" },
   backBtn: { paddingRight: 10 },
-  logoImg: { width: 140, height: 45 },
+  logoImg: { width: 170, height: 55, tintColor: '#FFFFFF' },
   notifBtn: {
     width: 44,
     height: 44,

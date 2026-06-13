@@ -12,6 +12,8 @@ import {
 import {useNavigation} from '@react-navigation/native';
 import {Award} from 'lucide-react-native';
 import {AuthContext} from '../context/AuthContext';
+import LinearGradient from 'react-native-linear-gradient';
+import {theme} from '../styles/globalStyles';
 
 const {width} = Dimensions.get('window');
 
@@ -39,7 +41,9 @@ export default function SplashScreen() {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <LinearGradient
+      colors={[theme.background, theme.backgroundEnd]}
+      style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="transparent" translucent={true} />
 
       <View style={styles.topCurve} />
@@ -55,7 +59,7 @@ export default function SplashScreen() {
             },
           ]}>
           <Image
-            source={require('../../assets/app/splashImage/logo1.png')}
+            source={require('../../assets/app/splashLogo.png')}
             style={styles.logo}
             resizeMode="contain"
           />
@@ -72,14 +76,13 @@ export default function SplashScreen() {
           </Text>
         </View>
       </View>
-    </View>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#2E2E74',
     alignItems: 'center',
     justifyContent: 'center',
   },

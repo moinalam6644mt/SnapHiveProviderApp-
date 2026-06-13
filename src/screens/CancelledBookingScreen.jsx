@@ -132,8 +132,8 @@ const CancelledBookingScreen = () => {
         <View
           style={[styles.loaderWrapper, {backgroundColor: 'rgba(0,0,0,0.4)'}]}>
           <View style={styles.loaderCard}>
-            <ActivityIndicator size="large" color="#ED6E0A" />
-            <Text style={styles.loadingText}>Loading details...</Text>
+            <ActivityIndicator size="large" color={theme.background} />
+            <Text style={styles.loadingText}>Loading...</Text>
           </View>
         </View>
       ) : (
@@ -258,7 +258,7 @@ const styles = StyleSheet.create({
     zIndex: 999,
   },
   loaderCard: {
-    backgroundColor: theme.background,
+    backgroundColor: '#FFFFFF',
     paddingVertical: verticalScale(25),
     paddingHorizontal: horizontalScale(35),
     borderRadius: moderateScale(20),

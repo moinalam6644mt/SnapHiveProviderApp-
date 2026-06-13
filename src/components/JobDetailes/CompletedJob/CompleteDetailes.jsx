@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 // Lucide Icons Import
 import { theme } from '../../../styles/globalStyles';
 import {
@@ -22,8 +22,8 @@ const CompleteDetailes = ({
     return (
       <View style={styles.container}>
         <Text style={styles.title}>Payment Details</Text>
-        <View style={[styles.card, {alignItems: 'center', padding: 20}]}>
-          <Text style={{color: '#71717A'}}>Calculating billing details...</Text>
+        <View style={[styles.card, { alignItems: 'center', padding: 20 }]}>
+          <Text style={{ color: '#ffffff' }}>Calculating billing details...</Text>
         </View>
       </View>
     );
@@ -45,7 +45,7 @@ const CompleteDetailes = ({
         {/* 1. First Hour Charge */}
         <View style={styles.row}>
           <View style={styles.left}>
-            <Zap size={18} color="#6366F1" strokeWidth={2} />
+            <Zap size={18} color="#71B280" strokeWidth={2} />
             <Text style={styles.label}>First Hour Charge</Text>
           </View>
           <Text style={styles.value}>₹{data.first_hour_charge}</Text>
@@ -57,7 +57,7 @@ const CompleteDetailes = ({
             <View style={styles.line} />
             <View style={styles.row}>
               <View style={styles.left}>
-                <Wallet size={18} color="#6366F1" strokeWidth={1.8} />
+                <Wallet size={18} color="#71B280" strokeWidth={1.8} />
                 <Text style={styles.label}>Next Hours Charge</Text>
               </View>
               <Text style={styles.value}>₹{data.next_hours_charge}</Text>
@@ -74,7 +74,7 @@ const CompleteDetailes = ({
                 <Clock size={18} color={theme.warning} strokeWidth={2} />
                 <Text style={styles.label}>Overtime Charges</Text>
               </View>
-              <Text style={[styles.value, {color: theme.warning}]}>
+              <Text style={[styles.value, { color: theme.warning }]}>
                 ₹{data.overtime_charge}
               </Text>
             </View>
@@ -86,10 +86,10 @@ const CompleteDetailes = ({
           <>
             <View style={styles.row}>
               <View style={styles.left}>
-                <Moon size={18} color="#6366F1" strokeWidth={2} />
+                <Moon size={18} color={theme.warning} strokeWidth={2} />
                 <Text style={styles.label}>Late Night Charge</Text>
               </View>
-              <Text style={styles.value}>₹{data.late_night_charge}</Text>
+              <Text style={[styles.value, { color: theme.warning }]}>₹{data.late_night_charge}</Text>
             </View>
           </>
         )}
@@ -99,10 +99,10 @@ const CompleteDetailes = ({
           <>
             <View style={styles.row}>
               <View style={styles.left}>
-                <AlertCircle size={18} color={theme.danger} strokeWidth={2} />
+                <AlertCircle size={18} color={theme.warning} strokeWidth={2} />
                 <Text style={styles.label}>Previous Cancellation</Text>
               </View>
-              <Text style={[styles.value, {color: theme.danger}]}>
+              <Text style={[styles.value, { color: theme.warning }]}>
                 ₹{data.cancel_charge}
               </Text>
             </View>
@@ -116,14 +116,14 @@ const CompleteDetailes = ({
         {/* Tax Amount Row */}
         <View style={styles.row}>
           <View style={styles.left}>
-            <Info size={18} color="#71717A" strokeWidth={2} />
+            <Info size={18} color="rgba(255,255,255,0.8)" strokeWidth={2} />
             <Text style={styles.label}>Tax Amount</Text>
           </View>
           <Text style={styles.value}>₹{data.tax_amount}</Text>
         </View>
         <View style={styles.row}>
           <View style={styles.left}>
-            <Wallet size={18} color="#71717A" strokeWidth={2} />
+            <Wallet size={18} color="rgba(255,255,255,0.8)" strokeWidth={2} />
             <Text style={styles.label}>Platform Fee</Text>
           </View>
           <Text style={styles.value}>₹{data.platform_fee}</Text>
@@ -132,7 +132,7 @@ const CompleteDetailes = ({
         <View
           style={[
             styles.line,
-            {backgroundColor: '#E4E4E7', height: 1.5, marginVertical: 12},
+            { backgroundColor: 'rgba(255,255,255,0.3)', height: 1.5, marginVertical: 12 },
           ]}
         />
 
@@ -145,7 +145,7 @@ const CompleteDetailes = ({
 
       {/* Footer */}
       <View style={styles.footer}>
-        <Info size={16} color="#71717A" strokeWidth={2} />
+        <Info size={16} color="rgba(255,255,255,0.8)" strokeWidth={2} />
         <Text style={styles.footerText}>
           Final billing is generated based on actual duration and applicable
           policy charges.
@@ -159,18 +159,18 @@ export default CompleteDetailes;
 
 // Styles same thakche...
 const styles = StyleSheet.create({
-  container: {marginHorizontal: 20, marginTop: 15},
-  title: {fontSize: 16, fontWeight: '700', color: '#1E1B4B', marginBottom: 12},
+  container: { marginHorizontal: 20, marginTop: 15 },
+  title: { fontSize: 16, fontWeight: '700', color: '#1E1B4B', marginBottom: 12 },
   card: {
     backgroundColor: theme.background,
     borderRadius: 16,
     padding: 16,
     borderWidth: 1,
-    borderColor: '#E4E4E7',
-    elevation: 2,
+    borderColor: '#2baab1',
+    elevation: 3,
     shadowColor: '#000',
-    shadowOffset: {width: 0, height: 1},
-    shadowOpacity: 0.05,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
     shadowRadius: 5,
   },
   row: {
@@ -179,10 +179,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingVertical: 4,
   },
-  left: {flexDirection: 'row', alignItems: 'center', gap: 10},
-  label: {fontSize: 14, color: '#52525B', fontWeight: '500'},
-  value: {fontSize: 15, fontWeight: '700', color: '#312E81'},
-  line: {height: 1, backgroundColor: '#F1F5F9', marginVertical: 6},
+  left: { flexDirection: 'row', alignItems: 'center', gap: 10 },
+  label: { fontSize: 14, color: '#FFFFFF', fontWeight: '500' },
+  value: { fontSize: 15, fontWeight: '700', color: '#FFFFFF' },
+  line: { height: 1, backgroundColor: 'rgba(255,255,255,0.2)', marginVertical: 6 },
   footer: {
     flexDirection: 'row',
     gap: 8,
@@ -190,12 +190,12 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     paddingHorizontal: 4,
   },
-  footerText: {flex: 1, fontSize: 12, color: '#6B7280', lineHeight: 16},
+  footerText: { flex: 1, fontSize: 12, color: '#134E5E', lineHeight: 16 },
   totalRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  totalLabel: {fontSize: 16, fontWeight: '700', color: '#18181B'},
-  totalValue: {fontSize: 22, fontWeight: '900', color: '#16A34A'},
+  totalLabel: { fontSize: 16, fontWeight: '700', color: '#FFFFFF' },
+  totalValue: { fontSize: 22, fontWeight: '900', color: '#4ade80' },
 });

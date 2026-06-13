@@ -65,7 +65,7 @@ const RedeemHistory = ({ data }) => {
           }
         }
 
-        const amount = item.total_amount ? `₹${item.total_amount}` : item.amount;
+        const amount = item.total_amount ? `+ ₹${item.total_amount}` : `+ ${item.amount}`;
         
         let status = item.status;
         let statusColor = item.statusColor;
@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
   },
   date: { fontSize: 12, fontWeight: "bold", color: "#3f3f46", marginBottom: 4 },
   transId: { fontSize: 12, color: "#6b7280", marginBottom: 6 },
-  amount: { fontSize: 13, fontWeight: "bold", color: "#1e1b4b" },
+  amount: { fontSize: 14, fontWeight: "bold", color: "#10b981" },
   statusBadge: { paddingVertical: 4, paddingHorizontal: 12, borderRadius: 20 },
   statusText: { color: "white", fontSize: 11, fontWeight: "500" },
   emptyContainer: {

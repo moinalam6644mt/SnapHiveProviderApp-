@@ -8,10 +8,11 @@ import {
   KeyboardAvoidingView,
   Platform,
   Image,
-  ImageBackground,
+  StatusBar,
+  ScrollView,
   ActivityIndicator,
 } from 'react-native';
-
+import LinearGradient from 'react-native-linear-gradient';
 import {Pencil} from 'lucide-react-native';
 import styles from './LoginStyle';
 import {useNavigation, useRoute} from '@react-navigation/native';
@@ -19,7 +20,6 @@ import {AuthUser} from '../../../api/authUser.js';
 import StatusModal from '../../components/StatusModal.jsx';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {AuthContext} from '../../context/AuthContext.jsx';
-import {Screen} from 'react-native-screens';
 
 const OtpVerification = () => {
   const {login, verifyOtpCentral} = React.useContext(AuthContext);
@@ -56,13 +56,6 @@ const OtpVerification = () => {
     setModalMsg(msg);
     setModalVisible(true);
   };
-
-  // useEffect(() => {
-  //   if (initialOtp) {
-  //     const arr = initialOtp.toString().split('').slice(0, 4);
-  //     setOtp(arr);
-  //   }
-  // }, []);
 
   useEffect(() => {
     let interval;
@@ -277,112 +270,130 @@ const OtpVerification = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <KeyboardAvoidingView
-        style={{flex: 1}}
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-        {/* TOP */}
-        <View style={styles.topSection}>
-          <ImageBackground
-            source={require('../../../assets/images/background_image.png')}
-            style={styles.topBg}>
-            <Image
-              source={require('../../../assets/images/logo1.png')}
-              style={styles.logo}
-            />
-            <Text style={styles.tagline}>Powered by People</Text>
-          </ImageBackground>
-        </View>
+      <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
+      <LinearGradient
+        colors={['#134E5E', '#71B280']}
+        style={styles.gradientBg}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+      >
+        <KeyboardAvoidingView
+          style={styles.keyboardView}
+          behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+          <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
+            {/* TOP */}
+            <View style={styles.topSection}>
+              <Image
+                source={require('../../../assets/images/logo1.png')}
+                style={styles.logo}
+              />
+              <Text style={styles.tagline}>Powered by People</Text>
+            </View>
 
-        <View style={styles.bottomSection} />
+            {/* BOTTOM SHEET */}
+            <View style={styles.bottomSheet}>
+              <Text style={styles.title}>OTP Verification</Text>
+              <Text style={styles.subtitle}>Enter the code sent to your number</Text>
 
-        {/* CARD */}
-        <View style={styles.card}>
-          <Text style={styles.title}>OTP Verification</Text>
+              <View style={styles.mobileNumberContainer}>
+                <Text style={styles.mobileNumberText}>Mobile Number</Text>
+                <View style={styles.mobileNumberRow}>
+                  <Text style={styles.mobileNumber}>
+                    {formatMobileNumber(mobileNumber)}
+                  </Text>
+                  <TouchableOpacity
+                    onPress={() => navigation.goBack()}
+                    disabled={loading}>
+                    <Pencil size={16} color="#6B7280" />
+                  </TouchableOpacity>
+                </View>
 
-          <View style={styles.mobileNumberContainer}>
-            <Text style={styles.mobileNumberText}>Enter code sent to</Text>
+                {/* Show user's name during registration */}
+                {isRegistration && (
+                  <Text style={styles.userNameText}>
+                    {firstName} {lastName}
+                  </Text>
+                )}
+              </View>
 
-            <View style={styles.mobileNumberRow}>
-              <Text style={styles.mobileNumber}>
-                {formatMobileNumber(mobileNumber)}
-              </Text>
+              {/* OTP INPUT CONTAINER */}
+              <View style={styles.otpContainerWrapper}>
+                <View style={[styles.otpContainer]}>
+                  {otp.map((d, i) => (
+                    <TextInput
+                      key={i}
+                      ref={r => (otpInputs.current[i] = r)}
+                      style={[styles.otpInput, otpError && styles.otpInputError]}
+                      keyboardType="number-pad"
+                      maxLength={1}
+                      value={d}
+                      onChangeText={t => handleOtpChange(t, i)}
+                      onKeyPress={({nativeEvent}) => {
+                        if (nativeEvent.key === 'Backspace' && !d && i > 0)
+                          otpInputs.current[i - 1]?.focus();
+                      }}
+                      editable={!loading}
+                      selectionColor="#2BAAB1"
+                    />
+                  ))}
+                </View>
+                {otpError && otpErrorMessage ? (
+                  <Text style={styles.otpErrorText}>{otpErrorMessage}</Text>
+                ) : null}
+              </View>
 
+              {/* RESEND */}
+              <View style={styles.resendContainer}>
+                <Text style={styles.resendText}>Didn't get it?</Text>
+
+                <TouchableOpacity
+                  disabled={!canResend || resendLoading}
+                  onPress={handleResendOtp}>
+                  {resendLoading ? (
+                    <ActivityIndicator size="small" color="#2BAAB1" />
+                  ) : (
+                    <Text
+                      style={[
+                        styles.timerText,
+                        !canResend && styles.timerTextDisabled,
+                      ]}>
+                      {canResend
+                        ? 'Resend OTP'
+                        : `00:${timer.toString().padStart(2, '0')}`}
+                    </Text>
+                  )}
+                </TouchableOpacity>
+              </View>
+
+              {/* VERIFY */}
               <TouchableOpacity
-                onPress={() => navigation.goBack()}
+                style={[styles.buttonContainer, loading && styles.buttonDisabled]}
+                onPress={handleVerifyOtp}
                 disabled={loading}>
-                <Pencil size={16} color="#666" />
+                <LinearGradient
+                  colors={['#134E5E', '#71B280']}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={styles.buttonGradient}
+                >
+                  {loading ? (
+                    <ActivityIndicator color="#FFFFFF" size="small" />
+                  ) : (
+                    <Text style={styles.buttonText}>Verify OTP</Text>
+                  )}
+                </LinearGradient>
               </TouchableOpacity>
-            </View>
-
-            {/* Show user's name during registration */}
-            {isRegistration && (
-              <Text style={styles.userNameText}>
-                {firstName} {lastName}
-              </Text>
-            )}
-          </View>
-
-          {/* OTP INPUT CONTAINER */}
-          <View style={styles.otpContainerWrapper}>
-            <View style={[styles.otpContainer, otpError]}>
-              {otp.map((d, i) => (
-                <TextInput
-                  key={i}
-                  ref={r => (otpInputs.current[i] = r)}
-                  style={[styles.otpInput, otpError && styles.otpInputError]}
-                  keyboardType="number-pad"
-                  maxLength={1}
-                  value={d}
-                  onChangeText={t => handleOtpChange(t, i)}
-                  onKeyPress={({nativeEvent}) => {
-                    if (nativeEvent.key === 'Backspace' && !d && i > 0)
-                      otpInputs.current[i - 1]?.focus();
-                  }}
-                  editable={!loading}
-                />
-              ))}
-            </View>
-            {otpError && otpErrorMessage && (
-              <Text style={styles.otpErrorText}>{otpErrorMessage}</Text>
-            )}
-          </View>
-
-          {/* RESEND */}
-          <View style={styles.resendContainer}>
-            <Text>Didn't get it?</Text>
-
-            <TouchableOpacity
-              disabled={!canResend || resendLoading}
-              onPress={handleResendOtp}>
-              {resendLoading ? (
-                <ActivityIndicator size="small" color="#3b2e83" />
-              ) : (
-                <Text
-                  style={[
-                    styles.timerText,
-                    !canResend && styles.timerTextDisabled,
-                  ]}>
-                  {canResend
-                    ? 'Resend OTP'
-                    : `00:${timer.toString().padStart(2, '0')}`}
+              <View style={styles.bottomSection}>
+                <Text style={styles.terms}>
+                  By continuing, you agree to our{' '}
+                  <Text style={styles.link}>T&C</Text> and{' '}
+                  <Text style={styles.link}>Privacy Policy</Text>
                 </Text>
-              )}
-            </TouchableOpacity>
-          </View>
-
-          {/* VERIFY */}
-          <TouchableOpacity
-            style={[styles.button, loading && styles.buttonDisabled]}
-            onPress={handleVerifyOtp}
-            disabled={loading}>
-            {loading ? (
-              <ActivityIndicator color="#fff" size="small" />
-            ) : (
-              <Text style={styles.buttonText}>Verify OTP</Text>
-            )}
-          </TouchableOpacity>
-        </View>
-      </KeyboardAvoidingView>
+              </View>
+            </View>
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </LinearGradient>
 
       {/* STATUS MODAL - Only for API errors */}
       <StatusModal

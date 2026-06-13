@@ -24,6 +24,7 @@ import { AuthUser } from '../../../api/authUser';
 import { useOtpShared } from '../../context/OtpSharedContext';
 import Toast from 'react-native-toast-message';
 import handleChat from '../../services/ChatServiceFunction';
+import LinearGradient from 'react-native-linear-gradient';
 
 import StartHeader from '../../components/JobDetailes/StartJob/StartHeader';
 import StartDetailes from '../../components/JobDetailes/StartJob/StartDetailes';
@@ -401,24 +402,29 @@ const JobDetailsScreen = () => {
         <View
           style={[styles.loaderWrapper, { backgroundColor: 'rgba(0,0,0,0.4)' }]}>
           <View style={styles.loaderCard}>
-            <ActivityIndicator size="large" color="#ED6E0A" />
+            <ActivityIndicator size="large" color={theme.background} />
             <Text style={styles.loadingText}>Loading details...</Text>
           </View>
         </View>
       ) : (
         <>
           <StatusBar
-            barStyle="dark-content"
+            barStyle="light-content"
             backgroundColor="transparent"
             translucent={true}
           />
-          <View style={styles.mainContainer}>
+          <LinearGradient
+            colors={['#134E5E', '#71B280']}
+            style={styles.gradientBg}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+          >
             {/* Fixed Header */}
             <View style={styles.headerSection}>
               <TouchableOpacity onPress={handleBack} style={styles.backButton}>
                 <ChevronLeft
                   size={moderateScale(28)}
-                  color="#1e1b4b"
+                  color="#fff"
                   strokeWidth={2.5}
                 />
               </TouchableOpacity>
@@ -429,30 +435,47 @@ const JobDetailsScreen = () => {
                 bookingDetails?.status === '3') && (
                 <View style={styles.headerActions}>
                   <TouchableOpacity
-                    style={styles.chatHeaderBtn}
+                    style={styles.headerIconWrapper}
+                    activeOpacity={0.8}
                     onPress={handleMessageCustomer}>
-                    <Image
-                      source={require('../../../assets/app/jobs/messages-2.png')}
-                      style={styles.headerActionIcon}
-                      resizeMode="contain"
-                    />
+                    <LinearGradient
+                      colors={['#134E5E', '#71B280']}
+                      start={{ x: 0, y: 0 }}
+                      end={{ x: 1, y: 1 }}
+                      style={styles.headerIconGradient}
+                    >
+                      <Image
+                        source={require('../../../assets/app/jobs/messages-2.png')}
+                        style={styles.headerActionIcon}
+                        resizeMode="contain"
+                      />
+                    </LinearGradient>
                   </TouchableOpacity>
                   <TouchableOpacity
-                    style={styles.callHeaderBtn}
+                    style={styles.headerIconWrapper}
+                    activeOpacity={0.8}
                     onPress={handleCallCustomer}>
-                    <Image
-                      source={require('../../../assets/app/jobs/material-symbols_call.png')}
-                      style={styles.headerActionIcon}
-                      resizeMode="contain"
-                    />
+                    <LinearGradient
+                      colors={['#134E5E', '#71B280']}
+                      start={{ x: 0, y: 0 }}
+                      end={{ x: 1, y: 1 }}
+                      style={styles.headerIconGradient}
+                    >
+                      <Image
+                        source={require('../../../assets/app/jobs/material-symbols_call.png')}
+                        style={styles.headerActionIcon}
+                        resizeMode="contain"
+                      />
+                    </LinearGradient>
                   </TouchableOpacity>
                 </View>
               )}
             </View>
 
-            {/* Scrollable Content */}
-            <ScrollView
-              style={styles.scrollView}
+            {/* Scrollable Content inside Bottom Sheet */}
+            <View style={styles.bottomSheet}>
+              <ScrollView
+                style={styles.scrollView}
               contentContainerStyle={styles.contentBody}
               showsVerticalScrollIndicator={false}
               keyboardShouldPersistTaps="handled"
@@ -565,8 +588,9 @@ const JobDetailsScreen = () => {
               </View>
             </ScrollView>
           </View>
-        </>
-      )}
+        </LinearGradient>
+      </>
+    )}
 
       <OTPVerificationModal
         visible={modalVisible}
@@ -641,23 +665,34 @@ const JobDetailsScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  safeArea: { flex: 1, backgroundColor: theme.background },
-  mainContainer: { flex: 1, backgroundColor: theme.background },
+  safeArea: { flex: 1, backgroundColor: '#134E5E' }, // Dark fallback
+  gradientBg: { flex: 1 },
+  bottomSheet: {
+    backgroundColor: '#FFFFFF',
+    borderTopLeftRadius: moderateScale(40),
+    borderTopRightRadius: moderateScale(40),
+    flex: 1,
+    paddingTop: verticalScale(20),
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: -10 },
+    shadowOpacity: 0.1,
+    shadowRadius: 20,
+    elevation: 20,
+    marginTop: verticalScale(10),
+    overflow: 'hidden',
+  },
   headerSection: {
-    backgroundColor: theme.background,
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: horizontalScale(20),
     paddingVertical: verticalScale(15),
-    borderBottomWidth: moderateScale(1),
-    borderBottomColor: '#f3f4f6',
   },
   backButton: { marginRight: moderateScale(10), padding: moderateScale(4) },
   mainTitle: {
     flex: 1,
     fontSize: moderateScale(20),
     fontWeight: '700',
-    color: '#1e1b4b',
+    color: '#fff',
   },
   headerActions: {
     flexDirection: 'row',
@@ -665,19 +700,19 @@ const styles = StyleSheet.create({
     gap: moderateScale(8),
     marginLeft: moderateScale(8),
   },
-  chatHeaderBtn: {
+  headerIconWrapper: {
     width: moderateScale(38),
     height: moderateScale(38),
     borderRadius: moderateScale(19),
-    backgroundColor: '#2E2E74',
-    justifyContent: 'center',
-    alignItems: 'center',
+    overflow: 'hidden',
+    shadowColor: '#134E5E',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 2,
   },
-  callHeaderBtn: {
-    width: moderateScale(38),
-    height: moderateScale(38),
-    borderRadius: moderateScale(19),
-    backgroundColor: '#f97316',
+  headerIconGradient: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -795,7 +830,7 @@ const styles = StyleSheet.create({
   },
 
   loaderCard: {
-    backgroundColor: theme.background,
+    backgroundColor: '#FFFFFF',
     paddingVertical: verticalScale(25),
     paddingHorizontal: horizontalScale(35),
     borderRadius: moderateScale(20),

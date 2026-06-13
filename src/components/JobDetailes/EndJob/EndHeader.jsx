@@ -2,6 +2,7 @@ import React, {useEffect, useRef, useMemo} from 'react';
 import {View, Text, StyleSheet, Animated} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {calculateAmount} from '../../../services/calculateAmount';
+import { theme } from '../../../styles/globalStyles';
 
 const EndHeader = ({
   bookingDetails,
@@ -75,7 +76,7 @@ const EndHeader = ({
             <Animated.View style={{width: progressWidth}}>
               <LinearGradient
                 colors={
-                  isOvertime ? ['#DC2626', '#DC2626'] : ['#2FCA00', '#2FCA00']
+                  isOvertime ? ['#f59e0b', '#f59e0b'] : ['#2FCA00', '#2FCA00']
                 }
                 style={styles.progressFill}
               />
@@ -127,10 +128,17 @@ export default EndHeader;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#f9fafb',
+    backgroundColor: theme.background,
     borderRadius: 20,
     padding: 18,
     marginHorizontal: 20,
+    borderWidth: 1,
+    borderColor: '#2baab1',
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
   },
 
   card: {},
@@ -138,14 +146,14 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#312E81',
+    color: '#FFFFFF',
     marginBottom: 4,
   },
 
   progressBackground: {
     height: 6,
     width: '100%',
-    backgroundColor: '#E5E7EB',
+    backgroundColor: 'rgba(255,255,255,0.2)',
     borderRadius: 60,
     overflow: 'hidden',
     marginVertical: 8,
@@ -165,18 +173,18 @@ const styles = StyleSheet.create({
   startText: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#0369A1',
+    color: '#71B280',
   },
 
   timeText: {
     fontSize: 13,
     fontWeight: '600',
-    color: '#52525B',
+    color: '#FFFFFF',
   },
 
   billingText: {
     fontSize: 13,
-    color: '#52525B',
+    color: 'rgba(255,255,255,0.8)',
     marginBottom: 6,
   },
 
@@ -188,18 +196,18 @@ const styles = StyleSheet.create({
   amountText: {
     fontSize: 14,
     fontWeight: '700',
-    color: '#0F172A',
+    color: '#FFFFFF',
   },
 
   otAmount: {
     fontSize: 14,
     fontWeight: '700',
-    color: '#DC2626',
+    color: '#f59e0b',
     marginLeft: 8,
   },
 
   warningText: {
-    color: '#DC2626',
+    color: '#f59e0b',
     fontWeight: '600',
     fontSize: 12,
     marginBottom: 4,
