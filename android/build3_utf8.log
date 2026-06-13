@@ -1,0 +1,1070 @@
+﻿> Task :gradle-plugin:settings-plugin:checkKotlinGradlePluginConfigurationErrors
+> Task :gradle-plugin:shared:checkKotlinGradlePluginConfigurationErrors
+> Task :gradle-plugin:shared:compileKotlin UP-TO-DATE
+> Task :gradle-plugin:shared:compileJava NO-SOURCE
+> Task :gradle-plugin:shared:processResources NO-SOURCE
+> Task :gradle-plugin:shared:classes UP-TO-DATE
+> Task :gradle-plugin:shared:jar UP-TO-DATE
+> Task :gradle-plugin:settings-plugin:compileKotlin UP-TO-DATE
+> Task :gradle-plugin:settings-plugin:compileJava NO-SOURCE
+> Task :gradle-plugin:settings-plugin:pluginDescriptors UP-TO-DATE
+> Task :gradle-plugin:settings-plugin:processResources UP-TO-DATE
+> Task :gradle-plugin:settings-plugin:classes UP-TO-DATE
+> Task :gradle-plugin:settings-plugin:jar UP-TO-DATE
+> Task :gradle-plugin:react-native-gradle-plugin:checkKotlinGradlePluginConfigurationErrors
+> Task :gradle-plugin:react-native-gradle-plugin:compileKotlin UP-TO-DATE
+> Task :gradle-plugin:react-native-gradle-plugin:compileJava NO-SOURCE
+> Task :gradle-plugin:react-native-gradle-plugin:pluginDescriptors UP-TO-DATE
+> Task :gradle-plugin:react-native-gradle-plugin:processResources UP-TO-DATE
+> Task :gradle-plugin:react-native-gradle-plugin:classes UP-TO-DATE
+> Task :gradle-plugin:react-native-gradle-plugin:jar UP-TO-DATE
+> Task :app:checkKotlinGradlePluginConfigurationErrors
+> Task :app:generateAutolinkingPackageList UP-TO-DATE
+> Task :app:generateCodegenSchemaFromJavaScript SKIPPED
+> Task :app:generateCodegenArtifactsFromSchema SKIPPED
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preReleaseBuild UP-TO-DATE
+> Task :app:generateReleaseBuildConfig UP-TO-DATE
+> Task :react-native-safe-area-context:preBuild UP-TO-DATE
+> Task :react-native-safe-area-context:preReleaseBuild UP-TO-DATE
+> Task :react-native-safe-area-context:writeReleaseAarMetadata UP-TO-DATE
+> Task :react-native-screens:preBuild UP-TO-DATE
+> Task :react-native-screens:preReleaseBuild UP-TO-DATE
+> Task :react-native-screens:writeReleaseAarMetadata UP-TO-DATE
+> Task :app:checkReleaseAarMetadata FAILED
+
+> Task :app:createBundleReleaseJsAndAssets
+debug Using @react-naive-community/cli-tools' logger
+debug Reading Metro config from D:\New folder\MyReleaseApp\metro.config.js
+ WARN  the transform cache was reset.
+                Welcome to Metro v0.81.5
+              Fast - Scalable - Integrated
+
+
+transform[stderr]: Bypassed unknown prop type for "iosPreventReattachmentOfDismissedScreens": "undefined"
+transform[stderr]: Bypassed unknown prop type for "onFinishTransitioning": "undefined"
+transform[stderr]: Bypassed unknown prop type for "onSearchFocus": "undefined"
+transform[stderr]: Bypassed unknown prop type for "onSearchBlur": "undefined"
+transform[stderr]: Bypassed unknown prop type for "onSearchButtonPress": "undefined"
+transform[stderr]: Bypassed unknown prop type for "onCancelButtonPress": "undefined"
+transform[stderr]: Bypassed unknown prop type for "onChangeText": "undefined"
+transform[stderr]: Bypassed unknown prop type for "hideWhenScrolling": "undefined"
+transform[stderr]: Bypassed unknown prop type for "autoCapitalize": "undefined"
+transform[stderr]: Bypassed unknown prop type for "placement": "undefined"
+transform[stderr]: Bypassed unknown prop type for "allowToolbarIntegration": "undefined"
+transform[stderr]: Bypassed unknown prop type for "obscureBackground": "undefined"
+transform[stderr]: Bypassed unknown prop type for "hideNavigationBar": "undefined"
+transform[stderr]: Bypassed unknown prop type for "autoFocus": "undefined"
+transform[stderr]: Bypassed unknown prop type for "onClose": "undefined"
+transform[stderr]: Bypassed unknown prop type for "onOpen": "undefined"
+transform[stderr]: 
+transform[stderr]: Error parsing schema for ScreenStack
+transform[stderr]: 
+transform[stderr]: {"modules":{"RNSScreenStack":{"type":"Component","components":{"RNSScreenStack":{"extendsProps":[{"type":"ReactNativeBuiltInType","knownTypeName":"ReactNativeCoreViewProps"}],"events":[],"props":[{"name":"iosPreventReattachmentOfDismissedScreens","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"onFinishTransitioning","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}}],"commands":[]}}}}}
+transform[stderr]: Bypassed unknown prop type for "shouldShowHintSearchIcon": "undefined"
+transform[stderr]: 
+transform[stderr]: Error parsing schema for SearchBar
+transform[stderr]: 
+transform[stderr]: {"modules":{"RNSSearchBar":{"type":"Component","components":{"RNSSearchBar":{"extendsProps":[{"type":"ReactNativeBuiltInType","knownTypeName":"ReactNativeCoreViewProps"}],"events":[],"props":[{"name":"onSearchFocus","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"onSearchBlur","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"onSearchButtonPress","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"onCancelButtonPress","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"onChangeText","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"hideWhenScrolling","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"autoCapitalize","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"placeholder","optional":true,"typeAnnotation":{"type":"StringTypeAnnotation","default":null}},{"name":"placement","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"allowToolbarIntegration","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"obscureBackground","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"hideNavigationBar","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"cancelButtonText","optional":true,"typeAnnotation":{"type":"StringTypeAnnotation","default":null}},{"name":"barTintColor","optional":true,"typeAnnotation":{"type":"ReservedPropTypeAnnotation","name":"ColorPrimitive"}},{"name":"tintColor","optional":true,"typeAnnotation":{"type":"ReservedPropTypeAnnotation","name":"ColorPrimitive"}},{"name":"textColor","optional":true,"typeAnnotation":{"type":"ReservedPropTypeAnnotation","name":"ColorPrimitive"}},{"name":"autoFocus","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"disableBackButtonOverride","optional":true,"typeAnnotation":{"type":"BooleanTypeAnnotation","default":false}},{"name":"inputType","optional":true,"typeAnnotation":{"type":"StringTypeAnnotation","default":null}},{"name":"onClose","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"onOpen","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"hintTextColor","optional":true,"typeAnnotation":{"type":"ReservedPropTypeAnnotation","name":"ColorPrimitive"}},{"name":"headerIconColor","optional":true,"typeAnnotation":{"type":"ReservedPropTypeAnnotation","name":"ColorPrimitive"}},{"name":"shouldShowHintSearchIcon","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}}],"commands":[{"name":"blur","optional":false,"typeAnnotation":{"type":"FunctionTypeAnnotation","params":[],"returnTypeAnnotation":{"type":"VoidTypeAnnotation"}}},{"name":"focus","optional":false,"typeAnnotation":{"type":"FunctionTypeAnnotation","params":[],"returnTypeAnnotation":{"type":"VoidTypeAnnotation"}}},{"name":"clearText","optional":false,"typeAnnotation":{"type":"FunctionTypeAnnotation","params":[],"returnTypeAnnotation":{"type":"VoidTypeAnnotation"}}},{"name":"toggleCancelButton","optional":false,"typeAnnotation":{"type":"FunctionTypeAnnotation","params":[{"name":"flag","optional":false,"typeAnnotation":{"type":"BooleanTypeAnnotation"}}],"returnTypeAnnotation":{"type":"VoidTypeAnnotation"}}},{"name":"setText","optional":false,"typeAnnotation":{"type":"FunctionTypeAnnotation","params":[{"name":"text","optional":false,"typeAnnotation":{"type":"StringTypeAnnotation"}}],"returnTypeAnnotation":{"type":"VoidTypeAnnotation"}}},{"name":"cancelSearch","optional":false,"typeAnnotation":{"type":"FunctionTypeAnnotation","params":[],"returnTypeAnnotation":{"type":"VoidTypeAnnotation"}}}]}}}}}
+transform[stderr]: Bypassed unknown prop type for "accessibilityContainerViewIsModal": "undefined"
+transform[stderr]: 
+transform[stderr]: Error parsing schema for FullWindowOverlay
+transform[stderr]: 
+transform[stderr]: {"modules":{"RNSFullWindowOverlay":{"type":"Component","components":{"RNSFullWindowOverlay":{"interfaceOnly":true,"extendsProps":[{"type":"ReactNativeBuiltInType","knownTypeName":"ReactNativeCoreViewProps"}],"events":[],"props":[{"name":"accessibilityContainerViewIsModal","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}}],"commands":[]}}}}}
+transform[stderr]: Bypassed unknown prop type for "type": "undefined"
+transform[stderr]: Bypassed unknown prop type for "synchronousShadowStateUpdatesEnabled": "undefined"
+transform[stderr]: 
+transform[stderr]: Error parsing schema for ScreenStackHeaderSubview
+transform[stderr]: 
+transform[stderr]: Bypassed unknown prop type for "onAttached": "undefined"
+transform[stderr]: Bypassed unknown prop type for "onDetached": "undefined"
+transform[stderr]: Bypassed unknown prop type for "backTitleFontSize": "undefined"
+transform[stderr]: {"modules":{"RNSScreenStackHeaderSubview":{"type":"Component","components":{"RNSScreenStackHeaderSubview":{"interfaceOnly":true,"extendsProps":[{"type":"ReactNativeBuiltInType","knownTypeName":"ReactNativeCoreViewProps"}],"events":[],"props":[{"name":"type","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"hidesSharedBackground","optional":true,"typeAnnotation":{"type":"BooleanTypeAnnotation","default":false}},{"name":"synchronousShadowStateUpdatesEnabled","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}}],"commands":[]}}}}}
+transform[stderr]: Bypassed unknown prop type for "backTitleVisible": "undefined"
+transform[stderr]: Bypassed unknown prop type for "direction": "undefined"
+transform[stderr]: Bypassed unknown prop type for "largeTitleFontSize": "undefined"
+transform[stderr]: Bypassed unknown prop type for "titleFontSize": "undefined"
+transform[stderr]: Bypassed unknown prop type for "backButtonDisplayMode": "undefined"
+transform[stderr]: Bypassed unknown prop type for "blurEffect": "undefined"
+transform[stderr]: Bypassed unknown prop type for "onAppear": "undefined"
+transform[stderr]: Bypassed unknown prop type for "onDisappear": "undefined"
+transform[stderr]: Bypassed unknown prop type for "onDismissed": "undefined"
+transform[stderr]: Bypassed unknown prop type for "onNativeDismissCancelled": "undefined"
+transform[stderr]: Bypassed unknown prop type for "onWillAppear": "undefined"
+transform[stderr]: Bypassed unknown prop type for "onWillDisappear": "undefined"
+transform[stderr]: Bypassed unknown prop type for "onHeaderHeightChange": "undefined"
+transform[stderr]: Bypassed unknown prop type for "onTransitionProgress": "undefined"
+transform[stderr]: Bypassed unknown prop type for "onGestureCancel": "undefined"
+transform[stderr]: Bypassed unknown prop type for "onHeaderBackButtonClicked": "undefined"
+transform[stderr]: Bypassed unknown prop type for "onSheetDetentChanged": "undefined"
+transform[stderr]: Bypassed unknown prop type for "screenId": "undefined"
+transform[stderr]: Bypassed unknown prop type for "sheetLargestUndimmedDetent": "undefined"
+transform[stderr]: Bypassed unknown prop type for "sheetGrabberVisible": "undefined"
+transform[stderr]: Bypassed unknown prop type for "sheetCornerRadius": "undefined"
+transform[stderr]: Bypassed unknown prop type for "sheetExpandsWhenScrolledToEdge": "undefined"
+transform[stderr]: Bypassed unknown prop type for "sheetInitialDetent": "undefined"
+transform[stderr]: Bypassed unknown prop type for "sheetElevation": "undefined"
+transform[stderr]: Bypassed unknown prop type for "sheetShouldOverflowTopInset": "undefined"
+transform[stderr]: Bypassed unknown prop type for "sheetDefaultResizeAnimationEnabled": "undefined"
+transform[stderr]: Bypassed unknown prop type for "fullScreenSwipeEnabled": "undefined"
+transform[stderr]: Bypassed unknown prop type for "fullScreenSwipeShadowEnabled": "undefined"
+transform[stderr]: Bypassed unknown prop type for "gestureEnabled": "undefined"
+transform[stderr]: Bypassed unknown prop type for "start": "undefined"
+transform[stderr]: Bypassed unknown prop type for "end": "undefined"
+transform[stderr]: Bypassed unknown prop type for "top": "undefined"
+transform[stderr]: Bypassed unknown prop type for "bottom": "undefined"
+transform[stderr]: Bypassed unknown prop type for "stackPresentation": "undefined"
+transform[stderr]: Bypassed unknown prop type for "stackAnimation": "undefined"
+transform[stderr]: Bypassed unknown prop type for "transitionDuration": "undefined"
+transform[stderr]: Bypassed unknown prop type for "replaceAnimation": "undefined"
+transform[stderr]: Bypassed unknown prop type for "swipeDirection": "undefined"
+transform[stderr]: Bypassed unknown prop type for "activityState": "undefined"
+transform[stderr]: Bypassed unknown prop type for "bottomScrollEdgeEffect": "undefined"
+transform[stderr]: Bypassed unknown prop type for "leftScrollEdgeEffect": "undefined"
+transform[stderr]: Bypassed unknown prop type for "rightScrollEdgeEffect": "undefined"
+transform[stderr]: Bypassed unknown prop type for "topScrollEdgeEffect": "undefined"
+transform[stderr]: Bypassed unknown prop type for "synchronousShadowStateUpdatesEnabled": "undefined"
+transform[stderr]: Bypassed unknown prop type for "androidResetScreenShadowStateOnOrientationChangeEnabled": "undefined"
+transform[stderr]: Bypassed unknown prop type for "ios26AllowInteractionsDuringTransition": "undefined"
+transform[stderr]: 
+transform[stderr]: Error parsing schema for Screen
+transform[stderr]: 
+transform[stderr]: {"modules":{"RNSScreen":{"type":"Component","components":{"RNSScreen":{"interfaceOnly":true,"extendsProps":[{"type":"ReactNativeBuiltInType","knownTypeName":"ReactNativeCoreViewProps"}],"events":[],"props":[{"name":"onAppear","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"onDisappear","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"onDismissed","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"onNativeDismissCancelled","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"onWillAppear","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"onWillDisappear","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"onHeaderHeightChange","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"onTransitionProgress","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"onGestureCancel","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"onHeaderBackButtonClicked","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"onSheetDetentChanged","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"screenId","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"sheetAllowedDetents","optional":true,"typeAnnotation":{"type":"ArrayTypeAnnotation","elementType":{"type":"FloatTypeAnnotation"}}},{"name":"sheetLargestUndimmedDetent","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"sheetGrabberVisible","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"sheetCornerRadius","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"sheetExpandsWhenScrolledToEdge","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"sheetInitialDetent","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"sheetElevation","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"sheetShouldOverflowTopInset","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"sheetDefaultResizeAnimationEnabled","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"customAnimationOnSwipe","optional":true,"typeAnnotation":{"type":"BooleanTypeAnnotation","default":false}},{"name":"fullScreenSwipeEnabled","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"fullScreenSwipeShadowEnabled","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"homeIndicatorHidden","optional":true,"typeAnnotation":{"type":"BooleanTypeAnnotation","default":false}},{"name":"preventNativeDismiss","optional":true,"typeAnnotation":{"type":"BooleanTypeAnnotation","default":false}},{"name":"gestureEnabled","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"statusBarColor","optional":true,"typeAnnotation":{"type":"ReservedPropTypeAnnotation","name":"ColorPrimitive"}},{"name":"statusBarHidden","optional":true,"typeAnnotation":{"type":"BooleanTypeAnnotation","default":false}},{"name":"screenOrientation","optional":true,"typeAnnotation":{"type":"StringTypeAnnotation","default":null}},{"name":"statusBarAnimation","optional":true,"typeAnnotation":{"type":"StringTypeAnnotation","default":null}},{"name":"statusBarStyle","optional":true,"typeAnnotation":{"type":"StringTypeAnnotation","default":null}},{"name":"statusBarTranslucent","optional":true,"typeAnnotation":{"type":"BooleanTypeAnnotation","default":false}},{"name":"gestureResponseDistance","optional":true,"typeAnnotation":{"type":"ObjectTypeAnnotation","properties":[{"name":"start","optional":false,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"end","optional":false,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"top","optional":false,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"bottom","optional":false,"typeAnnotation":{"type":"AnyTypeAnnotation"}}]}},{"name":"stackPresentation","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"stackAnimation","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"transitionDuration","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"replaceAnimation","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"swipeDirection","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"hideKeyboardOnSwipe","optional":true,"typeAnnotation":{"type":"BooleanTypeAnnotation","default":false}},{"name":"activityState","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"navigationBarColor","optional":true,"typeAnnotation":{"type":"ReservedPropTypeAnnotation","name":"ColorPrimitive"}},{"name":"navigationBarTranslucent","optional":true,"typeAnnotation":{"type":"BooleanTypeAnnotation","default":false}},{"name":"navigationBarHidden","optional":true,"typeAnnotation":{"type":"BooleanTypeAnnotation","default":false}},{"name":"nativeBackButtonDismissalEnabled","optional":true,"typeAnnotation":{"type":"BooleanTypeAnnotation","default":false}},{"name":"bottomScrollEdgeEffect","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"leftScrollEdgeEffect","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"rightScrollEdgeEffect","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"topScrollEdgeEffect","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"synchronousShadowStateUpdatesEnabled","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"androidResetScreenShadowStateOnOrientationChangeEnabled","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"ios26AllowInteractionsDuringTransition","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}}],"commands":[]}}}}}
+transform[stderr]: Bypassed unknown prop type for "onAppear": "undefined"
+transform[stderr]: Bypassed unknown prop type for "onDisappear": "undefined"
+transform[stderr]: Bypassed unknown prop type for "onDismissed": "undefined"
+transform[stderr]: Bypassed unknown prop type for "onNativeDismissCancelled": "undefined"
+transform[stderr]: Bypassed unknown prop type for "onWillAppear": "undefined"
+transform[stderr]: Bypassed unknown prop type for "onWillDisappear": "undefined"
+transform[stderr]: Bypassed unknown prop type for "onHeaderHeightChange": "undefined"
+transform[stderr]: Bypassed unknown prop type for "onTransitionProgress": "undefined"
+transform[stderr]: Bypassed unknown prop type for "onGestureCancel": "undefined"
+transform[stderr]: Bypassed unknown prop type for "onHeaderBackButtonClicked": "undefined"
+transform[stderr]: Bypassed unknown prop type for "onSheetDetentChanged": "undefined"
+transform[stderr]: Bypassed unknown prop type for "screenId": "undefined"
+transform[stderr]: Bypassed unknown prop type for "sheetLargestUndimmedDetent": "undefined"
+transform[stderr]: Bypassed unknown prop type for "sheetGrabberVisible": "undefined"
+transform[stderr]: Bypassed unknown prop type for "sheetCornerRadius": "undefined"
+transform[stderr]: Bypassed unknown prop type for "sheetExpandsWhenScrolledToEdge": "undefined"
+transform[stderr]: Bypassed unknown prop type for "sheetInitialDetent": "undefined"
+transform[stderr]: Bypassed unknown prop type for "sheetElevation": "undefined"
+transform[stderr]: Bypassed unknown prop type for "sheetShouldOverflowTopInset": "undefined"
+transform[stderr]: Bypassed unknown prop type for "sheetDefaultResizeAnimationEnabled": "undefined"
+transform[stderr]: Bypassed unknown prop type for "fullScreenSwipeEnabled": "undefined"
+transform[stderr]: Bypassed unknown prop type for "fullScreenSwipeShadowEnabled": "undefined"
+transform[stderr]: Bypassed unknown prop type for "gestureEnabled": "undefined"
+transform[stderr]: Bypassed unknown prop type for "start": "undefined"
+transform[stderr]: Bypassed unknown prop type for "end": "undefined"
+transform[stderr]: Bypassed unknown prop type for "top": "undefined"
+transform[stderr]: Bypassed unknown prop type for "bottom": "undefined"
+transform[stderr]: Bypassed unknown prop type for "stackPresentation": "undefined"
+transform[stderr]: Bypassed unknown prop type for "stackAnimation": "undefined"
+transform[stderr]: Bypassed unknown prop type for "transitionDuration": "undefined"
+transform[stderr]: Bypassed unknown prop type for "replaceAnimation": "undefined"
+transform[stderr]: Bypassed unknown prop type for "swipeDirection": "undefined"
+transform[stderr]: Bypassed unknown prop type for "activityState": "undefined"
+transform[stderr]: Bypassed unknown prop type for "synchronousShadowStateUpdatesEnabled": "undefined"
+transform[stderr]: 
+transform[stderr]: Error parsing schema for ModalScreen
+transform[stderr]: 
+transform[stderr]: {"modules":{"RNSModalScreen":{"type":"Component","components":{"RNSModalScreen":{"interfaceOnly":true,"extendsProps":[{"type":"ReactNativeBuiltInType","knownTypeName":"ReactNativeCoreViewProps"}],"events":[],"props":[{"name":"onAppear","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"onDisappear","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"onDismissed","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"onNativeDismissCancelled","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"onWillAppear","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"onWillDisappear","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"onHeaderHeightChange","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"onTransitionProgress","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"onGestureCancel","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"onHeaderBackButtonClicked","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"onSheetDetentChanged","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"screenId","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"sheetAllowedDetents","optional":true,"typeAnnotation":{"type":"ArrayTypeAnnotation","elementType":{"type":"FloatTypeAnnotation"}}},{"name":"sheetLargestUndimmedDetent","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"sheetGrabberVisible","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"sheetCornerRadius","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"sheetExpandsWhenScrolledToEdge","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"sheetInitialDetent","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"sheetElevation","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"sheetShouldOverflowTopInset","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"sheetDefaultResizeAnimationEnabled","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"customAnimationOnSwipe","optional":true,"typeAnnotation":{"type":"BooleanTypeAnnotation","default":false}},{"name":"fullScreenSwipeEnabled","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"fullScreenSwipeShadowEnabled","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"homeIndicatorHidden","optional":true,"typeAnnotation":{"type":"BooleanTypeAnnotation","default":false}},{"name":"preventNativeDismiss","optional":true,"typeAnnotation":{"type":"BooleanTypeAnnotation","default":false}},{"name":"gestureEnabled","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"statusBarColor","optional":true,"typeAnnotation":{"type":"ReservedPropTypeAnnotation","name":"ColorPrimitive"}},{"name":"statusBarHidden","optional":true,"typeAnnotation":{"type":"BooleanTypeAnnotation","default":false}},{"name":"screenOrientation","optional":true,"typeAnnotation":{"type":"StringTypeAnnotation","default":null}},{"name":"statusBarAnimation","optional":true,"typeAnnotation":{"type":"StringTypeAnnotation","default":null}},{"name":"statusBarStyle","optional":true,"typeAnnotation":{"type":"StringTypeAnnotation","default":null}},{"name":"statusBarTranslucent","optional":true,"typeAnnotation":{"type":"BooleanTypeAnnotation","default":false}},{"name":"gestureResponseDistance","optional":true,"typeAnnotation":{"type":"ObjectTypeAnnotation","properties":[{"name":"start","optional":false,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"end","optional":false,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"top","optional":false,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"bottom","optional":false,"typeAnnotation":{"type":"AnyTypeAnnotation"}}]}},{"name":"stackPresentation","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"stackAnimation","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"transitionDuration","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"replaceAnimation","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"swipeDirection","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"hideKeyboardOnSwipe","optional":true,"typeAnnotation":{"type":"BooleanTypeAnnotation","default":false}},{"name":"activityState","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"navigationBarColor","optional":true,"typeAnnotation":{"type":"ReservedPropTypeAnnotation","name":"ColorPrimitive"}},{"name":"navigationBarTranslucent","optional":true,"typeAnnotation":{"type":"BooleanTypeAnnotation","default":false}},{"name":"navigationBarHidden","optional":true,"typeAnnotation":{"type":"BooleanTypeAnnotation","default":false}},{"name":"nativeBackButtonDismissalEnabled","optional":true,"typeAnnotation":{"type":"BooleanTypeAnnotation","default":false}},{"name":"synchronousShadowStateUpdatesEnabled","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}}],"commands":[]}}}}}
+transform[stderr]: Bypassed unknown prop type for "onNativeFocusChange": "undefined"
+transform[stderr]: Bypassed unknown prop type for "tabBarHidden": "undefined"
+transform[stderr]: Bypassed unknown prop type for "tabBarItemTitleFontSize": "undefined"
+transform[stderr]: Bypassed unknown prop type for "tabBarItemTitleFontSizeActive": "undefined"
+transform[stderr]: Bypassed unknown prop type for "tabBarItemActiveIndicatorEnabled": "undefined"
+transform[stderr]: Bypassed unknown prop type for "tabBarItemLabelVisibilityMode": "undefined"
+transform[stderr]: Bypassed unknown prop type for "tabBarMinimizeBehavior": "undefined"
+transform[stderr]: Bypassed unknown prop type for "tabBarControllerMode": "undefined"
+transform[stderr]: Bypassed unknown prop type for "controlNavigationStateInJS": "undefined"
+transform[stderr]: 
+transform[stderr]: Error parsing schema for TabsHost
+transform[stderr]: 
+transform[stderr]: {"modules":{"RNSTabsHost":{"type":"Component","components":{"RNSTabsHost":{"interfaceOnly":true,"extendsProps":[{"type":"ReactNativeBuiltInType","knownTypeName":"ReactNativeCoreViewProps"}],"events":[],"props":[{"name":"onNativeFocusChange","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"tabBarHidden","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"nativeContainerBackgroundColor","optional":true,"typeAnnotation":{"type":"ReservedPropTypeAnnotation","name":"ColorPrimitive"}},{"name":"tabBarBackgroundColor","optional":true,"typeAnnotation":{"type":"ReservedPropTypeAnnotation","name":"ColorPrimitive"}},{"name":"tabBarItemTitleFontFamily","optional":true,"typeAnnotation":{"type":"StringTypeAnnotation","default":null}},{"name":"tabBarItemTitleFontSize","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"tabBarItemTitleFontSizeActive","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"tabBarItemTitleFontWeight","optional":true,"typeAnnotation":{"type":"StringTypeAnnotation","default":null}},{"name":"tabBarItemTitleFontStyle","optional":true,"typeAnnotation":{"type":"StringTypeAnnotation","default":null}},{"name":"tabBarItemTitleFontColor","optional":true,"typeAnnotation":{"type":"ReservedPropTypeAnnotation","name":"ColorPrimitive"}},{"name":"tabBarItemTitleFontColorActive","optional":true,"typeAnnotation":{"type":"ReservedPropTypeAnnotation","name":"ColorPrimitive"}},{"name":"tabBarItemIconColor","optional":true,"typeAnnotation":{"type":"ReservedPropTypeAnnotation","name":"ColorPrimitive"}},{"name":"tabBarItemIconColorActive","optional":true,"typeAnnotation":{"type":"ReservedPropTypeAnnotation","name":"ColorPrimitive"}},{"name":"tabBarItemActiveIndicatorColor","optional":true,"typeAnnotation":{"type":"ReservedPropTypeAnnotation","name":"ColorPrimitive"}},{"name":"tabBarItemActiveIndicatorEnabled","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"tabBarItemRippleColor","optional":true,"typeAnnotation":{"type":"ReservedPropTypeAnnotation","name":"ColorPrimitive"}},{"name":"tabBarItemLabelVisibilityMode","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"tabBarTintColor","optional":true,"typeAnnotation":{"type":"ReservedPropTypeAnnotation","name":"ColorPrimitive"}},{"name":"tabBarMinimizeBehavior","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"tabBarControllerMode","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"controlNavigationStateInJS","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}}],"commands":[]}}}}}
+transform[stderr]: Bypassed unknown prop type for "onLifecycleStateChange": "undefined"
+transform[stderr]: Bypassed unknown prop type for "insetType": "undefined"
+transform[stderr]: Bypassed unknown prop type for "onWillAppear": "undefined"
+transform[stderr]: Bypassed unknown prop type for "onDidAppear": "undefined"
+transform[stderr]: Bypassed unknown prop type for "onWillDisappear": "undefined"
+transform[stderr]: Bypassed unknown prop type for "onDidDisappear": "undefined"
+transform[stderr]: Bypassed unknown prop type for "isTitleUndefined": "undefined"
+transform[stderr]: Bypassed unknown prop type for "orientation": "undefined"
+transform[stderr]: Bypassed unknown prop type for "iconType": "undefined"
+transform[stderr]: Bypassed unknown prop type for "systemItem": "undefined"
+transform[stderr]: Bypassed unknown prop type for "popToRoot": "undefined"
+transform[stderr]: Bypassed unknown prop type for "scrollToTop": "undefined"
+transform[stderr]: Bypassed unknown prop type for "overrideScrollViewContentInsetAdjustmentBehavior": "undefined"
+transform[stderr]: Bypassed unknown prop type for "bottomScrollEdgeEffect": "undefined"
+transform[stderr]: Bypassed unknown prop type for "leftScrollEdgeEffect": "undefined"
+transform[stderr]: Bypassed unknown prop type for "rightScrollEdgeEffect": "undefined"
+transform[stderr]: Bypassed unknown prop type for "topScrollEdgeEffect": "undefined"
+transform[stderr]: Bypassed unknown prop type for "userInterfaceStyle": "undefined"
+transform[stderr]: 
+transform[stderr]: Error parsing schema for TabsScreen
+transform[stderr]: 
+transform[stderr]: {"modules":{"RNSTabsScreen":{"type":"Component","components":{"RNSTabsScreen":{"extendsProps":[{"type":"ReactNativeBuiltInType","knownTypeName":"ReactNativeCoreViewProps"}],"events":[],"props":[{"name":"onLifecycleStateChange","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"onWillAppear","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"onDidAppear","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"onWillDisappear","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"onDidDisappear","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"isFocused","optional":true,"typeAnnotation":{"type":"BooleanTypeAnnotation","default":false}},{"name":"tabKey","optional":false,"typeAnnotation":{"type":"StringTypeAnnotation","default":null}},{"name":"title","optional":true,"typeAnnotation":{"type":"StringTypeAnnotation","default":null}},{"name":"isTitleUndefined","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"badgeValue","optional":true,"typeAnnotation":{"type":"StringTypeAnnotation","default":null}},{"name":"tabBarItemTestID","optional":true,"typeAnnotation":{"type":"StringTypeAnnotation","default":null}},{"name":"tabBarItemAccessibilityLabel","optional":true,"typeAnnotation":{"type":"StringTypeAnnotation","default":null}},{"name":"orientation","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"drawableIconResourceName","optional":true,"typeAnnotation":{"type":"StringTypeAnnotation","default":null}},{"name":"imageIconResource","optional":true,"typeAnnotation":{"type":"ReservedPropTypeAnnotation","name":"ImageSourcePrimitive"}},{"name":"tabBarItemBadgeTextColor","optional":true,"typeAnnotation":{"type":"ReservedPropTypeAnnotation","name":"ColorPrimitive"}},{"name":"tabBarItemBadgeBackgroundColor","optional":true,"typeAnnotation":{"type":"ReservedPropTypeAnnotation","name":"ColorPrimitive"}},{"name":"standardAppearance","optional":true,"typeAnnotation":{"type":"MixedTypeAnnotation"}},{"name":"scrollEdgeAppearance","optional":true,"typeAnnotation":{"type":"MixedTypeAnnotation"}},{"name":"iconType","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"iconImageSource","optional":true,"typeAnnotation":{"type":"ReservedPropTypeAnnotation","name":"ImageSourcePrimitive"}},{"name":"iconResourceName","optional":true,"typeAnnotation":{"type":"StringTypeAnnotation","default":null}},{"name":"selectedIconImageSource","optional":true,"typeAnnotation":{"type":"ReservedPropTypeAnnotation","name":"ImageSourcePrimitive"}},{"name":"selectedIconResourceName","optional":true,"typeAnnotation":{"type":"StringTypeAnnotation","default":null}},{"name":"systemItem","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"specialEffects","optional":true,"typeAnnotation":{"type":"ObjectTypeAnnotation","properties":[{"name":"repeatedTabSelection","optional":true,"typeAnnotation":{"type":"ObjectTypeAnnotation","properties":[{"name":"popToRoot","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"scrollToTop","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}}]}}]}},{"name":"overrideScrollViewContentInsetAdjustmentBehavior","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"bottomScrollEdgeEffect","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"leftScrollEdgeEffect","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"rightScrollEdgeEffect","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"topScrollEdgeEffect","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}},{"name":"userInterfaceStyle","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}}],"commands":[]}}}}}
+transform[stderr]: 
+transform[stderr]: Error parsing schema for SafeAreaView
+transform[stderr]: 
+transform[stderr]: {"modules":{"RNSSafeAreaView":{"type":"Component","components":{"RNSSafeAreaView":{"interfaceOnly":true,"extendsProps":[{"type":"ReactNativeBuiltInType","knownTypeName":"ReactNativeCoreViewProps"}],"events":[],"props":[{"name":"edges","optional":true,"typeAnnotation":{"type":"ObjectTypeAnnotation","properties":[{"name":"top","optional":false,"typeAnnotation":{"type":"BooleanTypeAnnotation","default":false}},{"name":"right","optional":false,"typeAnnotation":{"type":"BooleanTypeAnnotation","default":false}},{"name":"bottom","optional":false,"typeAnnotation":{"type":"BooleanTypeAnnotation","default":false}},{"name":"left","optional":false,"typeAnnotation":{"type":"BooleanTypeAnnotation","default":false}}]}},{"name":"insetType","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}}],"commands":[]}}}}}
+transform[stderr]: Bypassed unknown prop type for "onEnvironmentChange": "undefined"
+transform[stderr]: Bypassed unknown prop type for "environment": "undefined"
+transform[stderr]: 
+transform[stderr]: Error parsing schema for TabsBottomAccessory
+transform[stderr]: 
+transform[stderr]: 
+transform[stderr]: Error parsing schema for TabsBottomAccessoryContent
+transform[stderr]: 
+transform[stderr]: {"modules":{"RNSTabsBottomAccessory":{"type":"Component","components":{"RNSTabsBottomAccessory":{"interfaceOnly":true,"extendsProps":[{"type":"ReactNativeBuiltInType","knownTypeName":"ReactNativeCoreViewProps"}],"events":[],"props":[{"name":"onEnvironmentChange","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}}],"commands":[]}}}}}
+transform[stderr]: {"modules":{"RNSTabsBottomAccessoryContent":{"type":"Component","components":{"RNSTabsBottomAccessoryContent":{"extendsProps":[{"type":"ReactNativeBuiltInType","knownTypeName":"ReactNativeCoreViewProps"}],"events":[],"props":[{"name":"environment","optional":true,"typeAnnotation":{"type":"AnyTypeAnnotation"}}],"commands":[]}}}}}
+.\gradlew : error 
+node_modules\react-native-screens\src\fabric\ScreenStackNativeComponent.ts: D:\New fold
+er\MyReleaseApp\node_modules\react-native-screens\src\fabric\ScreenStackNativeComponent
+.ts: Received unknown typeAnnotation: "AnyTypeAnnotation".
+At line:1 char:1
++ .\gradlew assembleRelease --stacktrace > build3.log 2>&1
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (error node_modu...ypeAnnotation".:String) 
+    [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+Error: D:\New folder\MyReleaseApp\node_modules\react-native-screens\src\fabric\ScreenStackNativeComponent.ts: Received unknown typeAnnotation: "AnyTypeAnnotation"
+    at getReactDiffProcessValue (D:\New folder\MyReleaseApp\node_modules\@react-native\codegen\lib\generators\components\GenerateViewConfigJs.js:95:13)
+    at D:\New folder\MyReleaseApp\node_modules\@react-native\codegen\lib\generators\components\GenerateViewConfigJs.js:226:9
+    at Array.map (<anonymous>)
+    at buildViewConfig (D:\New folder\MyReleaseApp\node_modules\@react-native\codegen\lib\generators\components\GenerateViewConfigJs.js:222:23)
+    at D:\New folder\MyReleaseApp\node_modules\@react-native\codegen\lib\generators\components\GenerateViewConfigJs.js:375:19
+    at Array.map (<anonymous>)
+    at D:\New folder\MyReleaseApp\node_modules\@react-native\codegen\lib\generators\components\GenerateViewConfigJs.js:352:14
+    at Array.map (<anonymous>)
+    at Object.generate (D:\New folder\MyReleaseApp\node_modules\@react-native\codegen\lib\generators\components\GenerateViewConfigJs.js:345:10)
+    at Object.generateViewConfig (D:\New folder\MyReleaseApp\node_modules\@react-native\codegen\lib\generators\RNCodegen.js:255:8)
+    at generateViewConfig (D:\New folder\MyReleaseApp\node_modules\@react-native\babel-plugin-codegen\index.js:55:20)
+    at PluginPass.exit (D:\New folder\MyReleaseApp\node_modules\@react-native\babel-plugin-codegen\index.js:170:32)
+    at newFn (D:\New folder\MyReleaseApp\node_modules\@babel\traverse\lib\visitors.js:168:14)
+    at NodePath._call (D:\New folder\MyReleaseApp\node_modules\@babel\traverse\lib\path\context.js:50:20)
+    at NodePath.call (D:\New folder\MyReleaseApp\node_modules\@babel\traverse\lib\path\context.js:40:18)
+    at NodePath.visit (D:\New folder\MyReleaseApp\node_modules\@babel\traverse\lib\path\context.js:95:8)
+    at TraversalContext.visitQueue (D:\New folder\MyReleaseApp\node_modules\@babel\traverse\lib\context.js:96:16)
+    at TraversalContext.visitSingle (D:\New folder\MyReleaseApp\node_modules\@babel\traverse\lib\context.js:72:19)
+    at TraversalContext.visit (D:\New folder\MyReleaseApp\node_modules\@babel\traverse\lib\context.js:119:19)
+    at traverseNode (D:\New folder\MyReleaseApp\node_modules\@babel\traverse\lib\traverse-node.js:130:17)
+    at traverse (D:\New folder\MyReleaseApp\node_modules\@babel\traverse\lib\index.js:53:34)
+    at transformFile (D:\New folder\MyReleaseApp\node_modules\@babel\core\lib\transformation\index.js:79:29)
+    at transformFile.next (<anonymous>)
+    at run (D:\New folder\MyReleaseApp\node_modules\@babel\core\lib\transformation\index.js:25:12)
+    at run.next (<anonymous>)
+    at D:\New folder\MyReleaseApp\node_modules\@babel\core\lib\transform-ast.js:23:33
+    at Generator.next (<anonymous>)
+    at evaluateSync (D:\New folder\MyReleaseApp\node_modules\gensync\index.js:251:28)
+    at sync (D:\New folder\MyReleaseApp\node_modules\gensync\index.js:89:14)
+    at stopHiding - secret - don't use this - v1 (D:\New folder\MyReleaseApp\node_modules\@babel\core\lib\errors\rewrite-stack-trace.js:47:12)
+    at transformFromAstSync (D:\New folder\MyReleaseApp\node_modules\@babel\core\lib\transform-ast.js:41:83)
+    at Object.transform (D:\New folder\MyReleaseApp\node_modules\@react-native\metro-babel-transformer\src\index.js:217:7)
+    at transformJSWithBabel (D:\New folder\MyReleaseApp\node_modules\metro-transform-worker\src\index.js:308:45)
+    at Object.transform (D:\New folder\MyReleaseApp\node_modules\metro-transform-worker\src\index.js:438:18)
+    at transformFile (D:\New folder\MyReleaseApp\node_modules\metro\src\DeltaBundler\Worker.flow.js:54:36)
+    at Object.transform (D:\New folder\MyReleaseApp\node_modules\metro\src\DeltaBundler\Worker.flow.js:30:10)
+    at execFunction (D:\New folder\MyReleaseApp\node_modules\jest-worker\build\workers\processChild.js:149:17)
+    at execHelper (D:\New folder\MyReleaseApp\node_modules\jest-worker\build\workers\processChild.js:137:5)
+    at execMethod (D:\New folder\MyReleaseApp\node_modules\jest-worker\build\workers\processChild.js:140:5)
+    at process.messageListener (D:\New folder\MyReleaseApp\node_modules\jest-worker\build\workers\processChild.js:44:7)
+    at process.emit (node:events:524:28)
+    at emit (node:internal/child_process:950:14)
+
+> Task :app:createBundleReleaseJsAndAssets FAILED
+
+FAILURE: Build completed with 2 failures.
+
+1: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':app:checkReleaseAarMetadata'.
+> A failure occurred while executing 
+com.android.build.gradle.internal.tasks.CheckAarMetadataWorkAction
+   > 4 issues were found when checking AAR metadata:
+     
+       1.  Dependency 'androidx.core:core:1.17.0' requires libraries and applications 
+that
+           depend on it to compile against version 36 or later of the
+           Android APIs.
+     
+           :app is currently compiled against android-35.
+     
+           Also, the maximum recommended compile SDK version for Android Gradle
+           plugin 8.6.0 is 35.
+     
+           Recommended action: Update this project's version of the Android Gradle
+           plugin to one that supports 36, then update this project to use
+           compileSdk of at least 36.
+     
+           Note that updating a library or application's compileSdk (which
+           allows newer APIs to be used) can be done separately from updating
+           targetSdk (which opts the app in to new runtime behavior) and
+           minSdk (which determines which devices the app can be installed
+           on).
+     
+       2.  Dependency 'androidx.core:core:1.17.0' requires Android Gradle plugin 8.9.1 
+or higher.
+     
+           This build currently uses Android Gradle plugin 8.6.0.
+     
+       3.  Dependency 'androidx.core:core-ktx:1.17.0' requires libraries and 
+applications that
+           depend on it to compile against version 36 or later of the
+           Android APIs.
+     
+           :app is currently compiled against android-35.
+     
+           Also, the maximum recommended compile SDK version for Android Gradle
+           plugin 8.6.0 is 35.
+     
+           Recommended action: Update this project's version of the Android Gradle
+           plugin to one that supports 36, then update this project to use
+           compileSdk of at least 36.
+     
+           Note that updating a library or application's compileSdk (which
+           allows newer APIs to be used) can be done separately from updating
+           targetSdk (which opts the app in to new runtime behavior) and
+           minSdk (which determines which devices the app can be installed
+           on).
+     
+       4.  Dependency 'androidx.core:core-ktx:1.17.0' requires Android Gradle plugin 
+8.9.1 or higher.
+     
+           This build currently uses Android Gradle plugin 8.6.0.
+
+* Try:
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+* Exception is:
+org.gradle.api.tasks.TaskExecutionException: Execution failed for task 
+':app:checkReleaseAarMetadata'.
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.lambda$executeIf
+Valid$1(ExecuteActionsTaskExecuter.java:130)
+	at org.gradle.internal.Try$Failure.ifSuccessfulOrElse(Try.java:293)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeIfValid(E
+xecuteActionsTaskExecuter.java:128)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.execute(ExecuteA
+ctionsTaskExecuter.java:116)
+	at org.gradle.api.internal.tasks.execution.FinalizePropertiesTaskExecuter.execute(Fina
+lizePropertiesTaskExecuter.java:46)
+	at org.gradle.api.internal.tasks.execution.ResolveTaskExecutionModeExecuter.execute(Re
+solveTaskExecutionModeExecuter.java:51)
+	at org.gradle.api.internal.tasks.execution.SkipTaskWithNoActionsExecuter.execute(SkipT
+askWithNoActionsExecuter.java:57)
+	at org.gradle.api.internal.tasks.execution.SkipOnlyIfTaskExecuter.execute(SkipOnlyIfTa
+skExecuter.java:74)
+	at org.gradle.api.internal.tasks.execution.CatchExceptionTaskExecuter.execute(CatchExc
+eptionTaskExecuter.java:36)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.executeTask(Event
+FiringTaskExecuter.java:77)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringT
+askExecuter.java:55)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringT
+askExecuter.java:52)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWo
+rker.execute(DefaultBuildOperationRunner.java:209)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWo
+rker.execute(DefaultBuildOperationRunner.java:204)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOp
+erationRunner.java:66)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOp
+erationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOper
+ationRunner.java:166)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOper
+ationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperati
+onRunner.java:53)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter.execute(EventFiring
+TaskExecuter.java:52)
+	at 
+org.gradle.execution.plan.LocalTaskNodeExecutor.execute(LocalTaskNodeExecutor.java:42)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.
+execute(DefaultTaskExecutionGraph.java:331)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.
+execute(DefaultTaskExecutionGraph.java:318)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecuti
+onAction.lambda$execute$0(DefaultTaskExecutionGraph.java:314)
+	at org.gradle.internal.operations.CurrentBuildOperationRef.with(CurrentBuildOperationR
+ef.java:85)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecuti
+onAction.execute(DefaultTaskExecutionGraph.java:314)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecuti
+onAction.execute(DefaultTaskExecutionGraph.java:303)
+	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.execute(DefaultPlanExe
+cutor.java:459)
+	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.run(DefaultPlanExecuto
+r.java:376)
+	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(Exec
+utorPolicy.java:64)
+	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecuto
+r.java:48)
+Caused by: org.gradle.workers.internal.DefaultWorkerExecutor$WorkExecutionException: A 
+failure occurred while executing 
+com.android.build.gradle.internal.tasks.CheckAarMetadataWorkAction
+	at org.gradle.workers.internal.DefaultWorkerExecutor$WorkItemExecution.waitForCompleti
+on(DefaultWorkerExecutor.java:287)
+	at org.gradle.internal.work.DefaultAsyncWorkTracker.lambda$waitForItemsAndGatherFailur
+es$2(DefaultAsyncWorkTracker.java:130)
+	at org.gradle.internal.Factories$1.create(Factories.java:31)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withoutLocks(DefaultWorkerLeaseS
+ervice.java:335)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withoutLocks(DefaultWorkerLeaseS
+ervice.java:318)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withoutLock(DefaultWorkerLeaseSe
+rvice.java:323)
+	at org.gradle.internal.work.DefaultAsyncWorkTracker.waitForItemsAndGatherFailures(Defa
+ultAsyncWorkTracker.java:126)
+	at org.gradle.internal.work.DefaultAsyncWorkTracker.waitForItemsAndGatherFailures(Defa
+ultAsyncWorkTracker.java:92)
+	at org.gradle.internal.work.DefaultAsyncWorkTracker.waitForAll(DefaultAsyncWorkTracker
+.java:78)
+	at org.gradle.internal.work.DefaultAsyncWorkTracker.waitForCompletion(DefaultAsyncWork
+Tracker.java:66)
+	at org.gradle.api.internal.tasks.execution.TaskExecution$3.run(TaskExecution.java:252)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOp
+erationRunner.java:29)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOp
+erationRunner.java:26)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOp
+erationRunner.java:66)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOp
+erationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOper
+ationRunner.java:166)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOper
+ationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.run(DefaultBuildOperatio
+nRunner.java:47)
+	at org.gradle.api.internal.tasks.execution.TaskExecution.executeAction(TaskExecution.j
+ava:229)
+	at org.gradle.api.internal.tasks.execution.TaskExecution.executeActions(TaskExecution.
+java:212)
+	at org.gradle.api.internal.tasks.execution.TaskExecution.executeWithPreviousOutputFile
+s(TaskExecution.java:195)
+	at 
+org.gradle.api.internal.tasks.execution.TaskExecution.execute(TaskExecution.java:162)
+	at 
+org.gradle.internal.execution.steps.ExecuteStep.executeInternal(ExecuteStep.java:105)
+	at org.gradle.internal.execution.steps.ExecuteStep.access$000(ExecuteStep.java:44)
+	at org.gradle.internal.execution.steps.ExecuteStep$1.call(ExecuteStep.java:59)
+	at org.gradle.internal.execution.steps.ExecuteStep$1.call(ExecuteStep.java:56)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWo
+rker.execute(DefaultBuildOperationRunner.java:209)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWo
+rker.execute(DefaultBuildOperationRunner.java:204)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOp
+erationRunner.java:66)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOp
+erationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOper
+ationRunner.java:166)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOper
+ationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperati
+onRunner.java:53)
+	at org.gradle.internal.execution.steps.ExecuteStep.execute(ExecuteStep.java:56)
+	at org.gradle.internal.execution.steps.ExecuteStep.execute(ExecuteStep.java:44)
+	at org.gradle.internal.execution.steps.CancelExecutionStep.execute(CancelExecutionStep
+.java:42)
+	at org.gradle.internal.execution.steps.TimeoutStep.executeWithoutTimeout(TimeoutStep.j
+ava:75)
+	at org.gradle.internal.execution.steps.TimeoutStep.execute(TimeoutStep.java:55)
+	at org.gradle.internal.execution.steps.PreCreateOutputParentsStep.execute(PreCreateOut
+putParentsStep.java:50)
+	at org.gradle.internal.execution.steps.PreCreateOutputParentsStep.execute(PreCreateOut
+putParentsStep.java:28)
+	at org.gradle.internal.execution.steps.RemovePreviousOutputsStep.execute(RemovePreviou
+sOutputsStep.java:67)
+	at org.gradle.internal.execution.steps.RemovePreviousOutputsStep.execute(RemovePreviou
+sOutputsStep.java:37)
+	at org.gradle.internal.execution.steps.BroadcastChangingOutputsStep.execute(BroadcastC
+hangingOutputsStep.java:61)
+	at org.gradle.internal.execution.steps.BroadcastChangingOutputsStep.execute(BroadcastC
+hangingOutputsStep.java:26)
+	at org.gradle.internal.execution.steps.CaptureOutputsAfterExecutionStep.execute(Captur
+eOutputsAfterExecutionStep.java:69)
+	at org.gradle.internal.execution.steps.CaptureOutputsAfterExecutionStep.execute(Captur
+eOutputsAfterExecutionStep.java:46)
+	at org.gradle.internal.execution.steps.ResolveInputChangesStep.execute(ResolveInputCha
+ngesStep.java:40)
+	at org.gradle.internal.execution.steps.ResolveInputChangesStep.execute(ResolveInputCha
+ngesStep.java:29)
+	at org.gradle.internal.execution.steps.BuildCacheStep.executeWithoutCache(BuildCacheSt
+ep.java:189)
+	at org.gradle.internal.execution.steps.BuildCacheStep.lambda$execute$1(BuildCacheStep.
+java:75)
+	at org.gradle.internal.Either$Right.fold(Either.java:175)
+	at org.gradle.internal.execution.caching.CachingState.fold(CachingState.java:62)
+	at org.gradle.internal.execution.steps.BuildCacheStep.execute(BuildCacheStep.java:73)
+	at org.gradle.internal.execution.steps.BuildCacheStep.execute(BuildCacheStep.java:48)
+	at org.gradle.internal.execution.steps.StoreExecutionStateStep.execute(StoreExecutionS
+tateStep.java:46)
+	at org.gradle.internal.execution.steps.StoreExecutionStateStep.execute(StoreExecutionS
+tateStep.java:35)
+	at org.gradle.internal.execution.steps.SkipUpToDateStep.executeBecause(SkipUpToDateSte
+p.java:75)
+	at org.gradle.internal.execution.steps.SkipUpToDateStep.lambda$execute$2(SkipUpToDateS
+tep.java:53)
+	at 
+org.gradle.internal.execution.steps.SkipUpToDateStep.execute(SkipUpToDateStep.java:53)
+	at 
+org.gradle.internal.execution.steps.SkipUpToDateStep.execute(SkipUpToDateStep.java:35)
+	at org.gradle.internal.execution.steps.legacy.MarkSnapshottingInputsFinishedStep.execu
+te(MarkSnapshottingInputsFinishedStep.java:37)
+	at org.gradle.internal.execution.steps.legacy.MarkSnapshottingInputsFinishedStep.execu
+te(MarkSnapshottingInputsFinishedStep.java:27)
+	at org.gradle.internal.execution.steps.ResolveIncrementalCachingStateStep.executeDeleg
+ate(ResolveIncrementalCachingStateStep.java:49)
+	at org.gradle.internal.execution.steps.ResolveIncrementalCachingStateStep.executeDeleg
+ate(ResolveIncrementalCachingStateStep.java:27)
+	at org.gradle.internal.execution.steps.AbstractResolveCachingStateStep.execute(Abstrac
+tResolveCachingStateStep.java:71)
+	at org.gradle.internal.execution.steps.AbstractResolveCachingStateStep.execute(Abstrac
+tResolveCachingStateStep.java:39)
+	at org.gradle.internal.execution.steps.ResolveChangesStep.execute(ResolveChangesStep.j
+ava:65)
+	at org.gradle.internal.execution.steps.ResolveChangesStep.execute(ResolveChangesStep.j
+ava:36)
+	at org.gradle.internal.execution.steps.ValidateStep.execute(ValidateStep.java:107)
+	at org.gradle.internal.execution.steps.ValidateStep.execute(ValidateStep.java:56)
+	at org.gradle.internal.execution.steps.AbstractCaptureStateBeforeExecutionStep.execute
+(AbstractCaptureStateBeforeExecutionStep.java:64)
+	at org.gradle.internal.execution.steps.AbstractCaptureStateBeforeExecutionStep.execute
+(AbstractCaptureStateBeforeExecutionStep.java:43)
+	at org.gradle.internal.execution.steps.AbstractSkipEmptyWorkStep.executeWithNonEmptySo
+urces(AbstractSkipEmptyWorkStep.java:125)
+	at org.gradle.internal.execution.steps.AbstractSkipEmptyWorkStep.execute(AbstractSkipE
+mptyWorkStep.java:56)
+	at org.gradle.internal.execution.steps.AbstractSkipEmptyWorkStep.execute(AbstractSkipE
+mptyWorkStep.java:36)
+	at org.gradle.internal.execution.steps.legacy.MarkSnapshottingInputsStartedStep.execut
+e(MarkSnapshottingInputsStartedStep.java:38)
+	at org.gradle.internal.execution.steps.LoadPreviousExecutionStateStep.execute(LoadPrev
+iousExecutionStateStep.java:36)
+	at org.gradle.internal.execution.steps.LoadPreviousExecutionStateStep.execute(LoadPrev
+iousExecutionStateStep.java:23)
+	at org.gradle.internal.execution.steps.HandleStaleOutputsStep.execute(HandleStaleOutpu
+tsStep.java:75)
+	at org.gradle.internal.execution.steps.HandleStaleOutputsStep.execute(HandleStaleOutpu
+tsStep.java:41)
+	at org.gradle.internal.execution.steps.AssignMutableWorkspaceStep.lambda$execute$0(Ass
+ignMutableWorkspaceStep.java:35)
+	at org.gradle.api.internal.tasks.execution.TaskExecution$4.withWorkspace(TaskExecution
+.java:289)
+	at org.gradle.internal.execution.steps.AssignMutableWorkspaceStep.execute(AssignMutabl
+eWorkspaceStep.java:31)
+	at org.gradle.internal.execution.steps.AssignMutableWorkspaceStep.execute(AssignMutabl
+eWorkspaceStep.java:22)
+	at org.gradle.internal.execution.steps.ChoosePipelineStep.execute(ChoosePipelineStep.j
+ava:40)
+	at org.gradle.internal.execution.steps.ChoosePipelineStep.execute(ChoosePipelineStep.j
+ava:23)
+	at org.gradle.internal.execution.steps.ExecuteWorkBuildOperationFiringStep.lambda$exec
+ute$2(ExecuteWorkBuildOperationFiringStep.java:67)
+	at org.gradle.internal.execution.steps.ExecuteWorkBuildOperationFiringStep.execute(Exe
+cuteWorkBuildOperationFiringStep.java:67)
+	at org.gradle.internal.execution.steps.ExecuteWorkBuildOperationFiringStep.execute(Exe
+cuteWorkBuildOperationFiringStep.java:39)
+	at org.gradle.internal.execution.steps.IdentityCacheStep.execute(IdentityCacheStep.jav
+a:46)
+	at org.gradle.internal.execution.steps.IdentityCacheStep.execute(IdentityCacheStep.jav
+a:34)
+	at org.gradle.internal.execution.steps.IdentifyStep.execute(IdentifyStep.java:48)
+	at org.gradle.internal.execution.steps.IdentifyStep.execute(IdentifyStep.java:35)
+	at org.gradle.internal.execution.impl.DefaultExecutionEngine$1.execute(DefaultExecutio
+nEngine.java:61)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeIfValid(E
+xecuteActionsTaskExecuter.java:127)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.execute(ExecuteA
+ctionsTaskExecuter.java:116)
+	at org.gradle.api.internal.tasks.execution.FinalizePropertiesTaskExecuter.execute(Fina
+lizePropertiesTaskExecuter.java:46)
+	at org.gradle.api.internal.tasks.execution.ResolveTaskExecutionModeExecuter.execute(Re
+solveTaskExecutionModeExecuter.java:51)
+	at org.gradle.api.internal.tasks.execution.SkipTaskWithNoActionsExecuter.execute(SkipT
+askWithNoActionsExecuter.java:57)
+	at org.gradle.api.internal.tasks.execution.SkipOnlyIfTaskExecuter.execute(SkipOnlyIfTa
+skExecuter.java:74)
+	at org.gradle.api.internal.tasks.execution.CatchExceptionTaskExecuter.execute(CatchExc
+eptionTaskExecuter.java:36)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.executeTask(Event
+FiringTaskExecuter.java:77)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringT
+askExecuter.java:55)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringT
+askExecuter.java:52)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWo
+rker.execute(DefaultBuildOperationRunner.java:209)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWo
+rker.execute(DefaultBuildOperationRunner.java:204)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOp
+erationRunner.java:66)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOp
+erationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOper
+ationRunner.java:166)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOper
+ationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperati
+onRunner.java:53)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter.execute(EventFiring
+TaskExecuter.java:52)
+	at 
+org.gradle.execution.plan.LocalTaskNodeExecutor.execute(LocalTaskNodeExecutor.java:42)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.
+execute(DefaultTaskExecutionGraph.java:331)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.
+execute(DefaultTaskExecutionGraph.java:318)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecuti
+onAction.lambda$execute$0(DefaultTaskExecutionGraph.java:314)
+	at org.gradle.internal.operations.CurrentBuildOperationRef.with(CurrentBuildOperationR
+ef.java:85)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecuti
+onAction.execute(DefaultTaskExecutionGraph.java:314)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecuti
+onAction.execute(DefaultTaskExecutionGraph.java:303)
+	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.execute(DefaultPlanExe
+cutor.java:459)
+	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.run(DefaultPlanExecuto
+r.java:376)
+	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(Exec
+utorPolicy.java:64)
+	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecuto
+r.java:48)
+Caused by: java.lang.RuntimeException: 4 issues were found when checking AAR metadata:
+
+  1.  Dependency 'androidx.core:core:1.17.0' requires libraries and applications that
+      depend on it to compile against version 36 or later of the
+      Android APIs.
+
+      :app is currently compiled against android-35.
+
+      Also, the maximum recommended compile SDK version for Android Gradle
+      plugin 8.6.0 is 35.
+
+      Recommended action: Update this project's version of the Android Gradle
+      plugin to one that supports 36, then update this project to use
+      compileSdk of at least 36.
+
+      Note that updating a library or application's compileSdk (which
+      allows newer APIs to be used) can be done separately from updating
+      targetSdk (which opts the app in to new runtime behavior) and
+      minSdk (which determines which devices the app can be installed
+      on).
+
+  2.  Dependency 'androidx.core:core:1.17.0' requires Android Gradle plugin 8.9.1 or 
+higher.
+
+      This build currently uses Android Gradle plugin 8.6.0.
+
+  3.  Dependency 'androidx.core:core-ktx:1.17.0' requires libraries and applications 
+that
+      depend on it to compile against version 36 or later of the
+      Android APIs.
+
+      :app is currently compiled against android-35.
+
+      Also, the maximum recommended compile SDK version for Android Gradle
+      plugin 8.6.0 is 35.
+
+      Recommended action: Update this project's version of the Android Gradle
+      plugin to one that supports 36, then update this project to use
+      compileSdk of at least 36.
+
+      Note that updating a library or application's compileSdk (which
+      allows newer APIs to be used) can be done separately from updating
+      targetSdk (which opts the app in to new runtime behavior) and
+      minSdk (which determines which devices the app can be installed
+      on).
+
+  4.  Dependency 'androidx.core:core-ktx:1.17.0' requires Android Gradle plugin 8.9.1 
+or higher.
+
+      This build currently uses Android Gradle plugin 8.6.0.
+	at com.android.build.gradle.internal.tasks.CheckAarMetadataWorkAction.execute(CheckAar
+MetadataTask.kt:288)
+	at 
+org.gradle.workers.internal.DefaultWorkerServer.execute(DefaultWorkerServer.java:63)
+	at org.gradle.workers.internal.NoIsolationWorkerFactory$1$1.create(NoIsolationWorkerFa
+ctory.java:66)
+	at org.gradle.workers.internal.NoIsolationWorkerFactory$1$1.create(NoIsolationWorkerFa
+ctory.java:62)
+	at org.gradle.internal.classloader.ClassLoaderUtils.executeInClassloader(ClassLoaderUt
+ils.java:100)
+	at org.gradle.workers.internal.NoIsolationWorkerFactory$1.lambda$execute$0(NoIsolation
+WorkerFactory.java:62)
+	at org.gradle.workers.internal.AbstractWorker$1.call(AbstractWorker.java:44)
+	at org.gradle.workers.internal.AbstractWorker$1.call(AbstractWorker.java:41)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWo
+rker.execute(DefaultBuildOperationRunner.java:209)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWo
+rker.execute(DefaultBuildOperationRunner.java:204)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOp
+erationRunner.java:66)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOp
+erationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOper
+ationRunner.java:166)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOper
+ationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperati
+onRunner.java:53)
+	at org.gradle.workers.internal.AbstractWorker.executeWrappedInBuildOperation(AbstractW
+orker.java:41)
+	at org.gradle.workers.internal.NoIsolationWorkerFactory$1.execute(NoIsolationWorkerFac
+tory.java:59)
+	at org.gradle.workers.internal.DefaultWorkerExecutor.lambda$submitWork$0(DefaultWorker
+Executor.java:174)
+	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.runExecut
+ion(DefaultConditionalExecutionQueue.java:194)
+	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.access$70
+0(DefaultConditionalExecutionQueue.java:127)
+	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner$1.run(Def
+aultConditionalExecutionQueue.java:169)
+	at org.gradle.internal.Factories$1.create(Factories.java:31)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withLocks(DefaultWorkerLeaseServ
+ice.java:263)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerL
+easeService.java:127)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerL
+easeService.java:132)
+	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.runBatch(
+DefaultConditionalExecutionQueue.java:164)
+	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.run(Defau
+ltConditionalExecutionQueue.java:133)
+	... 2 more
+
+==============================================================================
+
+2: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':app:createBundleReleaseJsAndAssets'.
+> Process 'command 'cmd'' finished with non-zero exit value 1
+
+* Try:
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+* Exception is:
+org.gradle.api.tasks.TaskExecutionException: Execution failed for task 
+':app:createBundleReleaseJsAndAssets'.
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.lambda$executeIf
+Valid$1(ExecuteActionsTaskExecuter.java:130)
+	at org.gradle.internal.Try$Failure.ifSuccessfulOrElse(Try.java:293)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeIfValid(E
+xecuteActionsTaskExecuter.java:128)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.execute(ExecuteA
+ctionsTaskExecuter.java:116)
+	at org.gradle.api.internal.tasks.execution.FinalizePropertiesTaskExecuter.execute(Fina
+lizePropertiesTaskExecuter.java:46)
+	at org.gradle.api.internal.tasks.execution.ResolveTaskExecutionModeExecuter.execute(Re
+solveTaskExecutionModeExecuter.java:51)
+	at org.gradle.api.internal.tasks.execution.SkipTaskWithNoActionsExecuter.execute(SkipT
+askWithNoActionsExecuter.java:57)
+	at org.gradle.api.internal.tasks.execution.SkipOnlyIfTaskExecuter.execute(SkipOnlyIfTa
+skExecuter.java:74)
+	at org.gradle.api.internal.tasks.execution.CatchExceptionTaskExecuter.execute(CatchExc
+eptionTaskExecuter.java:36)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.executeTask(Event
+FiringTaskExecuter.java:77)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringT
+askExecuter.java:55)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringT
+askExecuter.java:52)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWo
+rker.execute(DefaultBuildOperationRunner.java:209)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWo
+rker.execute(DefaultBuildOperationRunner.java:204)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOp
+erationRunner.java:66)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOp
+erationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOper
+ationRunner.java:166)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOper
+ationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperati
+onRunner.java:53)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter.execute(EventFiring
+TaskExecuter.java:52)
+	at 
+org.gradle.execution.plan.LocalTaskNodeExecutor.execute(LocalTaskNodeExecutor.java:42)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.
+execute(DefaultTaskExecutionGraph.java:331)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.
+execute(DefaultTaskExecutionGraph.java:318)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecuti
+onAction.lambda$execute$0(DefaultTaskExecutionGraph.java:314)
+	at org.gradle.internal.operations.CurrentBuildOperationRef.with(CurrentBuildOperationR
+ef.java:85)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecuti
+onAction.execute(DefaultTaskExecutionGraph.java:314)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecuti
+onAction.execute(DefaultTaskExecutionGraph.java:303)
+	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.execute(DefaultPlanExe
+cutor.java:459)
+	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.run(DefaultPlanExecuto
+r.java:376)
+	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(Exec
+utorPolicy.java:64)
+	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecuto
+r.java:48)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java
+:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.jav
+a:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Caused by: org.gradle.process.internal.ExecException: Process 'command 'cmd'' finished 
+with non-zero exit value 1
+	at org.gradle.process.internal.DefaultExecHandle$ExecResultImpl.assertNormalExitValue(
+DefaultExecHandle.java:442)
+	at org.gradle.process.internal.DefaultExecAction.execute(DefaultExecAction.java:38)
+	at org.gradle.process.internal.DefaultExecActionFactory.exec(DefaultExecActionFactory.
+java:202)
+	at 
+org.gradle.process.internal.DefaultExecOperations.exec(DefaultExecOperations.java:37)
+	at com.facebook.react.tasks.BundleHermesCTask.runCommand(BundleHermesCTask.kt:134)
+	at com.facebook.react.tasks.BundleHermesCTask.run(BundleHermesCTask.kt:94)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessor
+Impl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethod
+AccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.gradle.internal.reflect.JavaMethod.invoke(JavaMethod.java:125)
+	at org.gradle.api.internal.project.taskfactory.StandardTaskAction.doExecute(StandardTa
+skAction.java:58)
+	at org.gradle.api.internal.project.taskfactory.StandardTaskAction.execute(StandardTask
+Action.java:51)
+	at org.gradle.api.internal.project.taskfactory.StandardTaskAction.execute(StandardTask
+Action.java:29)
+	at org.gradle.api.internal.tasks.execution.TaskExecution$3.run(TaskExecution.java:244)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOp
+erationRunner.java:29)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOp
+erationRunner.java:26)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOp
+erationRunner.java:66)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOp
+erationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOper
+ationRunner.java:166)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOper
+ationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.run(DefaultBuildOperatio
+nRunner.java:47)
+	at org.gradle.api.internal.tasks.execution.TaskExecution.executeAction(TaskExecution.j
+ava:229)
+	at org.gradle.api.internal.tasks.execution.TaskExecution.executeActions(TaskExecution.
+java:212)
+	at org.gradle.api.internal.tasks.execution.TaskExecution.executeWithPreviousOutputFile
+s(TaskExecution.java:195)
+	at 
+org.gradle.api.internal.tasks.execution.TaskExecution.execute(TaskExecution.java:162)
+	at 
+org.gradle.internal.execution.steps.ExecuteStep.executeInternal(ExecuteStep.java:105)
+	at org.gradle.internal.execution.steps.ExecuteStep.access$000(ExecuteStep.java:44)
+	at org.gradle.internal.execution.steps.ExecuteStep$1.call(ExecuteStep.java:59)
+	at org.gradle.internal.execution.steps.ExecuteStep$1.call(ExecuteStep.java:56)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWo
+rker.execute(DefaultBuildOperationRunner.java:209)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWo
+rker.execute(DefaultBuildOperationRunner.java:204)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOp
+erationRunner.java:66)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOp
+erationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOper
+ationRunner.java:166)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOper
+ationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperati
+onRunner.java:53)
+	at org.gradle.internal.execution.steps.ExecuteStep.execute(ExecuteStep.java:56)
+	at org.gradle.internal.execution.steps.ExecuteStep.execute(ExecuteStep.java:44)
+	at org.gradle.internal.execution.steps.CancelExecutionStep.execute(CancelExecutionStep
+.java:42)
+	at org.gradle.internal.execution.steps.TimeoutStep.executeWithoutTimeout(TimeoutStep.j
+ava:75)
+	at org.gradle.internal.execution.steps.TimeoutStep.execute(TimeoutStep.java:55)
+	at org.gradle.internal.execution.steps.PreCreateOutputParentsStep.execute(PreCreateOut
+putParentsStep.java:50)
+	at org.gradle.internal.execution.steps.PreCreateOutputParentsStep.execute(PreCreateOut
+putParentsStep.java:28)
+	at org.gradle.internal.execution.steps.RemovePreviousOutputsStep.execute(RemovePreviou
+sOutputsStep.java:67)
+	at org.gradle.internal.execution.steps.RemovePreviousOutputsStep.execute(RemovePreviou
+sOutputsStep.java:37)
+	at org.gradle.internal.execution.steps.BroadcastChangingOutputsStep.execute(BroadcastC
+hangingOutputsStep.java:61)
+	at org.gradle.internal.execution.steps.BroadcastChangingOutputsStep.execute(BroadcastC
+hangingOutputsStep.java:26)
+	at org.gradle.internal.execution.steps.CaptureOutputsAfterExecutionStep.execute(Captur
+eOutputsAfterExecutionStep.java:69)
+	at org.gradle.internal.execution.steps.CaptureOutputsAfterExecutionStep.execute(Captur
+eOutputsAfterExecutionStep.java:46)
+	at org.gradle.internal.execution.steps.ResolveInputChangesStep.execute(ResolveInputCha
+ngesStep.java:40)
+	at org.gradle.internal.execution.steps.ResolveInputChangesStep.execute(ResolveInputCha
+ngesStep.java:29)
+	at org.gradle.internal.execution.steps.BuildCacheStep.executeWithoutCache(BuildCacheSt
+ep.java:189)
+	at org.gradle.internal.execution.steps.BuildCacheStep.lambda$execute$1(BuildCacheStep.
+java:75)
+	at org.gradle.internal.Either$Right.fold(Either.java:175)
+	at org.gradle.internal.execution.caching.CachingState.fold(CachingState.java:62)
+	at org.gradle.internal.execution.steps.BuildCacheStep.execute(BuildCacheStep.java:73)
+	at org.gradle.internal.execution.steps.BuildCacheStep.execute(BuildCacheStep.java:48)
+	at org.gradle.internal.execution.steps.StoreExecutionStateStep.execute(StoreExecutionS
+tateStep.java:46)
+	at org.gradle.internal.execution.steps.StoreExecutionStateStep.execute(StoreExecutionS
+tateStep.java:35)
+	at org.gradle.internal.execution.steps.SkipUpToDateStep.executeBecause(SkipUpToDateSte
+p.java:75)
+	at org.gradle.internal.execution.steps.SkipUpToDateStep.lambda$execute$2(SkipUpToDateS
+tep.java:53)
+	at java.base/java.util.Optional.orElseGet(Optional.java:364)
+	at 
+org.gradle.internal.execution.steps.SkipUpToDateStep.execute(SkipUpToDateStep.java:53)
+	at 
+org.gradle.internal.execution.steps.SkipUpToDateStep.execute(SkipUpToDateStep.java:35)
+	at org.gradle.internal.execution.steps.legacy.MarkSnapshottingInputsFinishedStep.execu
+te(MarkSnapshottingInputsFinishedStep.java:37)
+	at org.gradle.internal.execution.steps.legacy.MarkSnapshottingInputsFinishedStep.execu
+te(MarkSnapshottingInputsFinishedStep.java:27)
+	at org.gradle.internal.execution.steps.ResolveIncrementalCachingStateStep.executeDeleg
+ate(ResolveIncrementalCachingStateStep.java:49)
+	at org.gradle.internal.execution.steps.ResolveIncrementalCachingStateStep.executeDeleg
+ate(ResolveIncrementalCachingStateStep.java:27)
+	at org.gradle.internal.execution.steps.AbstractResolveCachingStateStep.execute(Abstrac
+tResolveCachingStateStep.java:71)
+	at org.gradle.internal.execution.steps.AbstractResolveCachingStateStep.execute(Abstrac
+tResolveCachingStateStep.java:39)
+	at org.gradle.internal.execution.steps.ResolveChangesStep.execute(ResolveChangesStep.j
+ava:65)
+	at org.gradle.internal.execution.steps.ResolveChangesStep.execute(ResolveChangesStep.j
+ava:36)
+20 actionable tasks: 6 executed, 14 up-to-date
+	at org.gradle.internal.execution.steps.ValidateStep.execute(ValidateStep.java:107)
+	at org.gradle.internal.execution.steps.ValidateStep.execute(ValidateStep.java:56)
+	at org.gradle.internal.execution.steps.AbstractCaptureStateBeforeExecutionStep.execute
+(AbstractCaptureStateBeforeExecutionStep.java:64)
+	at org.gradle.internal.execution.steps.AbstractCaptureStateBeforeExecutionStep.execute
+(AbstractCaptureStateBeforeExecutionStep.java:43)
+	at org.gradle.internal.execution.steps.AbstractSkipEmptyWorkStep.executeWithNonEmptySo
+urces(AbstractSkipEmptyWorkStep.java:125)
+	at org.gradle.internal.execution.steps.AbstractSkipEmptyWorkStep.execute(AbstractSkipE
+mptyWorkStep.java:56)
+	at org.gradle.internal.execution.steps.AbstractSkipEmptyWorkStep.execute(AbstractSkipE
+mptyWorkStep.java:36)
+	at org.gradle.internal.execution.steps.legacy.MarkSnapshottingInputsStartedStep.execut
+e(MarkSnapshottingInputsStartedStep.java:38)
+	at org.gradle.internal.execution.steps.LoadPreviousExecutionStateStep.execute(LoadPrev
+iousExecutionStateStep.java:36)
+	at org.gradle.internal.execution.steps.LoadPreviousExecutionStateStep.execute(LoadPrev
+iousExecutionStateStep.java:23)
+	at org.gradle.internal.execution.steps.HandleStaleOutputsStep.execute(HandleStaleOutpu
+tsStep.java:75)
+	at org.gradle.internal.execution.steps.HandleStaleOutputsStep.execute(HandleStaleOutpu
+tsStep.java:41)
+	at org.gradle.internal.execution.steps.AssignMutableWorkspaceStep.lambda$execute$0(Ass
+ignMutableWorkspaceStep.java:35)
+	at org.gradle.api.internal.tasks.execution.TaskExecution$4.withWorkspace(TaskExecution
+.java:289)
+	at org.gradle.internal.execution.steps.AssignMutableWorkspaceStep.execute(AssignMutabl
+eWorkspaceStep.java:31)
+	at org.gradle.internal.execution.steps.AssignMutableWorkspaceStep.execute(AssignMutabl
+eWorkspaceStep.java:22)
+	at org.gradle.internal.execution.steps.ChoosePipelineStep.execute(ChoosePipelineStep.j
+ava:40)
+	at org.gradle.internal.execution.steps.ChoosePipelineStep.execute(ChoosePipelineStep.j
+ava:23)
+	at org.gradle.internal.execution.steps.ExecuteWorkBuildOperationFiringStep.lambda$exec
+ute$2(ExecuteWorkBuildOperationFiringStep.java:67)
+	at java.base/java.util.Optional.orElseGet(Optional.java:364)
+	at org.gradle.internal.execution.steps.ExecuteWorkBuildOperationFiringStep.execute(Exe
+cuteWorkBuildOperationFiringStep.java:67)
+	at org.gradle.internal.execution.steps.ExecuteWorkBuildOperationFiringStep.execute(Exe
+cuteWorkBuildOperationFiringStep.java:39)
+	at org.gradle.internal.execution.steps.IdentityCacheStep.execute(IdentityCacheStep.jav
+a:46)
+	at org.gradle.internal.execution.steps.IdentityCacheStep.execute(IdentityCacheStep.jav
+a:34)
+	at org.gradle.internal.execution.steps.IdentifyStep.execute(IdentifyStep.java:48)
+	at org.gradle.internal.execution.steps.IdentifyStep.execute(IdentifyStep.java:35)
+	at org.gradle.internal.execution.impl.DefaultExecutionEngine$1.execute(DefaultExecutio
+nEngine.java:61)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeIfValid(E
+xecuteActionsTaskExecuter.java:127)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.execute(ExecuteA
+ctionsTaskExecuter.java:116)
+	at org.gradle.api.internal.tasks.execution.FinalizePropertiesTaskExecuter.execute(Fina
+lizePropertiesTaskExecuter.java:46)
+	at org.gradle.api.internal.tasks.execution.ResolveTaskExecutionModeExecuter.execute(Re
+solveTaskExecutionModeExecuter.java:51)
+	at org.gradle.api.internal.tasks.execution.SkipTaskWithNoActionsExecuter.execute(SkipT
+askWithNoActionsExecuter.java:57)
+	at org.gradle.api.internal.tasks.execution.SkipOnlyIfTaskExecuter.execute(SkipOnlyIfTa
+skExecuter.java:74)
+	at org.gradle.api.internal.tasks.execution.CatchExceptionTaskExecuter.execute(CatchExc
+eptionTaskExecuter.java:36)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.executeTask(Event
+FiringTaskExecuter.java:77)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringT
+askExecuter.java:55)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringT
+askExecuter.java:52)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWo
+rker.execute(DefaultBuildOperationRunner.java:209)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWo
+rker.execute(DefaultBuildOperationRunner.java:204)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOp
+erationRunner.java:66)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOp
+erationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOper
+ationRunner.java:166)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOper
+ationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperati
+onRunner.java:53)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter.execute(EventFiring
+TaskExecuter.java:52)
+	at 
+org.gradle.execution.plan.LocalTaskNodeExecutor.execute(LocalTaskNodeExecutor.java:42)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.
+execute(DefaultTaskExecutionGraph.java:331)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.
+execute(DefaultTaskExecutionGraph.java:318)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecuti
+onAction.lambda$execute$0(DefaultTaskExecutionGraph.java:314)
+	at org.gradle.internal.operations.CurrentBuildOperationRef.with(CurrentBuildOperationR
+ef.java:85)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecuti
+onAction.execute(DefaultTaskExecutionGraph.java:314)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecuti
+onAction.execute(DefaultTaskExecutionGraph.java:303)
+	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.execute(DefaultPlanExe
+cutor.java:459)
+	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.run(DefaultPlanExecuto
+r.java:376)
+	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(Exec
+utorPolicy.java:64)
+	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecuto
+r.java:48)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java
+:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.jav
+a:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+
+==============================================================================
+
+BUILD FAILED in 29s
