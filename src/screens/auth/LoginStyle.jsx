@@ -1,9 +1,10 @@
 import { StyleSheet } from 'react-native';
 
+import { theme } from '../../styles/globalStyles';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: theme.background,
   },
 
   /* TOP SECTION */
@@ -45,7 +46,7 @@ const styles = StyleSheet.create({
     top: '28%',
     left: 15,
     right: 15,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: theme.background,
     borderRadius: 16,
     padding: 18,
 
@@ -77,7 +78,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#E0E0E0',
+    borderColor: theme.border,
     paddingHorizontal: 12,
     height: 50,
     backgroundColor: '#F6F6F6',
@@ -107,7 +108,7 @@ const styles = StyleSheet.create({
   },
 
   buttonText: {
-    color: '#FFFFFF',
+    color: theme.background,
     fontSize: 16,
     fontWeight: '600',
   },
@@ -169,7 +170,7 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderWidth: 1,
-    borderColor: '#E0E0E0',
+    borderColor: theme.border,
     borderRadius: 8,
     textAlign: 'center',
     fontSize: 18,
@@ -238,7 +239,7 @@ inputWrapper: {
   flexDirection: 'row',
   alignItems: 'center',
   borderWidth: 1,
-  borderColor: '#E0E0E0',
+  borderColor: theme.border,
   borderRadius: 8,
   paddingHorizontal: 12,
   height: 50,

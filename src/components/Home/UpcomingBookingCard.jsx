@@ -4,6 +4,7 @@ import { Calendar, Clock, Info, MapPin, User, X } from 'lucide-react-native';
 import { useNavigation } from '@react-navigation/native';
 import { BookingContext } from '../../context/BookingContext';
 
+import { theme } from '../../styles/globalStyles';
 const formatPrice = value => {
   const num = parseFloat(value);
   if (isNaN(num)) return '0';
@@ -564,7 +565,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   rejectText: {
-    color: '#EF4444',
+    color: theme.danger,
     fontWeight: 'bold',
     fontSize: 14,
   },

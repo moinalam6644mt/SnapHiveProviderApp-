@@ -1,6 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 
+import { theme } from '../../../styles/globalStyles';
 const StartDetails = ({bookingDetails, providerDetails}) => {
   console.log('Booking Details:', bookingDetails);
   console.log('Provider Details:', providerDetails);
@@ -51,7 +52,7 @@ const StartDetails = ({bookingDetails, providerDetails}) => {
       {lateNightCharege > 0 && (
         <View style={styles.detailItem}>
           <Text style={styles.label}>Late Night Charge</Text>
-          <Text style={[styles.value, {color: '#ef4444'}]}>
+          <Text style={[styles.value, {color: theme.danger}]}>
             ₹{formatRate(lateNightCharege)}
           </Text>
         </View>
@@ -69,7 +70,7 @@ const StartDetails = ({bookingDetails, providerDetails}) => {
       {previousCancelCharge > 0 && (
         <View style={styles.detailItem}>
           <Text style={styles.label}>Previous Cancel Charge</Text>
-          <Text style={[styles.value, {color: '#ef4444'}]}>
+          <Text style={[styles.value, {color: theme.danger}]}>
             ₹{formatRate(previousCancelCharge)}
           </Text>
         </View>
@@ -97,7 +98,7 @@ export default StartDetails;
 
 const styles = StyleSheet.create({
   detailsBox: {
-    backgroundColor: '#ffffff',
+    backgroundColor: theme.background,
     borderRadius: 20,
     padding: 18,
     marginHorizontal: 20,

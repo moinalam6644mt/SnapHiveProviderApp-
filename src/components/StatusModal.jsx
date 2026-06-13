@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import { CheckCircle, XCircle } from 'lucide-react-native';
 
+import { theme } from '../styles/globalStyles';
 const StatusModal = ({
   visible,
   type = 'success', // success | error
@@ -91,7 +92,7 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    backgroundColor: '#FF7A00',
+    backgroundColor: theme.accent,
     paddingHorizontal: 35,
     paddingVertical: 10,
     borderRadius: 10,

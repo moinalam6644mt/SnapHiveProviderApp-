@@ -5,6 +5,7 @@ import { LogOut } from 'lucide-react-native';
 import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from '../../context/AuthContext';
 
+import { theme } from '../../styles/globalStyles';
 const LogOutButton = () => {
   const navigation = useNavigation();
   const { logout } = useContext(AuthContext);
@@ -28,7 +29,7 @@ const LogOutButton = () => {
           </Text>
           <LogOut
             size={20}
-            color={pressed ? 'white' : '#ef4444'}
+            color={pressed ? 'white' : theme.danger}
             style={styles.icon}
           />
         </>
@@ -58,14 +59,14 @@ const styles = StyleSheet.create({
 
   // Pressed Style
   buttonActive: {
-    backgroundColor: '#ef4444',
-    borderColor: '#ef4444',
+    backgroundColor: theme.danger,
+    borderColor: theme.danger,
   },
 
   text: {
     fontWeight: 'bold',
     fontSize: 16,
-    color: '#ef4444',
+    color: theme.danger,
   },
 
   textActive: {

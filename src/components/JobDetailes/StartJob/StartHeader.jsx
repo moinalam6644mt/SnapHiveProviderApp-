@@ -2,6 +2,7 @@ import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import {MapPin, LocateFixed, AlertTriangle} from 'lucide-react-native';
 import {Linking} from 'react-native';
 
+import { theme } from '../../../styles/globalStyles';
 export default function StartHeader({bookingDetails, providerDetails}) {
   const handleOpenDirection = () => {
     const lat = bookingDetails?.member_lat;
@@ -152,7 +153,7 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     borderRadius: 6,
     borderWidth: 1,
-    borderColor: '#ef4444',
+    borderColor: theme.danger,
   },
   lateWarningText: {
     color: '#b91c1c',

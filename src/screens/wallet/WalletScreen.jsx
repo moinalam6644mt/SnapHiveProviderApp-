@@ -22,6 +22,7 @@ import PusherService from '../../services/PusherService';
 import Toast from 'react-native-toast-message';
 import { useRoute } from '@react-navigation/native';
 
+import { theme } from '../../styles/globalStyles';
 const WalletScreen = () => {
   const [earningsVisible, setEarningsVisible] = useState(false);
   const [sevenDaysData, setSevenDaysData] = useState([]);
@@ -239,7 +240,7 @@ export default WalletScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: theme.background,
   },
 
   header: {

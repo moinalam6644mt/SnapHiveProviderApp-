@@ -25,6 +25,7 @@ import StartDetailes from '../components/JobDetailes/StartJob/StartDetailes';
 import BookingMap from '../components/BookingMap';
 import {AuthContext} from '../context/AuthContext';
 
+import { theme } from '../styles/globalStyles';
 const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get('window');
 
 const guidelineBaseWidth = 375;
@@ -207,10 +208,10 @@ const CancelledBookingScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  safeArea: {flex: 1, backgroundColor: '#ffffff'},
-  mainContainer: {flex: 1, backgroundColor: '#ffffff'},
+  safeArea: {flex: 1, backgroundColor: theme.background},
+  mainContainer: {flex: 1, backgroundColor: theme.background},
   headerSection: {
-    backgroundColor: '#ffffff',
+    backgroundColor: theme.background,
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: horizontalScale(20),
@@ -247,7 +248,7 @@ const styles = StyleSheet.create({
     borderColor: '#E5E7EB',
     borderRadius: moderateScale(12),
     overflow: 'hidden',
-    backgroundColor: '#f9f9f9',
+    backgroundColor: theme.surface,
   },
   loaderWrapper: {
     ...StyleSheet.absoluteFillObject,
@@ -257,7 +258,7 @@ const styles = StyleSheet.create({
     zIndex: 999,
   },
   loaderCard: {
-    backgroundColor: '#ffffff',
+    backgroundColor: theme.background,
     paddingVertical: verticalScale(25),
     paddingHorizontal: horizontalScale(35),
     borderRadius: moderateScale(20),

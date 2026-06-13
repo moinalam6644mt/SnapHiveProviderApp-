@@ -26,6 +26,7 @@ import { AuthContext } from '../../context/AuthContext';
 import { AuthUser } from '../../../api/authUser';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import { theme } from '../../styles/globalStyles';
 let cachedAcceptedBookingData = null;
 let lastUserId = null;
 
@@ -213,7 +214,7 @@ const styles = StyleSheet.create({
   },
 
   loaderCard: {
-    backgroundColor: '#ffffff',
+    backgroundColor: theme.background,
     paddingVertical: 25,
     paddingHorizontal: 35,
     borderRadius: 20,

@@ -26,6 +26,7 @@ import BookingMap from '../components/BookingMap';
 import { AuthContext } from '../context/AuthContext';
 import { BookingContext } from '../context/BookingContext';
 
+import { theme } from '../styles/globalStyles';
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 const guidelineBaseWidth = 375;
@@ -234,10 +235,10 @@ const NotificationHandlingScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  safeArea: { flex: 1, backgroundColor: '#ffffff' },
-  mainContainer: { flex: 1, backgroundColor: '#ffffff' },
+  safeArea: { flex: 1, backgroundColor: theme.background },
+  mainContainer: { flex: 1, backgroundColor: theme.background },
   headerSection: {
-    backgroundColor: '#ffffff',
+    backgroundColor: theme.background,
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: horizontalScale(20),
@@ -279,7 +280,7 @@ const styles = StyleSheet.create({
     borderColor: '#E5E7EB',
     borderRadius: moderateScale(12),
     overflow: 'hidden',
-    backgroundColor: '#f9f9f9',
+    backgroundColor: theme.surface,
   },
   mapImage: { width: '100%', height: '100%' },
   loaderWrapper: {
@@ -291,7 +292,7 @@ const styles = StyleSheet.create({
   },
 
   loaderCard: {
-    backgroundColor: '#ffffff',
+    backgroundColor: theme.background,
     paddingVertical: verticalScale(25),
     paddingHorizontal: horizontalScale(35),
     borderRadius: moderateScale(20),

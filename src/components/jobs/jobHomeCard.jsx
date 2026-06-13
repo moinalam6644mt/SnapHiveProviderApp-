@@ -4,6 +4,7 @@ import { User, MapPin, Calendar, Clock, Info, X } from 'lucide-react-native';
 import { useNavigation } from '@react-navigation/native';
 import { BookingContext } from '../../context/BookingContext';
 
+import { theme } from '../../styles/globalStyles';
 const BookingTimer = ({ orderId, receivedAt, onExpire }) => {
   const [timeLeft, setTimeLeft] = useState(() => {
     const start = receivedAt || Date.now();
@@ -530,7 +531,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Sora-Regular',
   },
   rejectText: {
-    color: '#EF4444',
+    color: theme.danger,
     fontWeight: 'bold',
     fontSize: 14,
   },

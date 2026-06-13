@@ -10,6 +10,7 @@ import {
 } from 'lucide-react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
 
+import { theme } from '../../styles/globalStyles';
 const Footer = () => {
   const navigation = useNavigation();
   const route = useRoute();
@@ -78,7 +79,7 @@ const styles = StyleSheet.create({
   footer: {
     flexDirection: 'row',
     height: 75,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: theme.background,
     borderTopWidth: 1,
     borderTopColor: '#EEE',
     position: 'absolute',

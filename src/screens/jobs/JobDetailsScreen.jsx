@@ -44,6 +44,7 @@ import BookingMap from '../../components/BookingMap';
 
 import ICard from '../../components/JobDetailes/EndJob/ICard';
 
+import { theme } from '../../styles/globalStyles';
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 const guidelineBaseWidth = 375;
@@ -585,13 +586,13 @@ const JobDetailsScreen = () => {
           />
           <View style={styles.cancelModalCard}>
             <View style={styles.iconContainer}>
-              <AlertCircle size={moderateScale(50)} color="#EF4444" />
+              <AlertCircle size={moderateScale(50)} color={theme.danger} />
             </View>
             <Text style={styles.cancelModalTitle}>Cancel Job</Text>
             <Text style={styles.cancelModalMessage}>
               Are you sure you want to cancel?{'\n'}
               {Number(providerDetails?.provider_cancel_charge || 0) > 0 ? (
-                <Text style={{ fontWeight: '700', color: '#EF4444' }}>
+                <Text style={{ fontWeight: '700', color: theme.danger }}>
                   ₹{providerDetails?.provider_cancel_charge} cancellation fee will apply.
                 </Text>
               ) : (
@@ -640,10 +641,10 @@ const JobDetailsScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  safeArea: { flex: 1, backgroundColor: '#ffffff' },
-  mainContainer: { flex: 1, backgroundColor: '#ffffff' },
+  safeArea: { flex: 1, backgroundColor: theme.background },
+  mainContainer: { flex: 1, backgroundColor: theme.background },
   headerSection: {
-    backgroundColor: '#ffffff',
+    backgroundColor: theme.background,
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: horizontalScale(20),
@@ -711,7 +712,7 @@ const styles = StyleSheet.create({
     borderColor: '#E5E7EB',
     borderRadius: moderateScale(12),
     overflow: 'hidden',
-    backgroundColor: '#f9f9f9',
+    backgroundColor: theme.surface,
   },
   modalOverlay: {
     flex: 1,
@@ -724,7 +725,7 @@ const styles = StyleSheet.create({
   },
   cancelModalCard: {
     width: '85%',
-    backgroundColor: '#ffffff',
+    backgroundColor: theme.background,
     borderRadius: moderateScale(24),
     padding: moderateScale(25),
     alignItems: 'center',
@@ -769,13 +770,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalPrimaryBtn: {
-    backgroundColor: '#EF4444',
+    backgroundColor: theme.danger,
   },
   modalSecondaryBtn: {
     backgroundColor: '#F3F4F6',
   },
   modalPrimaryBtnText: {
-    color: '#ffffff',
+    color: theme.background,
     fontSize: moderateScale(15),
     fontWeight: 'bold',
   },
@@ -794,7 +795,7 @@ const styles = StyleSheet.create({
   },
 
   loaderCard: {
-    backgroundColor: '#ffffff',
+    backgroundColor: theme.background,
     paddingVertical: verticalScale(25),
     paddingHorizontal: horizontalScale(35),
     borderRadius: moderateScale(20),

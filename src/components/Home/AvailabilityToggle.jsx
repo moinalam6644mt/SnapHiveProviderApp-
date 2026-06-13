@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator } from "react-native";
 
+import { theme } from '../../styles/globalStyles';
 const AvailabilityToggle = ({ isAvailable, onToggle }) => {
   const [toggling, setToggling] = useState(false);
 
@@ -74,7 +75,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#2E2E74",
   },
   inactiveBtn: {
-    backgroundColor: "#EF4444",
+    backgroundColor: theme.danger,
   },
   text: {
     color: "#1e1b4b",

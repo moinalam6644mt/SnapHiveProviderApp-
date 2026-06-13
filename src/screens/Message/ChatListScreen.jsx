@@ -16,6 +16,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import { ChevronLeft } from 'lucide-react-native';
 
+import { theme } from '../../styles/globalStyles';
 const ChatListScreen = () => {
   const navigation = useNavigation();
   const [searchQuery, setSearchQuery] = useState('');
@@ -163,7 +164,7 @@ const ChatListScreen = () => {
         </View>
 
         <View style={styles.serviceTag}>
-          <Icon name="work" size={12} color="#ff7a00" />
+          <Icon name="work" size={12} color={theme.accent} />
           <Text style={styles.serviceText}>{item.serviceType}</Text>
         </View>
       </View>
@@ -184,7 +185,7 @@ const ChatListScreen = () => {
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#ff7a00" />
+        <ActivityIndicator size="large" color={theme.accent} />
       </View>
     );
   }
@@ -345,7 +346,7 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   unreadBadge: {
-    backgroundColor: '#ff7a00',
+    backgroundColor: theme.accent,
     borderRadius: 12,
     minWidth: 24,
     height: 24,
@@ -369,7 +370,7 @@ const styles = StyleSheet.create({
   },
   serviceText: {
     fontSize: 12,
-    color: '#ff7a00',
+    color: theme.accent,
     marginLeft: 4,
   },
   emptyContainer: {

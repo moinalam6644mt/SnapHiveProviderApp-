@@ -2,6 +2,7 @@ import React from 'react';
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import {IdCard, User} from 'lucide-react-native';
 
+import { theme } from '../../../styles/globalStyles';
 const UserProfile = ({bookingDetails, providerDetails, onOpenIdCard}) => {
   console.log('Booking Details in UserProfile:', bookingDetails);
   console.log('Provider Details in UserProfile:', providerDetails);
@@ -123,7 +124,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     backgroundColor: '#65A30D',
     borderWidth: 2,
-    borderColor: '#FFFFFF',
+    borderColor: theme.background,
   },
   infoSection: {
     justifyContent: 'center',
@@ -143,7 +144,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: theme.background,
     justifyContent: 'center',
     alignItems: 'center',
     shadowColor: '#F3F3F3',

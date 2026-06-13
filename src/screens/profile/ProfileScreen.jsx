@@ -29,6 +29,7 @@ import WalletHistoryDrawer from "../../components/Profile/Transaction/WalletHist
 import { AuthUser } from "../../../api/authUser";
 import { AuthContext } from "../../context/AuthContext";
 
+import { theme } from '../../styles/globalStyles';
 const ProfileScreen = () => {
   const [historyVisible, setHistoryVisible] = useState(false);
   const [profile,setGetProfile]  = useState({});
@@ -110,7 +111,7 @@ export default ProfileScreen;
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: theme.background,
     paddingVertical: verticalScale(20),
   },
   header: {

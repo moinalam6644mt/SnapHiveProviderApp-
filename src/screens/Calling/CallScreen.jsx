@@ -26,6 +26,7 @@ import {AuthUser} from '../../../api/authUser';
 import {CallContext} from '../../context/CallContext';
 import {stopRingtone} from '../../services/ringToneService';
 
+import { theme } from '../../styles/globalStyles';
 const TOKEN =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlrZXkiOiIwODNkODE4OC1mZTE5LTQ3YzYtYWEwMi03MTRkNjliNDNmNjkiLCJwZXJtaXNzaW9ucyI6WyJhbGxvd19qb2luIl0sImlhdCI6MTc3MjI2NTU0NCwiZXhwIjoxODAzODAxNTQ0fQ.DnnKXMZDTMT8lWUhJF-gU-oSSR5KV9BShoePMB7jmNI';
 
@@ -615,7 +616,7 @@ const styles = StyleSheet.create({
   },
   btnOff: {backgroundColor: '#FCA5A5'},
   endCallBtn: {
-    backgroundColor: '#EF4444',
+    backgroundColor: theme.danger,
     width: 75,
     height: 75,
     borderRadius: 40,

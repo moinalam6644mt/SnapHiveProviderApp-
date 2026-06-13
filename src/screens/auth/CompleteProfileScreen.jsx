@@ -24,6 +24,7 @@ import { AuthUser } from "../../../api/authUser";
 import Toast from "react-native-toast-message";
 import { ArrowLeft, User, Pencil, ChevronDown, Camera, Image as ImageIcon, Check, MapPin, Navigation } from "lucide-react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { theme } from '../../styles/globalStyles';
 const { width, height } = Dimensions.get("window");
 // Simple responsive scaling function
 const scale = (size) => (width / 375) * size;
@@ -796,7 +797,7 @@ const styles = StyleSheet.create({
   predictionsDropdown: {
     backgroundColor: "#fff",
     borderWidth: 1,
-    borderColor: "#e0e0e0",
+    borderColor: theme.border,
     borderRadius: scale(10),
     maxHeight: scale(180),
     position: "absolute",

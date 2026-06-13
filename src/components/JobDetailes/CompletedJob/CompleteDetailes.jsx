@@ -1,6 +1,7 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 // Lucide Icons Import
+import { theme } from '../../../styles/globalStyles';
 import {
   Clock,
   Wallet,
@@ -70,10 +71,10 @@ const CompleteDetailes = ({
             <View style={styles.line} />
             <View style={styles.row}>
               <View style={styles.left}>
-                <Clock size={18} color="#F59E0B" strokeWidth={2} />
+                <Clock size={18} color={theme.warning} strokeWidth={2} />
                 <Text style={styles.label}>Overtime Charges</Text>
               </View>
-              <Text style={[styles.value, {color: '#F59E0B'}]}>
+              <Text style={[styles.value, {color: theme.warning}]}>
                 ₹{data.overtime_charge}
               </Text>
             </View>
@@ -98,10 +99,10 @@ const CompleteDetailes = ({
           <>
             <View style={styles.row}>
               <View style={styles.left}>
-                <AlertCircle size={18} color="#EF4444" strokeWidth={2} />
+                <AlertCircle size={18} color={theme.danger} strokeWidth={2} />
                 <Text style={styles.label}>Previous Cancellation</Text>
               </View>
-              <Text style={[styles.value, {color: '#EF4444'}]}>
+              <Text style={[styles.value, {color: theme.danger}]}>
                 ₹{data.cancel_charge}
               </Text>
             </View>
@@ -161,7 +162,7 @@ const styles = StyleSheet.create({
   container: {marginHorizontal: 20, marginTop: 15},
   title: {fontSize: 16, fontWeight: '700', color: '#1E1B4B', marginBottom: 12},
   card: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: theme.background,
     borderRadius: 16,
     padding: 16,
     borderWidth: 1,

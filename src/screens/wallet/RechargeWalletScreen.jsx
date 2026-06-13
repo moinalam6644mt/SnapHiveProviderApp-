@@ -19,6 +19,7 @@ import PaymentMethodDrawer from '../../components/Recharge/PaymentMethodDrawer';
 import { AuthUser } from '../../../api/authUser';
 import { AuthContext } from '../../context/AuthContext';
 
+import { theme } from '../../styles/globalStyles';
 const RechargeWalletScreen = () => {
   const navigation = useNavigation();
   const { callApi } = AuthUser();
@@ -139,7 +140,7 @@ export default RechargeWalletScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: theme.background,
   },
   header: {
     flexDirection: 'row',
@@ -175,7 +176,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     paddingHorizontal: 15,
     justifyContent: 'center',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: theme.background,
   },
   input: {
     fontSize: 14,

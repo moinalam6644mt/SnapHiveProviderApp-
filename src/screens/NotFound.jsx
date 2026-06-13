@@ -11,6 +11,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { ChevronLeft, Construction } from "lucide-react-native";
 import { useNavigation } from "@react-navigation/native";
 
+import { theme } from '../styles/globalStyles';
 const { width } = Dimensions.get("window");
 
 const NotFound = () => {
@@ -62,7 +63,7 @@ export default NotFound;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: theme.background,
   },
 
   header: {

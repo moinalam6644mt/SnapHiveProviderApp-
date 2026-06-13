@@ -11,6 +11,7 @@ import { useNavigation } from "@react-navigation/native";
 import Toast from "react-native-toast-message";
 import { AuthContext } from "../../context/AuthContext";
 
+import { theme } from '../../styles/globalStyles';
 export default function OtpCard({ mobile, onBack }) {
   const navigation = useNavigation();
   const { login, verifyOtpCentral } = useContext(AuthContext);
@@ -162,7 +163,7 @@ export default function OtpCard({ mobile, onBack }) {
 const styles = StyleSheet.create({
   card: {
     width: "100%",
-    backgroundColor: "#FFFFFF",
+    backgroundColor: theme.background,
     borderRadius: 12,
     paddingVertical: 32,
     paddingHorizontal: 12,
@@ -247,7 +248,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   buttonText: {
-    color: "#FFFFFF",
+    color: theme.background,
     fontSize: 14,
     fontWeight: "600",
   },

@@ -21,6 +21,7 @@ import { AuthContext } from '../../context/AuthContext';
 import { AuthUser } from '../../../api/authUser';
 
 
+import { theme } from '../../styles/globalStyles';
 const JobScreen = () => {
   const [activeTab, setActiveTab] = useState('Upcoming');
   const [modalVisible, setModalVisible] = useState(false);
@@ -391,7 +392,7 @@ const styles = StyleSheet.create({
     zIndex: 999,
   },
   loaderCard: {
-    backgroundColor: '#ffffff',
+    backgroundColor: theme.background,
     paddingVertical: 28,
     paddingHorizontal: 40,
     borderRadius: 20,

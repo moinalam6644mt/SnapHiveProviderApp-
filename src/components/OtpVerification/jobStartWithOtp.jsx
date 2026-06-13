@@ -13,6 +13,7 @@ import {
 import { X } from 'lucide-react-native';
 import { useOtpShared } from '../../context/OtpSharedContext';
 
+import { theme } from '../../styles/globalStyles';
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 const OTPVerificationModal = ({ visible, onClose }) => {
@@ -124,7 +125,7 @@ const OTPVerificationModal = ({ visible, onClose }) => {
                   keyboardType="numeric"
                   maxLength={1}
                   textAlign="center"
-                  selectionColor="#ef4444"
+                  selectionColor={theme.danger}
                 />
               ))}
             </View>
@@ -209,7 +210,7 @@ const styles = StyleSheet.create({
     borderColor: 'transparent',
   },
   otpBoxFocused: {
-    borderColor: '#ef4444', // Red border on focus
+    borderColor: theme.danger, // Red border on focus
     backgroundColor: 'white',
   },
   verifyBtn: {

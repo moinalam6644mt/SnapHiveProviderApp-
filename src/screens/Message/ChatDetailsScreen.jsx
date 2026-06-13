@@ -40,6 +40,7 @@ import PusherService from '../../services/PusherService';
 import {AuthContext} from '../../context/AuthContext';
 import Toast from 'react-native-toast-message';
 
+import { theme } from '../../styles/globalStyles';
 const ChatDetailsScreen = () => {
   const route = useRoute();
   const navigation = useNavigation();
@@ -512,7 +513,7 @@ const ChatDetailsScreen = () => {
   if (!currentUserId && loading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#ff7a00" />
+        <ActivityIndicator size="large" color={theme.accent} />
         <Text style={styles.loadingText}>Loading user data...</Text>
       </View>
     );
@@ -521,7 +522,7 @@ const ChatDetailsScreen = () => {
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#ff7a00" />
+        <ActivityIndicator size="large" color={theme.accent} />
         <Text style={styles.loadingText}>Loading chat...</Text>
       </View>
     );
@@ -581,7 +582,7 @@ const ChatDetailsScreen = () => {
             style={styles.headerButton}
             onPress={handleAudioCall}
           >
-            <Phone size={24} color="#ff7a00" />
+            <Phone size={24} color={theme.accent} />
           </TouchableOpacity> */}
           {/* <TouchableOpacity style={styles.headerButton}> */}
           {/* <MoreVertical size={24} color="#333" /> */}
@@ -617,7 +618,7 @@ const ChatDetailsScreen = () => {
         {/* Input Area */}
         <View style={styles.inputContainer}>
           {/* <TouchableOpacity style={styles.attachButton}> */}
-          {/* <Paperclip size={24} color="#ff7a00" /> */}
+          {/* <Paperclip size={24} color={theme.accent} /> */}
           {/* </TouchableOpacity> */}
           <TouchableOpacity
             style={styles.inputWrapper}
@@ -680,7 +681,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: '#ff7a00', // Tomar theme color
+    backgroundColor: theme.accent, // Tomar theme color
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 10,
@@ -782,7 +783,7 @@ const styles = StyleSheet.create({
     maxWidth: '100%',
   },
   myBubble: {
-    backgroundColor: '#ff7a00',
+    backgroundColor: theme.accent,
     borderBottomRightRadius: 4,
   },
   theirBubble: {
@@ -845,7 +846,7 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   sendButton: {
-    backgroundColor: '#ff7a00',
+    backgroundColor: theme.accent,
     width: 44,
     height: 44,
     borderRadius: 22,
@@ -895,7 +896,7 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   initiateButton: {
-    backgroundColor: '#ff7a00',
+    backgroundColor: theme.accent,
     paddingHorizontal: 30,
     paddingVertical: 15,
     borderRadius: 25,

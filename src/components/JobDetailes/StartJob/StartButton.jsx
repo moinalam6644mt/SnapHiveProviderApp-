@@ -2,6 +2,7 @@ import { StyleSheet, TouchableOpacity, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 
+import { theme } from '../../../styles/globalStyles';
 export default function StartButton({
   setModalVisible,
   isBlocked,
@@ -72,7 +73,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#47970B', // Primary Orange
   },
   cancelBtn: {
-    backgroundColor: '#EF4444', // Danger Red
+    backgroundColor: theme.danger, // Danger Red
   },
   btnText: {
     color: 'white',

@@ -3,6 +3,7 @@ import {View, Text, StyleSheet} from 'react-native';
 import {Clock, Wallet, Zap, Timer} from 'lucide-react-native';
 import {calculateAmount} from '../../../services/calculateAmount';
 
+import { theme } from '../../../styles/globalStyles';
 const CompleteHeader = ({
   bookingDetails,
   providerDetails,
@@ -128,10 +129,10 @@ const CompleteHeader = ({
           {parseFloat(ot_rate) > 0 && (
             <View style={styles.row}>
               <View style={styles.left}>
-                <Clock size={16} color="#F59E0B" strokeWidth={2} />
+                <Clock size={16} color={theme.warning} strokeWidth={2} />
                 <Text style={styles.label}>Overtime Rate</Text>
               </View>
-              <Text style={[styles.value, {color: '#F59E0B'}]}>₹{ot_rate}</Text>
+              <Text style={[styles.value, {color: theme.warning}]}>₹{ot_rate}</Text>
             </View>
           )}
         </View>
@@ -148,7 +149,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   card: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: theme.background,
     borderRadius: 18,
     padding: 18,
     borderWidth: 1,
