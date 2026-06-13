@@ -19,6 +19,7 @@ const EndDetailes = ({ bookingDetails, providerDetails }) => {
       bookingDate.getFullYear() === today.getFullYear();
 
 
+
     const datePart = isToday
       ? 'Today'
       : bookingDate.toLocaleDateString('en-IN', {
