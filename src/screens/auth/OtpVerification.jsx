@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Text,
   View,
@@ -13,19 +13,19 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import {Pencil} from 'lucide-react-native';
+import { Pencil } from 'lucide-react-native';
 import styles from './LoginStyle';
-import {useNavigation, useRoute} from '@react-navigation/native';
-import {AuthUser} from '../../../api/authUser.js';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { AuthUser } from '../../../api/authUser.js';
 import StatusModal from '../../components/StatusModal.jsx';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {AuthContext} from '../../context/AuthContext.jsx';
+import { AuthContext } from '../../context/AuthContext.jsx';
 
 const OtpVerification = () => {
-  const {login, verifyOtpCentral} = React.useContext(AuthContext);
+  const { login, verifyOtpCentral } = React.useContext(AuthContext);
   const navigation = useNavigation();
   const route = useRoute();
-  const {callApi} = AuthUser();
+  const { callApi } = AuthUser();
 
   const mobileNumber = route.params?.mobile || '';
   const initialOtp = route.params?.otp || '';
@@ -252,8 +252,8 @@ const OtpVerification = () => {
           showMsg(
             'error',
             response?.response?.errors?.[0]?.message ||
-              response?.response?.message ||
-              'OTP Verification Failed',
+            response?.response?.message ||
+            'OTP Verification Failed',
           );
         }
       }
@@ -295,6 +295,13 @@ const OtpVerification = () => {
               <Text style={styles.title}>OTP Verification</Text>
               <Text style={styles.subtitle}>Enter the code sent to your number</Text>
 
+              {/* Debug OTP Display */}
+              {debugOtp ? (
+                <Text style={{ fontSize: 12, color: 'gray', textAlign: 'center', marginBottom: 5 }}>
+                  Test OTP: {debugOtp}
+                </Text>
+              ) : null}
+
               <View style={styles.mobileNumberContainer}>
                 <Text style={styles.mobileNumberText}>Mobile Number</Text>
                 <View style={styles.mobileNumberRow}>
@@ -328,7 +335,7 @@ const OtpVerification = () => {
                       maxLength={1}
                       value={d}
                       onChangeText={t => handleOtpChange(t, i)}
-                      onKeyPress={({nativeEvent}) => {
+                      onKeyPress={({ nativeEvent }) => {
                         if (nativeEvent.key === 'Backspace' && !d && i > 0)
                           otpInputs.current[i - 1]?.focus();
                       }}
