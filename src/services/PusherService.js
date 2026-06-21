@@ -1,3 +1,4 @@
+
 import { Pusher } from '@pusher/pusher-websocket-react-native';
 
 class PusherService {
@@ -9,7 +10,7 @@ class PusherService {
     this.pusher = new Pusher();
 
     await this.pusher.init({
-      apiKey: '003e8b8d264c1b8fc52a',
+      apiKey: '62f7d9574efef214c87f',
       cluster: 'ap2',
 
       onConnectionStateChange: (currentState, previousState) => {

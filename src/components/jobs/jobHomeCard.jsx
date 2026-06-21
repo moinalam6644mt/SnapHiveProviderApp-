@@ -141,7 +141,8 @@ const JobHomeCard = ({ myBookingData = [], userId }) => {
         const fullAddress = `${address_1 || ''}, ${address_2 || ''} - ${landmark || ''
           }`;
 
-        const bookingDate = new Date(booking_date);
+        const bookingDateStr = typeof booking_date === 'string' ? booking_date : (booking_date?.toString() || '');
+        const bookingDate = bookingDateStr ? new Date(bookingDateStr.replace(' ', 'T')) : new Date();
         const time = bookingDate.toLocaleTimeString([], {
           hour: '2-digit',
           minute: '2-digit',

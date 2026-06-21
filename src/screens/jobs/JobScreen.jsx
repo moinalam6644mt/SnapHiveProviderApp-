@@ -47,7 +47,43 @@ const JobScreen = () => {
   const myBookingData = useMemo(() => {
     if (!userId) return [];
 
-    return bookings.filter(item => item?.worker_ids?.includes(String(userId)));
+    return bookings.filter(item => {
+      let match = false;
+      const uidStr = String(userId);
+      try {
+        if (item?.worker_ids) {
+          if (Array.isArray(item.worker_ids)) {
+            match = match || item.worker_ids.some(id => String(id) === uidStr);
+          } else if (typeof item.worker_ids === 'string') {
+            match = match || item.worker_ids.split(',').map(s => s.trim()).includes(uidStr);
+            if (!match && item.worker_ids.includes('[')) {
+              try {
+                const parsed = JSON.parse(item.worker_ids);
+                if (Array.isArray(parsed)) {
+                  match = match || parsed.some(id => String(id) === uidStr);
+                }
+              } catch (e) {}
+            }
+          }
+        }
+        if (item?.worker_ids_dist) {
+          if (Array.isArray(item.worker_ids_dist)) {
+            match = match || item.worker_ids_dist.some(w => String(w?.worker_id) === uidStr);
+          } else if (typeof item.worker_ids_dist === 'string') {
+            try {
+              const parsed = JSON.parse(item.worker_ids_dist);
+              if (Array.isArray(parsed)) {
+                match = match || parsed.some(w => String(w?.worker_id) === uidStr);
+              }
+            } catch (e) {}
+          }
+        }
+        if (String(item?.worker_id) === uidStr) match = true;
+      } catch (e) {
+        console.warn(e);
+      }
+      return match;
+    });
   }, [bookings, userId]);
 
   const fetchAcceptedBookingData = async (page = 1, isLoadMore = false) => {

@@ -161,7 +161,8 @@ const UpcomingBookingCard = ({ bookings = [], userId }) => {
         const formattedDistance = formatDistance(distance);
 
         // Parse backend date safely
-        const bookingDate = new Date(booking_date.replace(' ', 'T'));
+        const bookingDateStr = typeof booking_date === 'string' ? booking_date : (booking_date?.toString() || '');
+        const bookingDate = bookingDateStr ? new Date(bookingDateStr.replace(' ', 'T')) : new Date();
 
         const now = new Date();
 
