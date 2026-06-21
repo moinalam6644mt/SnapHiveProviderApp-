@@ -19,7 +19,7 @@ import {
 
 // ─── Initialize OneSignal ───────────────────────────────────────────────────
 OneSignal.Debug.setLogLevel(LogLevel.Verbose);
-OneSignal.initialize('bccab546-8d91-4499-8caf-f2a8f9d3b12e');
+OneSignal.initialize('5e6bf344-af9c-4b5a-bc98-7939d1851daf');
 
 // ─── Custom Toast Config ────────────────────────────────────────────────────
 const toastConfig = {

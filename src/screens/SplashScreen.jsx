@@ -1,5 +1,5 @@
-import React, {useEffect, useRef} from 'react';
-import {useContext} from 'react';
+import React, { useEffect, useRef } from 'react';
+import { useContext } from 'react';
 import {
   View,
   Text,
@@ -9,17 +9,17 @@ import {
   Image,
   StatusBar,
 } from 'react-native';
-import {useNavigation} from '@react-navigation/native';
-import {Award} from 'lucide-react-native';
-import {AuthContext} from '../context/AuthContext';
+import { useNavigation } from '@react-navigation/native';
+import { Award } from 'lucide-react-native';
+import { AuthContext } from '../context/AuthContext';
 import LinearGradient from 'react-native-linear-gradient';
-import {theme} from '../styles/globalStyles';
+import { theme } from '../styles/globalStyles';
 
-const {width} = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 export default function SplashScreen() {
   const navigation = useNavigation();
-  const {isLoggedIn} = useContext(AuthContext);
+  const { isLoggedIn } = useContext(AuthContext);
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const scaleAnim = useRef(new Animated.Value(0)).current;
@@ -55,7 +55,7 @@ export default function SplashScreen() {
             styles.logoContainer,
             {
               opacity: fadeAnim,
-              transform: [{scale: scaleAnim}],
+              transform: [{ scale: scaleAnim }],
             },
           ]}>
           <Image
@@ -72,7 +72,7 @@ export default function SplashScreen() {
 
           <Text style={styles.trustedText}>
             Trusted By{'\n'}
-            <Text style={styles.boldText}>500+ Professionals</Text>
+            <Text style={styles.boldText}>1000+ Professionals</Text>
           </Text>
         </View>
       </View>
