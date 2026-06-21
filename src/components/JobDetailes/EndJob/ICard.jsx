@@ -1,10 +1,10 @@
 import React from 'react';
-import {View, Text, StyleSheet, Image, Dimensions} from 'react-native';
-import {Phone, Mail, Globe, Calendar, MapPin} from 'lucide-react-native';
+import { View, Text, StyleSheet, Image, Dimensions } from 'react-native';
+import { Phone, Mail, Globe, Calendar, MapPin } from 'lucide-react-native';
 
-const {width} = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
-const ICard = ({bookingDetails, providerDetails}) => {
+const ICard = ({ bookingDetails, providerDetails }) => {
   console.log('Provider Details in ICard:', providerDetails);
   const formatDate = dateString => {
     if (!dateString || dateString === 'N/A') return 'N/A';
@@ -29,10 +29,10 @@ const ICard = ({bookingDetails, providerDetails}) => {
           <Image
             source={
               providerDetails?.logo
-                ? {uri: providerDetails.logo}
+                ? { uri: providerDetails.logo }
                 : {
-                    uri: 'https://static.vecteezy.com/system/resources/thumbnails/048/334/475/small/a-person-icon-on-a-transparent-background-png.png',
-                  }
+                  uri: 'https://static.vecteezy.com/system/resources/thumbnails/048/334/475/small/a-person-icon-on-a-transparent-background-png.png',
+                }
             }
             style={styles.avatar}
           />

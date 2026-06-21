@@ -2,142 +2,22 @@ import React, { createContext, useEffect, useState } from 'react';
 import PusherService from '../services/PusherService';
 import { AuthUser } from '../../api/authUser';
 import Toast from 'react-native-toast-message';
-import { playBookingChime } from '../services/ringToneService';
+import { playBookingChime, stopBookingChime } from '../services/ringToneService';
 
 export const BookingContext = createContext();
 
 export const BookingProvider = ({ children }) => {
   const [bookings, setBookings] = useState([]);
   const [countMatchOtp, setCountMatchOtp] = useState(1);
-  const [currentBookingId,setCurrentBookingId]= useState(null);
+  const [currentBookingId, setCurrentBookingId] = useState(null);
   const [otpUiText, setOtpUiText] = useState('start');
   const { callApi } = AuthUser();
 
-  // useEffect(() => {
-  //   const dummyBookings = [
-  //     {
-  //       order_id: 201,
-  //       worker_ids: ['20', '15'],
-  //       service_name: 'Child Care',
-  //       distance: '2km from you',
-  //       price_per_hour: 220,
-  //       duration: '2 Hours',
-  //       timer: '05:30',
-  //       order_details: {
-  //         customer_name: 'Kari Chanchoda',
-  //         booking_date: '2026-02-16 16:00:00',
-  //         address: '4517 Washington Ave. Manchester Kentucky 39495',
-  //       },
-  //     },
-  //     {
-  //       order_id: 301,
-  //       worker_ids: ['20', '18'],
-  //       service_name: 'Elder Care',
-  //       distance: '1.5km from you',
-  //       price_per_hour: 300,
-  //       duration: '5 Hours',
-  //       timer: '04:10',
-
-  //       order_details: {
-  //         customer_name: 'Sanjay Verma',
-  //         booking_date: '2026-02-18 09:30:00',
-  //         address: '12 Lake View Road, Kolkata 700029',
-  //       },
-  //     },
-  //     {
-  //       order_id: 302,
-  //       worker_ids: ['20'],
-  //       service_name: 'House Cleaning',
-  //       distance: '3km from you',
-  //       price_per_hour: 200,
-  //       duration: '3 Hours',
-  //       timer: '02:50',
-
-  //       order_details: {
-  //         customer_name: 'Priya Sharma',
-  //         booking_date: '2026-02-18 14:00:00',
-  //         address: '55 Salt Lake Sector 1, Kolkata 700064',
-  //       },
-  //     },
-  //     {
-  //       order_id: 303,
-  //       worker_ids: ['15', '20'],
-  //       service_name: 'Baby Sitting',
-  //       distance: '2.2km from you',
-  //       price_per_hour: 250,
-  //       duration: '4 Hours',
-  //       timer: '01:30',
-
-  //       order_details: {
-  //         customer_name: 'Ankit Jain',
-  //         booking_date: '2026-02-19 16:00:00',
-  //         address: '22 Park Circus, Kolkata 700017',
-  //       },
-  //     },
-  //     {
-  //       order_id: 304,
-  //       worker_ids: ['20', '9'],
-  //       service_name: 'Cooking Service',
-  //       distance: '4.1km from you',
-  //       price_per_hour: 350,
-  //       duration: '6 Hours',
-  //       timer: '05:00',
-
-  //       order_details: {
-  //         customer_name: 'Meera Iyer',
-  //         booking_date: '2026-02-20 11:00:00',
-  //         address: '88 Ballygunge Place, Kolkata 700019',
-  //       },
-  //     },
-  //     {
-  //       order_id: 305,
-  //       worker_ids: ['7', '41'],
-  //       service_name: 'Car Washing',
-  //       distance: '5km from you',
-  //       price_per_hour: 150,
-  //       duration: '2 Hours',
-  //       timer: '03:15',
-
-  //       order_details: {
-  //         customer_name: 'Rohit Gupta',
-  //         booking_date: '2026-02-20 08:00:00',
-  //         address: '14 New Town Action Area 1, Kolkata 700156',
-  //       },
-  //     },
-  //     {
-  //       order_id: 306,
-  //       worker_ids: ['20'],
-  //       service_name: 'Pet Care',
-  //       distance: '1km from you',
-  //       price_per_hour: 220,
-  //       duration: '3 Hours',
-  //       timer: '06:20',
-
-  //       order_details: {
-  //         customer_name: 'Sneha Kapoor',
-  //         booking_date: '2026-02-21 07:00:00',
-  //         address: '77 Behala Chowrasta, Kolkata 700034',
-  //       },
-  //     },
-  //     {
-  //       order_id: 307,
-  //       worker_ids: ['3', '8', '20'],
-  //       service_name: 'Gardening',
-  //       distance: '2.8km from you',
-  //       price_per_hour: 280,
-  //       duration: '4 Hours',
-  //       timer: '02:10',
-
-  //       order_details: {
-  //         customer_name: 'Amit Roy',
-  //         booking_date: '2026-02-22 15:00:00',
-  //         address: '90 Dum Dum Park, Kolkata 700055',
-  //       },
-  //     },
-  //   ];
-
-  //   setBookings(dummyBookings);
-  // }, []);
+  useEffect(() => {
+    if (bookings.length === 0) {
+      stopBookingChime();
+    }
+  }, [bookings]);
 
   //This one is for getting data via Pusher
 
@@ -150,7 +30,21 @@ export const BookingProvider = ({ children }) => {
         'booking_service',
         event => {
           console.log('BOOKING EVENT RECEIVED:', event);
-          const data = event?.data ? JSON.parse(event.data) : event;
+
+          let data = event?.data;
+          if (typeof data === 'string') {
+            try {
+              data = JSON.parse(data);
+              // In case it's double stringified
+              if (typeof data === 'string') {
+                data = JSON.parse(data);
+              }
+            } catch (e) {
+              console.log('Error parsing pusher data', e);
+            }
+          }
+          if (!data) data = event;
+
           let isNew = false;
           setBookings(prev => {
             const exists = prev.some(
@@ -179,7 +73,16 @@ export const BookingProvider = ({ children }) => {
         'expire_booking_request',
         'booking-accepted',
         event => {
-          const data = event?.data ? JSON.parse(event.data) : event;
+          let data = event?.data;
+          if (typeof data === 'string') {
+            try {
+              data = JSON.parse(data);
+              if (typeof data === 'string') data = JSON.parse(data);
+            } catch (e) {
+              console.log('Error parsing pusher data', e);
+            }
+          }
+          if (!data) data = event;
 
           console.log('BOOKING ACCEPTED BY SOMEONE:', data);
 

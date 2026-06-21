@@ -68,9 +68,9 @@ const Login = () => {
 
     try {
       const resp = await callApi({
-        api:`/login_serviceProvider`,
-        method:'CUSTOM_POST',
-        data:{
+        api: `/login_serviceProvider`,
+        method: 'CUSTOM_POST',
+        data: {
           mobile: mobileNumber,
           step: '1',
         },
@@ -97,10 +97,10 @@ const Login = () => {
 
     } catch (error) {
       console.log('Error Details:', error);
-      
+
       // Extract meaningful error message from API response
       let errorMessage = 'Network error. Please try again.';
-      
+
       if (error.response?.data?.errors) {
         errorMessage = error.response.data.errors;
       } else if (error.response?.data?.message) {
@@ -113,7 +113,7 @@ const Login = () => {
       } else if (error.message) {
         errorMessage = error.message;
       }
-      
+
       showError(errorMessage);
     } finally {
       setLoading(false);
@@ -162,12 +162,12 @@ const Login = () => {
               {/* MOBILE INPUT WITH ERROR HANDLING */}
               <View style={styles.inputContainer}>
                 <View style={[
-                  styles.inputWrapper, 
+                  styles.inputWrapper,
                   mobileError && styles.inputError
                 ]}>
-                  <Phone 
-                    size={20} 
-                    color={mobileError ? "#FF6B6B" : "#6B7280"} 
+                  <Phone
+                    size={20}
+                    color={mobileError ? "#FF6B6B" : "#6B7280"}
                   />
                   <TextInput
                     placeholder="Mobile Number"
@@ -200,7 +200,7 @@ const Login = () => {
                   <Text style={styles.buttonText}>
                     {loading ? 'Sending OTP...' : 'Continue'}
                   </Text>
-                  {!loading && <ArrowRight size={20} color="#FFFFFF" style={{marginLeft: 8}} />}
+                  {!loading && <ArrowRight size={20} color="#FFFFFF" style={{ marginLeft: 8 }} />}
                 </LinearGradient>
               </TouchableOpacity>
 

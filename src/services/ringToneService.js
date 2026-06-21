@@ -31,6 +31,8 @@ export const playBookingChime = () => {
   if (bookingChime) {
     bookingChime.stop(() => {
       bookingChime.setCurrentTime(0);
+      bookingChime.setVolume(1.0);
+      bookingChime.setNumberOfLoops(-1);
       bookingChime.play();
     });
     return;
@@ -41,9 +43,16 @@ export const playBookingChime = () => {
       bookingChime = null;
       return;
     }
-    bookingChime.setNumberOfLoops(0);
+    bookingChime.setVolume(1.0);
+    bookingChime.setNumberOfLoops(-1);
     bookingChime.play(success => {
       if (!success) console.log('Booking chime playback failed');
     });
   });
+};
+
+export const stopBookingChime = () => {
+  if (bookingChime) {
+    bookingChime.stop();
+  }
 };
