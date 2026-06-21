@@ -24,22 +24,22 @@ import { AuthUser } from '../../../api/authUser';
 const JobCard = ({ acceptedBookingData, userId }) => {
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
-  const [callingData,setCallingData]=useState("");
+  const [callingData, setCallingData] = useState("");
 
-const {callApi}=AuthUser();
+  const { callApi } = AuthUser();
 
-const createMeeting=async()=>{
+  const createMeeting = async () => {
 
-  const response= await callApi({
-    method:"CUSTOM_POST",
-    api:`/user/create_token_video?worker_id=${userId}`,
-    data:{
-      booking_id:booking_id,
-    }
-  });
-  setCallingData(response?.data);
-  return response?.data;
-}
+    const response = await callApi({
+      method: "CUSTOM_POST",
+      api: `/user/create_token_video?worker_id=${userId}`,
+      data: {
+        booking_id: booking_id,
+      }
+    });
+    setCallingData(response?.data);
+    return response?.data;
+  }
 
 
   const formatDateTime = () => {
@@ -59,10 +59,10 @@ const createMeeting=async()=>{
     const datePart = isToday
       ? 'Today'
       : bookingDate.toLocaleDateString('en-IN', {
-          day: 'numeric',
-          month: 'short',
-          year: 'numeric',
-        });
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+      });
 
     const timePart = bookingDate.toLocaleTimeString('en-IN', {
       hour: 'numeric',
@@ -118,33 +118,35 @@ const createMeeting=async()=>{
   const formattedDistance = formatDistance(distance);
 
   const handleCall = async () => {
-   const data = await createMeeting();
-   if (data) {
-     let parsedData = data;
-     try {
-       // Only parse if it's a string
-       if (typeof data === 'string') {
-         parsedData = JSON.parse(data);
-       }
-     } catch (e) {
-       console.warn("Error parsing data:", e);
-     }
-     
-     const roomId = parsedData?.roomId || "";
+    const data = await createMeeting();
+    if (data) {
+      let parsedData = data;
+      try {
+        // Only parse if it's a string
+        if (typeof data === 'string') {
+          parsedData = JSON.parse(data);
+        }
+      } catch (e) {
+        console.warn("Error parsing data:", e);
+      }
 
-     navigation.navigate("CallScreen", {
-       callingData: parsedData,
-       booking_id: booking_id,
-       userId: userId,
-     });
-   }
+      const roomId = parsedData?.roomId || "";
+
+      navigation.navigate("CallScreen", {
+        callingData: parsedData,
+        booking_id: booking_id,
+        userId: userId,
+      });
+    }
   };
 
-  const handleRedirect = () => {navigation.navigate('JobDetailsScreen', {
-              orderId: booking_id,
-              userId: userId,
-              autoOpenOtp: true,
-            })}
+  const handleRedirect = () => {
+    navigation.navigate('JobDetailsScreen', {
+      orderId: booking_id,
+      userId: userId,
+      autoOpenOtp: true,
+    })
+  }
 
 
   return (
@@ -159,7 +161,7 @@ const createMeeting=async()=>{
 
         <View style={styles.iconRow}>
           <TouchableOpacity
-            onPress={() => { handleChat(userId, booking_id, acceptedBookingData, navigation,member_name,logo,category_subchild_name); }}
+            onPress={() => { handleChat(userId, booking_id, acceptedBookingData, navigation, member_name, logo, category_subchild_name); }}
             style={styles.iconCircleWrapper}
             activeOpacity={0.8}
           >

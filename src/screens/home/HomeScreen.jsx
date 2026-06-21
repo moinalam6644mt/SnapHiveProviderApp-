@@ -91,7 +91,7 @@ const HomeScreen = () => {
         method: 'CUSTOM_POST',
         api: `/user/set_availability?worker_id=${userId}`,
         data: {
-          offline: available ? 0 : 1, 
+          offline: available ? 0 : 1,
         },
       });
 
@@ -114,7 +114,7 @@ const HomeScreen = () => {
     const loadData = async () => {
       const onesignalId = await AsyncStorage.getItem('onesignal_id');
       const deviceType = await AsyncStorage.getItem('device_type');
-      if(onesignalId && deviceType && userId){
+      if (onesignalId && deviceType && userId) {
         const resp = await callApi({
           method: 'CUSTOM_POST',
           api: `/user/add_device?worker_id=${userId}`,
@@ -123,7 +123,7 @@ const HomeScreen = () => {
             device_type: deviceType,
           },
         });
-        console.log("resp for one signal: ",resp);
+        console.log("resp for one signal: ", resp);
       }
     };
     loadData();
@@ -146,7 +146,7 @@ const HomeScreen = () => {
                 if (Array.isArray(parsed)) {
                   match = match || parsed.some(id => String(id) === uidStr);
                 }
-              } catch (e) {}
+              } catch (e) { }
             }
           }
         }
@@ -159,7 +159,7 @@ const HomeScreen = () => {
               if (Array.isArray(parsed)) {
                 match = match || parsed.some(w => String(w?.worker_id) === uidStr);
               }
-            } catch (e) {}
+            } catch (e) { }
           }
         }
         if (String(item?.worker_id) === uidStr) match = true;

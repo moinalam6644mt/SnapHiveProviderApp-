@@ -6,13 +6,13 @@ import React, {
   useRef,
 } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {AuthUser} from '../../api/authUser';
+import { AuthUser } from '../../api/authUser';
 import PusherService from '../services/PusherService';
-import {CallContext} from './CallContext';
+import { CallContext } from './CallContext';
 
 export const AuthContext = createContext();
 
-export const AuthProvider = ({children}) => {
+export const AuthProvider = ({ children }) => {
   const [userId, setUserId] = useState(null);
   const [userToken, setUserToken] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -21,8 +21,8 @@ export const AuthProvider = ({children}) => {
   const [onesignalId, setOnesignalId] = useState(null);
   const [deviceType, setDeviceType] = useState('');
 
-  const {callApi} = AuthUser();
-  const {showIncomingCall, hideIncomingCall, triggerEndCall} =
+  const { callApi } = AuthUser();
+  const { showIncomingCall, hideIncomingCall, triggerEndCall } =
     useContext(CallContext);
   const isCallListenerReadyRef = useRef(false);
 

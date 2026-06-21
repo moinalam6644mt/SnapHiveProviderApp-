@@ -157,21 +157,21 @@ export const BookingProvider = ({ children }) => {
     setOtpUiText('start');
   };
 
+  const contextValue = React.useMemo(() => ({
+    bookings,
+    acceptBooking,
+    rejectBooking,
+    countMatchOtp,
+    setCountMatchOtp,
+    setOtpUiText,
+    otpUiText,
+    resetOtpState,
+    currentBookingId,
+    setCurrentBookingId,
+  }), [bookings, countMatchOtp, otpUiText, currentBookingId]);
+
   return (
-    <BookingContext.Provider
-      value={{
-        bookings,
-        acceptBooking,
-        rejectBooking,
-        countMatchOtp,
-        setCountMatchOtp,
-        setOtpUiText,
-        otpUiText,
-        resetOtpState,
-        currentBookingId,
-        setCurrentBookingId,
-      }}
-    >
+    <BookingContext.Provider value={contextValue}>
       {children}
     </BookingContext.Provider>
   );
