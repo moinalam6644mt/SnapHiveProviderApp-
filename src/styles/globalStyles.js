@@ -4,14 +4,14 @@ import { StyleSheet, Dimensions } from 'react-native';
 const { width, height } = Dimensions.get('window');
 
 export const theme = {
-  primary: '#2BAAB1',
+  primary: '#068585ff', // Solid dark blue (removed e7 alpha to fix Android crashes)
   accent: '#ff7a00',
   danger: '#ff6b6b',
   warning: '#f59e0b',
   success: '#1bb21b',
   surface: 'rgba(255, 255, 255, 0.15)',
-  background: '#134E5E',
-  backgroundEnd: '#71B280',
+  background: '#068585ff', // Darker background
+  backgroundEnd: '#068585ff',
   textPrimary: '#FFFFFF',
   textSecondary: 'rgba(255, 255, 255, 0.8)',
   border: 'rgba(255, 255, 255, 0.3)',
@@ -20,7 +20,7 @@ export const theme = {
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#2BAAB1',
+    backgroundColor: '#0a58ca',
   },
 
   backgroundImage: {
@@ -38,7 +38,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     marginTop: 80,
     marginBottom: 40,
-    shadowColor: '#2EC4B6',
+    shadowColor: 'rgba(13, 110, 253, 0.3)',
     shadowOpacity: 0.4,
     shadowRadius: 10,
     elevation: 8,
@@ -105,7 +105,7 @@ export default StyleSheet.create({
   title: {
     fontSize: 26,
     fontWeight: '700',
-    color: '#2BAAB1',
+    color: '#0a58ca',
     textAlign: 'center',
     marginBottom: 10,
     letterSpacing: -0.3,
@@ -145,7 +145,7 @@ export default StyleSheet.create({
   },
 
   inputFocused: {
-    borderColor: '#2BAAB1',
+    borderColor: '#0a58ca',
     borderWidth: 2,
     backgroundColor: '#FFFFFF',
   },
@@ -170,8 +170,8 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 25,
-    backgroundColor: '#2BAAB1',
-    shadowColor: '#2BAAB1',
+    backgroundColor: '#0a58ca',
+    shadowColor: '#0a58ca',
     shadowOffset: {
       width: 0,
       height: 4,
@@ -265,13 +265,13 @@ export default StyleSheet.create({
   mobileNumber: {
     fontSize: 17,
     fontWeight: '700',
-    color: '#2BAAB1',
+    color: '#0a58ca',
     marginLeft: 8,
   },
 
   userNameText: {
     fontSize: 14,
-    color: '#2BAAB1',
+    color: '#0a58ca',
     marginTop: 6,
     fontWeight: '500',
   },
@@ -294,14 +294,14 @@ export default StyleSheet.create({
     textAlign: 'center',
     fontSize: 22,
     fontWeight: '700',
-    color: '#2BAAB1',
+    color: '#0a58ca',
     backgroundColor: '#F8F9FA',
     borderWidth: 2,
     borderColor: '#E8ECEF',
   },
 
   otpInputFocused: {
-    borderColor: '#2BAAB1',
+    borderColor: '#0a58ca',
     backgroundColor: '#FFFFFF',
     borderWidth: 2,
   },
@@ -338,7 +338,7 @@ export default StyleSheet.create({
 
   timerText: {
     fontSize: 14,
-    color: '#2BAAB1',
+    color: '#0a58ca',
     fontWeight: '700',
   },
 
@@ -347,7 +347,7 @@ export default StyleSheet.create({
   },
 
   resendActive: {
-    color: '#2BAAB1',
+    color: '#0a58ca',
     fontWeight: '700',
     fontSize: 14,
   },

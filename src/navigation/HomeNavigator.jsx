@@ -1,11 +1,8 @@
 import React, {useContext, useEffect} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
-import HomeScreen from '../screens/home/HomeScreen';
-import ProfileScreen from '../screens/profile/ProfileScreen';
-import JobScreen from '../screens/jobs/JobScreen';
+import MainTabNavigator from './MainTabNavigator';
 import JobDetailsScreen from '../screens/jobs/JobDetailsScreen';
-import WalletScreen from '../screens/wallet/WalletScreen';
 import RechargeWalletScreen from '../screens/wallet/RechargeWalletScreen';
 import ChatListScreen from '../screens/Message/ChatListScreen';
 import ChatDetailsScreen from '../screens/Message/ChatDetailsScreen';
@@ -71,11 +68,8 @@ export default function HomeNavigation() {
   return (
     <>
       <Stack.Navigator screenOptions={{headerShown: false}}>
-        <Stack.Screen name="HomeMain" component={HomeScreen} />
-        <Stack.Screen name="Profile" component={ProfileScreen} />
-        <Stack.Screen name="JobScreen" component={JobScreen} />
+        <Stack.Screen name="MainTabs" component={MainTabNavigator} />
         <Stack.Screen name="JobDetailsScreen" component={JobDetailsScreen} />
-        <Stack.Screen name="Wallet" component={WalletScreen} />
         <Stack.Screen name="RechargeScreen" component={RechargeWalletScreen} />
         <Stack.Screen name="ChatList" component={ChatListScreen} />
         <Stack.Screen name="ChatDetails" component={ChatDetailsScreen} />

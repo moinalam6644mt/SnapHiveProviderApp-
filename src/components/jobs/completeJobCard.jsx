@@ -10,9 +10,8 @@ import {
   ActivityIndicator,
   PermissionsAndroid,
 } from 'react-native';
-import { User, MapPin, Calendar, X, Download, Clock } from 'lucide-react-native';
+import { User, MapPin, Calendar, X, Download, Clock, CheckCircle } from 'lucide-react-native';
 import axios from 'axios';
-import LinearGradient from 'react-native-linear-gradient';
 import ReactNativeBlobUtil from 'react-native-blob-util';
 import Toast from 'react-native-toast-message';
 import { AuthUser } from '../../../api/authUser';
@@ -178,7 +177,7 @@ const CompleteJobCard = ({ completeBookingData, userId }) => {
       return { date: dateStr, time: timeStr };
     }
   };
-  if (!completeBookingData.length) {
+  if (!completeBookingData || !completeBookingData.length) {
     return (
       <View style={styles.emptyContainer}>
         <Text style={styles.emptyTitle}>No Completed Jobs Yet</Text>
@@ -215,6 +214,9 @@ const CompleteJobCard = ({ completeBookingData, userId }) => {
             category_subchild_name,
             duration_hours,
             total_amount,
+            price_per_unit,
+            rate: bookingRate,
+            price,
             distance,
             booking_id,
             member_name,
@@ -284,7 +286,7 @@ const CompleteJobCard = ({ completeBookingData, userId }) => {
             return Number.isInteger(num) ? num : num.toFixed(2);
           };
 
-          const rate = formatRate(total_amount);
+          const rate = formatRate(total_amount || price_per_unit || bookingRate || price);
           const formattedDistance = formatDistance(distance);
           const effectivePaymentStatus =
             localPaymentStatus[booking_id] ??
@@ -423,12 +425,6 @@ const CompleteJobCard = ({ completeBookingData, userId }) => {
                     disabled={downloading}
                     activeOpacity={0.8}
                   >
-                    <LinearGradient
-                      colors={['#134E5E', '#71B280']}
-                      start={{ x: 0, y: 0 }}
-                      end={{ x: 1, y: 1 }}
-                      style={styles.gradientButton}
-                    >
                       {downloading ? (
                         <>
                           <ActivityIndicator size="small" color="white" />
@@ -436,17 +432,17 @@ const CompleteJobCard = ({ completeBookingData, userId }) => {
                         </>
                       ) : (
                         <>
-                          <Download size={20} color="white" />
+                          <Download size={20} color="white" style={{ marginRight: 8 }} />
                           <Text style={styles.downloadButtonText}>Download Invoice</Text>
                         </>
                       )}
-                    </LinearGradient>
                   </TouchableOpacity>
                 )}
 
                 {/* Mark as Paid button inside modal, below invoice */}
                 {modalPaymentStatus === 1 ? (
                   <View style={[styles.btnContainer, styles.paymentButtonDisabled, { marginTop: 12 }]}>
+                    <CheckCircle size={20} color="#9CA3AF" style={{ marginRight: 8 }} />
                     <Text style={styles.paymentButtonTextDisabled}>Marked as Paid</Text>
                   </View>
                 ) : (
@@ -456,12 +452,6 @@ const CompleteJobCard = ({ completeBookingData, userId }) => {
                     onPress={() => handleMarkAsPaid(selectedJob)}
                     disabled={markingPaidId === selectedJob}
                   >
-                    <LinearGradient
-                      colors={['#134E5E', '#71B280']}
-                      start={{ x: 0, y: 0 }}
-                      end={{ x: 1, y: 1 }}
-                      style={styles.gradientButton}
-                    >
                       {markingPaidId === selectedJob ? (
                         <>
                           <ActivityIndicator size="small" color="#fff" />
@@ -470,7 +460,6 @@ const CompleteJobCard = ({ completeBookingData, userId }) => {
                       ) : (
                         <Text style={styles.paymentButtonText}>Mark as Paid</Text>
                       )}
-                    </LinearGradient>
                   </TouchableOpacity>
                 )}
               </ScrollView>
@@ -498,7 +487,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     marginTop: 20,
     borderWidth: 1,
-    borderColor: '#2baab1',
+    borderColor: theme.primary,
     // Soft shadow logic
     ...Platform.select({
       ios: {
@@ -575,7 +564,7 @@ const styles = StyleSheet.create({
   price: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#4ade80',
+    color: theme.primary,
   },
   duration: {
     textAlign: 'right',
@@ -593,7 +582,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 20,
     right: 20,
-    backgroundColor: '#2E2E74',
+    backgroundColor: theme.primary,
     width: 65,
     height: 65,
     borderRadius: 33,

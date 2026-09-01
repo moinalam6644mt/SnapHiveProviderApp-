@@ -24,7 +24,6 @@ import { AuthUser } from '../../../api/authUser';
 import { useOtpShared } from '../../context/OtpSharedContext';
 import Toast from 'react-native-toast-message';
 import handleChat from '../../services/ChatServiceFunction';
-import LinearGradient from 'react-native-linear-gradient';
 
 import StartHeader from '../../components/JobDetailes/StartJob/StartHeader';
 import StartDetailes from '../../components/JobDetailes/StartJob/StartDetailes';
@@ -410,15 +409,10 @@ const JobDetailsScreen = () => {
         <>
           <StatusBar
             barStyle="light-content"
-            backgroundColor="transparent"
-            translucent={true}
+            backgroundColor={theme.primary}
+            translucent={false}
           />
-          <LinearGradient
-            colors={['#134E5E', '#71B280']}
-            style={styles.gradientBg}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-          >
+          <View style={styles.solidBg}>
             {/* Fixed Header */}
             <View style={styles.headerSection}>
               <TouchableOpacity onPress={handleBack} style={styles.backButton}>
@@ -438,35 +432,25 @@ const JobDetailsScreen = () => {
                     style={styles.headerIconWrapper}
                     activeOpacity={0.8}
                     onPress={handleMessageCustomer}>
-                    <LinearGradient
-                      colors={['#134E5E', '#71B280']}
-                      start={{ x: 0, y: 0 }}
-                      end={{ x: 1, y: 1 }}
-                      style={styles.headerIconGradient}
-                    >
+                    <View style={styles.headerIconSolid}>
                       <Image
                         source={require('../../../assets/app/jobs/messages-2.png')}
                         style={styles.headerActionIcon}
                         resizeMode="contain"
                       />
-                    </LinearGradient>
+                    </View>
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={styles.headerIconWrapper}
                     activeOpacity={0.8}
                     onPress={handleCallCustomer}>
-                    <LinearGradient
-                      colors={['#134E5E', '#71B280']}
-                      start={{ x: 0, y: 0 }}
-                      end={{ x: 1, y: 1 }}
-                      style={styles.headerIconGradient}
-                    >
+                    <View style={styles.headerIconSolid}>
                       <Image
                         source={require('../../../assets/app/jobs/material-symbols_call.png')}
                         style={styles.headerActionIcon}
                         resizeMode="contain"
                       />
-                    </LinearGradient>
+                    </View>
                   </TouchableOpacity>
                 </View>
               )}
@@ -588,7 +572,7 @@ const JobDetailsScreen = () => {
               </View>
             </ScrollView>
           </View>
-        </LinearGradient>
+        </View>
       </>
     )}
 
@@ -665,8 +649,8 @@ const JobDetailsScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  safeArea: { flex: 1, backgroundColor: '#134E5E' }, // Dark fallback
-  gradientBg: { flex: 1 },
+  safeArea: { flex: 1, backgroundColor: theme.primary },
+  solidBg: { flex: 1, backgroundColor: theme.primary },
   bottomSheet: {
     backgroundColor: '#FFFFFF',
     borderTopLeftRadius: moderateScale(40),
@@ -711,10 +695,11 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 2,
   },
-  headerIconGradient: {
+  headerIconSolid: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#0a369d',
   },
   headerActionIcon: {
     width: moderateScale(22),

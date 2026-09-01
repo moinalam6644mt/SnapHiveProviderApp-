@@ -136,7 +136,7 @@ const NotificationHandlingScreen = () => {
         <View
           style={[styles.loaderWrapper, { backgroundColor: 'rgba(0,0,0,0.4)' }]}>
           <View style={styles.loaderCard}>
-            <ActivityIndicator size="large" color={theme.background} />
+            <ActivityIndicator size="large" color={theme.primary} />
             <Text style={styles.loadingText}>Loading...</Text>
           </View>
         </View>
@@ -153,7 +153,7 @@ const NotificationHandlingScreen = () => {
               <TouchableOpacity onPress={handleBack} style={styles.backButton}>
                 <ChevronLeft
                   size={moderateScale(28)}
-                  color="#1e1b4b"
+                  color="#fff"
                   strokeWidth={2.5}
                 />
               </TouchableOpacity>
@@ -191,42 +191,45 @@ const NotificationHandlingScreen = () => {
                     landmark={bookingDetails?.member_landmark}
                   />
                 </View>
-                {/* Buttons */}
-                {bookingDetails?.status === '1' ? (
-                  <View style={styles.buttonWrapper}>
-                    <TouchableOpacity
-                      style={[styles.actionButton, styles.acceptButton]}
-                      onPress={async () => {
-                        const result = await acceptBooking(
-                          bookingDetails?.booking_id,
-                          userId,
-                        );
-
-                        if (result?.success) {
-                          navigation.push('JobDetailsScreen', {
-                            orderId: bookingDetails?.booking_id,
-                            userId,
-                          });
-                        }
-                      }}>
-                      <Text style={styles.buttonText}>Accept</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                      style={[styles.actionButton, styles.rejectButton]}
-                      onPress={handleReject}>
-                      <Text style={styles.buttonText}>Reject</Text>
-                    </TouchableOpacity>
-                  </View>
-                ) : bookingDetails?.status === '2' ? (
-                  <View style={styles.bookingTakenWrapper}>
-                    <Text style={styles.bookingTakenText}>
-                      This booking is already booked
-                    </Text>
-                  </View>
-                ) : null}
               </View>
             </ScrollView>
+
+            {/* Fixed Bottom Buttons */}
+            {bookingDetails?.status === '1' ? (
+              <View style={styles.fixedBottomContainer}>
+                <View style={styles.buttonWrapper}>
+                  <TouchableOpacity
+                    style={[styles.actionButton, styles.acceptButton]}
+                    onPress={async () => {
+                      const result = await acceptBooking(
+                        bookingDetails?.booking_id,
+                        userId,
+                      );
+
+                      if (result?.success) {
+                        navigation.push('JobDetailsScreen', {
+                          orderId: bookingDetails?.booking_id,
+                          userId,
+                        });
+                      }
+                    }}>
+                    <Text style={styles.buttonText}>Accept</Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    style={[styles.actionButton, styles.rejectButton]}
+                    onPress={handleReject}>
+                    <Text style={styles.buttonText}>Reject</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            ) : bookingDetails?.status === '2' ? (
+              <View style={styles.bookingTakenWrapper}>
+                <Text style={styles.bookingTakenText}>
+                  This booking is already booked
+                </Text>
+              </View>
+            ) : null}
           </View>
         </>
       )}
@@ -235,23 +238,23 @@ const NotificationHandlingScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  safeArea: { flex: 1, backgroundColor: theme.background },
-  mainContainer: { flex: 1, backgroundColor: theme.background },
+  safeArea: { flex: 1, backgroundColor: theme.primary },
+  mainContainer: { flex: 1, backgroundColor: theme.primary },
   headerSection: {
-    backgroundColor: theme.background,
+    backgroundColor: theme.primary,
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: horizontalScale(20),
     paddingVertical: verticalScale(15),
     borderBottomWidth: moderateScale(1),
-    borderBottomColor: '#f3f4f6',
+    borderBottomColor: 'rgba(255,255,255,0.1)',
   },
   backButton: { marginRight: moderateScale(10), padding: moderateScale(4) },
   mainTitle: {
     flex: 1,
     fontSize: moderateScale(20),
     fontWeight: '700',
-    color: '#1e1b4b',
+    color: '#fff',
   },
   scrollView: { flex: 1 },
   contentBody: {
@@ -310,12 +313,18 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#1e1b4b',
   },
+  fixedBottomContainer: {
+    paddingBottom: verticalScale(20),
+    paddingTop: verticalScale(10),
+    backgroundColor: theme.primary,
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(255,255,255,0.1)',
+  },
   buttonWrapper: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     paddingHorizontal: horizontalScale(20),
-    marginTop: verticalScale(10),
-    gap: moderateScale(10),
+    gap: moderateScale(15),
   },
 
   actionButton: {

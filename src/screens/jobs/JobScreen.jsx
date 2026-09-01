@@ -14,14 +14,18 @@ import AcceptedJobCard from '../../components/jobs/acceptedJobCard';
 import CompleteJobCard from '../../components/jobs/completeJobCard';
 import OnGoingJobCard from "../../components/jobs/onGoingJobCard"
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import {
+  useNavigation,
+  useFocusEffect,
+  useRoute,
+} from '@react-navigation/native';
+import { theme } from '../../styles/globalStyles';
 import OTPVerificationModal from '../../components/OtpVerification/jobStartWithOtp';
 import { BookingContext } from '../../context/BookingContext';
 import { AuthContext } from '../../context/AuthContext';
 import { AuthUser } from '../../../api/authUser';
+import SkeletonLoader from '../../components/SkeletonLoader';
 
-
-import { theme } from '../../styles/globalStyles';
 const JobScreen = () => {
   const [activeTab, setActiveTab] = useState('Upcoming');
   const [modalVisible, setModalVisible] = useState(false);
@@ -205,11 +209,19 @@ const JobScreen = () => {
 
   useFocusEffect(
     useCallback(() => {
-      fetchAcceptedBookingData(1);
-      fetchOngoingBookingData(1);
-      fetchCompletedBookingData(1);
+      if (activeTab === 'Upcoming') {
+        setLoading(true);
+        const timer = setTimeout(() => setLoading(false), 500);
+        return () => clearTimeout(timer);
+      } else if (activeTab === 'Accepted') {
+        fetchAcceptedBookingData(1);
+      } else if (activeTab === 'Ongoing') {
+        fetchOngoingBookingData(1);
+      } else if (activeTab === 'Completed') {
+        fetchCompletedBookingData(1);
+      }
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [myBookingData])
+    }, [myBookingData, activeTab])
   );
 
   const handleBack = () => {
@@ -228,10 +240,7 @@ const JobScreen = () => {
     <SafeAreaView style={styles.container}>
       {loading && (
         <View style={styles.loaderWrapper}>
-          <View style={styles.loaderCard}>
-            <ActivityIndicator size="large" color={theme.background} />
-            <Text style={styles.loadingText}>Loading...</Text>
-          </View>
+          <SkeletonLoader />
         </View>
       )}
       <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent={true} />
@@ -275,7 +284,7 @@ const JobScreen = () => {
 
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 20 }}
+        contentContainerStyle={{ paddingBottom: 100 }}
       >
         {activeTab === 'Upcoming' && (
           <JobHomeCard myBookingData={myBookingData} userId={userId} />
@@ -378,7 +387,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#1e1b4b',
+    color: theme.primary,
   },
   tabWrapper: {
     marginTop: 20,
@@ -398,7 +407,7 @@ const styles = StyleSheet.create({
     color: '#9ca3af',
   },
   activeTabText: {
-    color: '#1e1b4b',
+    color: theme.primary,
   },
   tabUnderlineBase: {
     position: 'absolute',
@@ -412,44 +421,24 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     width: '100%',
-    height: 2,
-    backgroundColor: '#1e1b4b',
+    height: 3,
+    backgroundColor: theme.primary,
     borderRadius: 30,
   },
   loaderWrapper: {
     position: 'absolute',
-    top: 0,
+    top: 60,
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: 'rgba(0,0,0,0.35)',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: '#F5F5F5',
     zIndex: 999,
-  },
-  loaderCard: {
-    backgroundColor: '#FFFFFF',
-    paddingVertical: 28,
-    paddingHorizontal: 40,
-    borderRadius: 20,
-    alignItems: 'center',
-    gap: 12,
-    elevation: 8,
-    shadowColor: '#000',
-    shadowOpacity: 0.15,
-    shadowRadius: 10,
-    shadowOffset: { width: 0, height: 4 },
-  },
-  loadingText: {
-    fontSize: 15,
-    fontWeight: '600',
-    color: '#1e1b4b',
   },
   fab: {
     position: 'absolute',
     bottom: 30,
     right: 20,
-    backgroundColor: '#2E2E74',
+    backgroundColor: theme.primary,
     width: 65,
     height: 65,
     borderRadius: 33,

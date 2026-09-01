@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import {
   Home,
   Briefcase,
@@ -8,61 +8,54 @@ import {
   MessageCircle,
   WalletCards,
 } from 'lucide-react-native';
-import {useNavigation, useRoute} from '@react-navigation/native';
-import LinearGradient from 'react-native-linear-gradient';
-
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { theme } from '../../styles/globalStyles';
-const Footer = () => {
-  const navigation = useNavigation();
-  const route = useRoute();
+const Footer = ({ state, navigation }) => {
+  // If state is missing, fallback to avoid crash during transition
+  if (!state) return null;
 
-  const currentRoute = route.name;
+  const currentRouteName = state.routes[state.index].name;
 
   const handleNavigation = screen => {
-    navigation.navigate('Main', {
-      screen: screen,
-    });
+    navigation.navigate(screen);
   };
 
   return (
-    <LinearGradient 
-      colors={['#134E5E', '#71B280']}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}
+    <View
       style={styles.footer}
     >
       <FooterItem
         label="Home"
-        active={currentRoute === 'Home'}
+        active={currentRouteName === 'HomeMain'}
         IconComponent={Home}
         onPress={() => handleNavigation('HomeMain')}
       />
 
       <FooterItem
         label="Jobs"
-        active={currentRoute === 'Jobs'}
+        active={currentRouteName === 'JobScreen'}
         IconComponent={Briefcase}
         onPress={() => handleNavigation('JobScreen')}
       />
 
       <FooterItem
         label="Wallet"
-        active={currentRoute === 'Wallet'}
+        active={currentRouteName === 'Wallet'}
         IconComponent={WalletCards}
         onPress={() => handleNavigation('Wallet')}
       />
 
       <FooterItem
         label="Account"
-        active={currentRoute === 'Profile'}
+        active={currentRouteName === 'Profile'}
         IconComponent={User}
         onPress={() => handleNavigation('Profile')}
       />
-    </LinearGradient>
+    </View>
   );
 };
 
-const FooterItem = ({label, active, IconComponent, onPress}) => (
+const FooterItem = ({ label, active, IconComponent, onPress }) => (
   <TouchableOpacity style={styles.item} onPress={onPress} activeOpacity={0.6}>
     <IconComponent
       size={24}
@@ -84,10 +77,11 @@ const styles = StyleSheet.create({
     bottom: 0,
     width: '100%',
     paddingBottom: 10,
+    backgroundColor: theme.primary,
 
     elevation: 10,
     shadowColor: '#000',
-    shadowOffset: {width: 0, height: -2},
+    shadowOffset: { width: 0, height: -2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
   },

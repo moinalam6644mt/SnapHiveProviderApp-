@@ -268,25 +268,22 @@ const UpcomingBookingCard = ({ bookings = [], userId }) => {
 
               <TouchableOpacity
                 style={styles.acceptBtnContainer}
+                activeOpacity={0.8}
                 onPress={async () => {
-                  const result = await acceptBooking(order_id, userId);
-
-                  if (result?.success) {
-                    navigation.push('JobDetailsScreen', {
-                      orderId: order_id,
-                      userId,
-                    });
+                  try {
+                    const result = await acceptBooking(order_id, userId);
+                    if (result?.success) {
+                      navigation.navigate('JobDetailsScreen', {
+                        orderId: order_id,
+                        userId: userId,
+                      });
+                    }
+                  } catch (e) {
+                    console.warn(e);
                   }
                 }}
               >
-                <LinearGradient
-                  colors={['#134E5E', '#71B280']}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 1 }}
-                  style={styles.acceptBtnGradient}
-                >
-                  <Text style={styles.acceptText}>Accept Job</Text>
-                </LinearGradient>
+                <Text style={styles.acceptText}>Accept Job</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -349,15 +346,17 @@ export default UpcomingBookingCard;
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: 'white',
+    backgroundColor: '#ffffff',
     borderRadius: 16,
     padding: 16,
-    elevation: 3,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    elevation: 4,
+    shadowColor: theme.primary,
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
-    shadowRadius: 4,
-    marginBottom: 15,
+    shadowRadius: 10,
+    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: 'rgba(6, 133, 133, 0.1)',
   },
   topRow: {
     flexDirection: 'row',
@@ -368,7 +367,7 @@ const styles = StyleSheet.create({
   jobTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#312e81',
+    color: theme.primary,
     fontFamily: 'Sora-Bold',
   },
   timerWrapper: {
@@ -443,12 +442,12 @@ const styles = StyleSheet.create({
     color: '#71717a',
   },
   instructionBox: {
-    backgroundColor: '#EEF2FF',
+    backgroundColor: 'rgba(6, 133, 133, 0.05)',
     borderRadius: 12,
     padding: 12,
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: '#E0E7FF',
+    borderColor: 'rgba(6, 133, 133, 0.15)',
   },
   instructionHeader: {
     flexDirection: 'row',
@@ -459,7 +458,7 @@ const styles = StyleSheet.create({
   instructionLabel: {
     fontSize: 12,
     fontWeight: '700',
-    color: '#4338ca',
+    color: theme.primary,
     textTransform: 'uppercase',
     letterSpacing: 0.5,
   },
@@ -470,7 +469,7 @@ const styles = StyleSheet.create({
   },
   instructionText: {
     fontSize: 13,
-    color: '#3730a3',
+    color: '#333333',
     flex: 1,
     lineHeight: 18,
   },
@@ -569,17 +568,14 @@ const styles = StyleSheet.create({
     flex: 1.5,
     height: 48,
     borderRadius: 24,
-    shadowColor: '#134E5E',
+    backgroundColor: theme.primary,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: theme.primary,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
     elevation: 4,
-    overflow: 'hidden',
-  },
-  acceptBtnGradient: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   rejectText: {
     color: theme.danger,

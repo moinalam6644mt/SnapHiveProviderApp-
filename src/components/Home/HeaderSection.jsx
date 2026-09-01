@@ -10,9 +10,9 @@ import {
 } from 'react-native';
 import { Wallet } from 'lucide-react-native';
 import { useNavigation } from '@react-navigation/native';
-import LinearGradient from 'react-native-linear-gradient';
+import { theme } from '../../styles/globalStyles';
 
-const HeaderSection = ({ userName,joiningDate }) => {
+const HeaderSection = ({ userName, joiningDate }) => {
   const navigation = useNavigation();
   const [greeting, setGreeting] = useState('');
 
@@ -26,33 +26,30 @@ const HeaderSection = ({ userName,joiningDate }) => {
     }).replace(',', '');
   };
 
-useEffect(() => {
-  const updateGreeting = () => {
-    const hour = new Date().getHours();
+  useEffect(() => {
+    const updateGreeting = () => {
+      const hour = new Date().getHours();
 
-    if (hour >= 5 && hour < 12) {
-      setGreeting('Good Morning');
-    } else if (hour >= 12 && hour < 17) {
-      setGreeting('Good Afternoon');
-    } else if (hour >= 17 && hour < 20) {
-      setGreeting('Good Evening');
-    } else {
-      setGreeting('Good Night');
-    }
-  };
+      if (hour >= 5 && hour < 12) {
+        setGreeting('Good Morning');
+      } else if (hour >= 12 && hour < 17) {
+        setGreeting('Good Afternoon');
+      } else if (hour >= 17 && hour < 20) {
+        setGreeting('Good Evening');
+      } else {
+        setGreeting('Good Night');
+      }
+    };
 
-  updateGreeting(); // first time run
+    updateGreeting(); // first time run
 
-  const interval = setInterval(updateGreeting, 60000); // every 1 min
+    const interval = setInterval(updateGreeting, 60000); // every 1 min
 
-  return () => clearInterval(interval);
-}, []);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
-    <LinearGradient 
-      colors={['#134E5E', '#71B280']}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}
+    <View
       style={styles.headerContainer}
     >
       <StatusBar barStyle="light-content" backgroundColor="transparent" translucent={true} />
@@ -85,7 +82,7 @@ useEffect(() => {
       </View>
 
       <Text style={styles.joinDateText}>Joined On : {formatDate(joiningDate)}</Text>
-    </LinearGradient>
+    </View>
   );
 };
 
@@ -98,6 +95,7 @@ const styles = StyleSheet.create({
     paddingBottom: 22,
     position: 'relative',
     zIndex: 999,
+    backgroundColor: theme.primary,
   },
 
   centerLogo: {

@@ -98,12 +98,12 @@ export default StartDetails;
 
 const styles = StyleSheet.create({
   detailsBox: {
-    backgroundColor: theme.background,
+    backgroundColor: '#ffffff',
     borderRadius: 20,
     padding: 18,
     marginHorizontal: 20,
     borderWidth: 1,
-    borderColor: '#f0f0f0',
+    borderColor: '#e5e7eb',
     elevation: 3,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -112,9 +112,9 @@ const styles = StyleSheet.create({
   },
   sectionLabel: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: '700',
     marginBottom: 15,
-    color: '#FFFFFF',
+    color: '#1f2937',
   },
   detailItem: {
     flexDirection: 'row',
@@ -123,13 +123,13 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   label: {
-    color: '#FFFFFF',
+    color: '#6b7280',
     fontSize: 14,
     fontWeight: '500',
   },
   value: {
     fontWeight: '700',
-    color: '#FFFFFF',
+    color: '#374151',
     fontSize: 15,
   },
   divider: {
@@ -139,17 +139,17 @@ const styles = StyleSheet.create({
   },
   estimatedLabel: {
     fontWeight: '800',
-    color: '#FFFFFF',
+    color: '#1f2937',
     fontSize: 16,
   },
   estimatedValue: {
     fontWeight: '900',
-    color: '#FFFFFF',
+    color: theme.primary,
     fontSize: 18,
   },
   note: {
     fontSize: 11,
-    color: '#FFFFFF',
+    color: '#9ca3af',
     fontStyle: 'italic',
     marginTop: 5,
     textAlign: 'center',

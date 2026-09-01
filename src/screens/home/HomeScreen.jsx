@@ -17,7 +17,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
 
 import AvailabilityToggle from '../../components/Home/AvailabilityToggle';
-import Footer from '../../components/Home/Footer';
 import HeaderSection from '../../components/Home/HeaderSection';
 import JobCard from '../../components/Home/JobCard';
 import UpcomingBookingCard from '../../components/Home/UpcomingBookingCard';
@@ -27,6 +26,7 @@ import { AuthUser } from '../../../api/authUser';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { theme } from '../../styles/globalStyles';
+import SkeletonLoader from '../../components/SkeletonLoader';
 let cachedAcceptedBookingData = null;
 let lastUserId = null;
 
@@ -135,6 +135,14 @@ const HomeScreen = () => {
       let match = false;
       const uidStr = String(userId);
       try {
+        // Allow global broadcasts where no specific worker is assigned
+        if (
+          (!item.worker_ids || item.worker_ids.length === 0 || item.worker_ids === '[]') &&
+          (!item.worker_ids_dist || item.worker_ids_dist.length === 0 || item.worker_ids_dist === '[]')
+        ) {
+          return true;
+        }
+
         if (item?.worker_ids) {
           if (Array.isArray(item.worker_ids)) {
             match = match || item.worker_ids.some(id => String(id) === uidStr);
@@ -177,10 +185,7 @@ const HomeScreen = () => {
 
       {loading ? (
         <View style={styles.loaderWrapper}>
-          <View style={styles.loaderCard}>
-            <ActivityIndicator size="large" color={theme.background} />
-            <Text style={styles.loadingText}>Please wait...</Text>
-          </View>
+          <SkeletonLoader />
         </View>
       ) : (
         <ScrollView
@@ -205,8 +210,6 @@ const HomeScreen = () => {
           </View>
         </ScrollView>
       )}
-
-      <Footer />
     </SafeAreaView>
   );
 };
@@ -232,26 +235,6 @@ const styles = StyleSheet.create({
   },
   loaderWrapper: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  loaderCard: {
-    backgroundColor: '#FFFFFF',
-    paddingVertical: 25,
-    paddingHorizontal: 35,
-    borderRadius: 20,
-    alignItems: 'center',
-    elevation: 6, // Android shadow
-    shadowColor: '#000',
-    shadowOpacity: 0.15,
-    shadowRadius: 10,
-    shadowOffset: { width: 0, height: 4 },
-  },
-  loadingText: {
-    marginTop: 12,
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#1e1b4b',
-    fontFamily: 'Sora-SemiBold',
+    paddingTop: 15,
   },
 });

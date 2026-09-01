@@ -9,7 +9,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 import { AuthUser } from '../../../api/authUser';
-import LinearGradient from 'react-native-linear-gradient';
+import { theme } from '../../styles/globalStyles';
 
 export default function MarkPaid({ isPayment, workerId,orderId }) {
   const navigation = useNavigation();
@@ -67,12 +67,6 @@ export default function MarkPaid({ isPayment, workerId,orderId }) {
       disabled={isPaid || loading}
       activeOpacity={0.8}
     >
-      <LinearGradient
-        colors={['#134E5E', '#71B280']}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={styles.gradientBtn}
-      >
         {loading ? (
           <View style={styles.loadingRow}>
             <ActivityIndicator color="white" size="small" />
@@ -85,7 +79,6 @@ export default function MarkPaid({ isPayment, workerId,orderId }) {
             {isPaid ? 'Marked as Paid' : 'Mark as Paid'}
           </Text>
         )}
-      </LinearGradient>
     </TouchableOpacity>
   );
 }
@@ -102,9 +95,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 4,
     overflow: 'hidden',
-  },
-  gradientBtn: {
-    flex: 1,
+    backgroundColor: theme.primary,
     justifyContent: 'center',
     alignItems: 'center',
   },

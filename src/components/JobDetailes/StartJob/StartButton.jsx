@@ -1,7 +1,6 @@
 import { StyleSheet, TouchableOpacity, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
-import LinearGradient from 'react-native-linear-gradient';
 
 import { theme } from '../../../styles/globalStyles';
 export default function StartButton({
@@ -16,7 +15,7 @@ export default function StartButton({
     <View style={styles.container}>
       {/* Start Job Button */}
       <TouchableOpacity
-        style={styles.startBtnContainer}
+        style={[styles.btn, styles.startBtnContainer]}
         disabled={loading}
         activeOpacity={0.8}
         onPress={() => {
@@ -36,14 +35,7 @@ export default function StartButton({
           setModalVisible(true);
         }}
       >
-        <LinearGradient
-          colors={['#134E5E', '#71B280']}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          style={styles.gradientBtn}
-        >
-          <Text style={styles.btnText}>Start Job</Text>
-        </LinearGradient>
+        <Text style={styles.btnText}>Start Job</Text>
       </TouchableOpacity>
 
       {/* Cancel Job Button */}
@@ -78,20 +70,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
   },
   startBtnContainer: {
-    height: 60,
-    borderRadius: 15,
-    width: '100%',
-    elevation: 2,
-    shadowColor: '#134E5E',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    overflow: 'hidden',
-  },
-  gradientBtn: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: theme.primary,
   },
   cancelBtn: {
     backgroundColor: theme.danger, // Danger Red

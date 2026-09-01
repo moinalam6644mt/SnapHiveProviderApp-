@@ -7,7 +7,7 @@ import {
   Image,
   Linking,
 } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+import { theme } from '../../styles/globalStyles';
 import {
   MessageSquare,
   Phone,
@@ -165,14 +165,7 @@ const JobCard = ({ acceptedBookingData, userId }) => {
             style={styles.iconCircleWrapper}
             activeOpacity={0.8}
           >
-            <LinearGradient
-              colors={['#134E5E', '#71B280']}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={styles.iconCircleGradient}
-            >
-              <MessageSquare size={18} color="white" />
-            </LinearGradient>
+            <MessageSquare size={18} color="white" />
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -180,14 +173,7 @@ const JobCard = ({ acceptedBookingData, userId }) => {
             style={styles.iconCircleWrapper}
             activeOpacity={0.8}
           >
-            <LinearGradient
-              colors={['#134E5E', '#71B280']}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={styles.iconCircleGradient}
-            >
-              <Phone size={18} color="white" />
-            </LinearGradient>
+            <Phone size={18} color="white" />
           </TouchableOpacity>
         </View>
       </View>
@@ -245,14 +231,7 @@ const JobCard = ({ acceptedBookingData, userId }) => {
             })
           }
         >
-          <LinearGradient
-            colors={['#134E5E', '#71B280']}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={styles.startBtnGradient}
-          >
-            <Text style={styles.btnText}>Start Job</Text>
-          </LinearGradient>
+          <Text style={styles.btnText}>Start Job</Text>
         </TouchableOpacity>
       </View>
       <OTPVerificationModal
@@ -267,15 +246,17 @@ export default JobCard;
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: 'white',
+    backgroundColor: '#ffffff',
     borderRadius: 16,
     padding: 16,
-    marginBottom: 15,
-    elevation: 3,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    marginBottom: 16,
+    elevation: 4,
+    shadowColor: theme.primary,
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
-    shadowRadius: 4,
+    shadowRadius: 10,
+    borderWidth: 1,
+    borderColor: 'rgba(6, 133, 133, 0.1)',
   },
   cardHeader: {
     flexDirection: 'row',
@@ -285,7 +266,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#1e1b4b',
+    color: theme.primary,
   },
   iconRow: {
     flexDirection: 'row',
@@ -295,17 +276,14 @@ const styles = StyleSheet.create({
     width: 35,
     height: 35,
     borderRadius: 18,
-    overflow: 'hidden',
-    shadowColor: '#134E5E',
+    backgroundColor: theme.primary,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: theme.primary,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 4,
     elevation: 2,
-  },
-  iconCircleGradient: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   userRow: {
     flexDirection: 'row',
@@ -385,17 +363,14 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 48,
     borderRadius: 24,
-    shadowColor: '#134E5E',
+    backgroundColor: theme.primary,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: theme.primary,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
     elevation: 4,
-    overflow: 'hidden',
-  },
-  startBtnGradient: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   btnText: {
     color: 'white',

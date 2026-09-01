@@ -1,8 +1,9 @@
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext, useEffect, useState, useRef } from 'react';
 import PusherService from '../services/PusherService';
 import { AuthUser } from '../../api/authUser';
 import Toast from 'react-native-toast-message';
 import { playBookingChime, stopBookingChime } from '../services/ringToneService';
+import { navigate } from '../services/NavigationService';
 
 export const BookingContext = createContext();
 
@@ -12,6 +13,11 @@ export const BookingProvider = ({ children }) => {
   const [currentBookingId, setCurrentBookingId] = useState(null);
   const [otpUiText, setOtpUiText] = useState('start');
   const { callApi } = AuthUser();
+  const latestBookings = useRef([]);
+
+  useEffect(() => {
+    latestBookings.current = bookings;
+  }, [bookings]);
 
   useEffect(() => {
     if (bookings.length === 0) {
@@ -35,7 +41,6 @@ export const BookingProvider = ({ children }) => {
           if (typeof data === 'string') {
             try {
               data = JSON.parse(data);
-              // In case it's double stringified
               if (typeof data === 'string') {
                 data = JSON.parse(data);
               }
@@ -45,23 +50,17 @@ export const BookingProvider = ({ children }) => {
           }
           if (!data) data = event;
 
-          let isNew = false;
-          setBookings(prev => {
-            const exists = prev.some(
-              item => String(item.order_id) === String(data.order_id),
-            );
+          const exists = latestBookings.current.some(
+            item => String(item.order_id) === String(data.order_id),
+          );
 
-            if (exists) {
-              return prev; // already added, do nothing
-            }
-
-            isNew = true;
+          if (!exists) {
             data.receivedAt = Date.now();
-            return [...prev, data];
-          });
-          if (isNew) {
+            setBookings(prev => [...prev, data]);
+            
             try {
               playBookingChime();
+              navigate('NotificationHandling', { orderId: data.order_id });
             } catch (e) {
               console.log('Booking chime error:', e);
             }

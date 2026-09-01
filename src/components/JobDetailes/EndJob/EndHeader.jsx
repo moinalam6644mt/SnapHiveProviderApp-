@@ -1,6 +1,5 @@
 import React, {useEffect, useRef, useMemo} from 'react';
 import {View, Text, StyleSheet, Animated} from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
 import {calculateAmount} from '../../../services/calculateAmount';
 import { theme } from '../../../styles/globalStyles';
 
@@ -74,11 +73,11 @@ const EndHeader = ({
         {!isCompleted && (
           <View style={styles.progressBackground}>
             <Animated.View style={{width: progressWidth}}>
-              <LinearGradient
-                colors={
-                  isOvertime ? ['#f59e0b', '#f59e0b'] : ['#2FCA00', '#2FCA00']
-                }
-                style={styles.progressFill}
+              <View
+                style={[
+                  styles.progressFill,
+                  { backgroundColor: isOvertime ? '#f59e0b' : '#2FCA00' }
+                ]}
               />
             </Animated.View>
           </View>
@@ -128,12 +127,10 @@ export default EndHeader;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: theme.background,
+    backgroundColor: theme.primary,
     borderRadius: 20,
     padding: 18,
     marginHorizontal: 20,
-    borderWidth: 1,
-    borderColor: '#2baab1',
     elevation: 3,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },

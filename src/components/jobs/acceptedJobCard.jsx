@@ -11,7 +11,7 @@ import {
 import {User, MapPin, Calendar} from 'lucide-react-native';
 import Toast from 'react-native-toast-message';
 import {useNavigation} from '@react-navigation/native';
-import LinearGradient from 'react-native-linear-gradient';
+import { theme } from '../../styles/globalStyles';
 import handleChat from '../../services/ChatServiceFunction';
 import {AuthUser} from '../../../api/authUser';
 
@@ -20,7 +20,7 @@ const AcceptedJobCard = ({onStartJob, acceptedBookingData, userId}) => {
   const navigation = useNavigation();
   const {callApi} = AuthUser();
 
-  if (!acceptedBookingData.length) {
+  if (!acceptedBookingData || !acceptedBookingData.length) {
     return (
       <View style={styles.emptyContainer}>
         <Text style={styles.emptyTitle}>No Accepted Jobs Yet</Text>
@@ -170,18 +170,11 @@ const AcceptedJobCard = ({onStartJob, acceptedBookingData, userId}) => {
                       category_subchild_name,
                     );
                   }}>
-                  <LinearGradient
-                    colors={['#134E5E', '#71B280']}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 1 }}
-                    style={styles.iconCircleGradient}
-                  >
-                    <Image
-                      source={require('../../../assets/app/jobs/messages-2.png')}
-                      style={styles.iconImage}
-                      resizeMode="contain"
-                    />
-                  </LinearGradient>
+                  <Image
+                    source={require('../../../assets/app/jobs/messages-2.png')}
+                    style={styles.iconImage}
+                    resizeMode="contain"
+                  />
                 </TouchableOpacity>
 
                 {/* Call Icon - Custom PNG */}
@@ -189,18 +182,11 @@ const AcceptedJobCard = ({onStartJob, acceptedBookingData, userId}) => {
                   style={styles.iconCircleWrapper}
                   activeOpacity={0.8}
                   onPress={() => handleCall()}>
-                  <LinearGradient
-                    colors={['#134E5E', '#71B280']}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 1 }}
-                    style={styles.iconCircleGradient}
-                  >
-                    <Image
-                      source={require('../../../assets/app/jobs/material-symbols_call.png')}
-                      style={styles.iconImage}
-                      resizeMode="contain"
-                    />
-                  </LinearGradient>
+                  <Image
+                    source={require('../../../assets/app/jobs/material-symbols_call.png')}
+                    style={styles.iconImage}
+                    resizeMode="contain"
+                  />
                 </TouchableOpacity>
               </View>
             </View>
@@ -249,14 +235,7 @@ const AcceptedJobCard = ({onStartJob, acceptedBookingData, userId}) => {
                     userId: userId,
                   })
                 }>
-                <LinearGradient
-                  colors={['#134E5E', '#71B280']}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 1 }}
-                  style={styles.startBtnGradient}
-                >
-                  <Text style={styles.startBtnText}>Start Job</Text>
-                </LinearGradient>
+                <Text style={styles.startBtnText}>Start Job</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -268,15 +247,18 @@ const AcceptedJobCard = ({onStartJob, acceptedBookingData, userId}) => {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: 'white',
+    backgroundColor: '#ffffff',
     borderRadius: 16,
     padding: 16,
     marginHorizontal: 20,
     marginTop: 20,
-    shadowColor: '#000',
-    shadowOpacity: 0.05,
+    elevation: 4,
+    shadowColor: theme.primary,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
     shadowRadius: 10,
-    elevation: 3,
+    borderWidth: 1,
+    borderColor: 'rgba(6, 133, 133, 0.1)',
   },
   headerRow: {
     flexDirection: 'row',
@@ -284,24 +266,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 15,
   },
-  jobTitle: {fontSize: 15, fontWeight: 'bold', color: '#312e81'},
+  jobTitle: {fontSize: 15, fontWeight: 'bold', color: theme.primary},
   iconGroup: {flexDirection: 'row', gap: 12},
 
   iconCircleWrapper: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    overflow: 'hidden',
-    shadowColor: '#134E5E',
+    backgroundColor: theme.primary,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: theme.primary,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 4,
     elevation: 2,
-  },
-  iconCircleGradient: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   iconImage: {
     width: 24,
@@ -351,17 +330,14 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 48,
     borderRadius: 24,
-    shadowColor: '#134E5E',
+    backgroundColor: theme.primary,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: theme.primary,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
     elevation: 4,
-    overflow: 'hidden',
-  },
-  startBtnGradient: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   startBtnText: {
     color: 'white',

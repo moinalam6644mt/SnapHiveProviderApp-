@@ -10,7 +10,8 @@ import {
 } from 'react-native';
 import {User, MapPin, Calendar} from 'lucide-react-native';
 import Toast from 'react-native-toast-message';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
+import { theme } from '../../styles/globalStyles';
 import handleChat from '../../services/ChatServiceFunction';
 import {AuthUser} from '../../../api/authUser';
 
@@ -19,7 +20,7 @@ const OnGoingJobCard = ({onStartJob, ongoingBookingData, userId}) => {
   const navigation = useNavigation();
   const {callApi} = AuthUser();
 
-  if (!ongoingBookingData.length) {
+  if (!ongoingBookingData || !ongoingBookingData.length) {
     return (
       <View style={styles.emptyContainer}>
         <Text style={styles.emptyTitle}>No Ongoing Jobs Yet</Text>
@@ -191,19 +192,19 @@ const OnGoingJobCard = ({onStartJob, ongoingBookingData, userId}) => {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: 'white',
+    backgroundColor: '#ffffff',
     borderRadius: 16,
     padding: 20,
     marginHorizontal: 16,
     marginTop: 16,
     marginBottom: 4,
-    shadowColor: '#000',
-    shadowOpacity: 0.08,
-    shadowRadius: 15,
-    shadowOffset: {width: 0, height: 4},
     elevation: 4,
+    shadowColor: theme.primary,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
     borderWidth: 1,
-    borderColor: '#f4f4f5',
+    borderColor: 'rgba(6, 133, 133, 0.1)',
   },
   headerRow: {
     flexDirection: 'row',
@@ -217,7 +218,7 @@ const styles = StyleSheet.create({
   jobTitle: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#18181b',
+    color: theme.primary,
     flex: 1,
     marginRight: 10,
   },
@@ -239,17 +240,27 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: '#f97316',
+    backgroundColor: theme.primary,
     justifyContent: 'center',
     alignItems: 'center',
+    shadowColor: theme.primary,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 2,
   },
   chatIconBtn: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: '#2E2E74',
+    backgroundColor: theme.primary,
     justifyContent: 'center',
     alignItems: 'center',
+    shadowColor: theme.primary,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 2,
   },
   iconImage: {
     width: 24,

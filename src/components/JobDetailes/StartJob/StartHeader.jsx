@@ -1,9 +1,9 @@
-import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
-import {MapPin, LocateFixed, AlertTriangle} from 'lucide-react-native';
-import {Linking} from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { MapPin, LocateFixed, AlertTriangle } from 'lucide-react-native';
+import { Linking } from 'react-native';
 
 import { theme } from '../../../styles/globalStyles';
-export default function StartHeader({bookingDetails, providerDetails}) {
+export default function StartHeader({ bookingDetails, providerDetails }) {
   const handleOpenDirection = () => {
     const lat = bookingDetails?.member_lat;
     const lng = bookingDetails?.member_lng;
@@ -61,10 +61,10 @@ export default function StartHeader({bookingDetails, providerDetails}) {
     const datePart = isToday
       ? 'Today'
       : bookingDate.toLocaleDateString('en-IN', {
-          day: 'numeric',
-          month: 'short',
-          year: 'numeric',
-        });
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+      });
 
     const timePart = bookingDate.toLocaleTimeString('en-IN', {
       hour: 'numeric',
@@ -83,24 +83,59 @@ export default function StartHeader({bookingDetails, providerDetails}) {
     .filter(Boolean)
     .join(', ');
 
+  const getFormattedDistance = () => {
+    let dist = bookingDetails?.distance || providerDetails?.distance;
+
+    // Calculate manually if missing
+    if (!dist) {
+      const pLat = providerDetails?.latitude || providerDetails?.lat;
+      const pLng = providerDetails?.longitude || providerDetails?.lng || providerDetails?.lon;
+      const mLat = bookingDetails?.member_lat;
+      const mLng = bookingDetails?.member_lng;
+
+      if (pLat && pLng && mLat && mLng) {
+        const R = 6371; // km
+        const dLat = (mLat - pLat) * (Math.PI / 180);
+        const dLon = (mLng - pLng) * (Math.PI / 180);
+        const a =
+          Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+          Math.cos(pLat * (Math.PI / 180)) * Math.cos(mLat * (Math.PI / 180)) *
+          Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        dist = R * c;
+      }
+    }
+
+    if (!dist) return '0.0';
+    return parseFloat(dist).toFixed(1);
+  };
+
   return (
     <View style={styles.secBody}>
       <View style={styles.section}>
+        <View style={styles.categoryRow}>
+          <Text style={styles.categoryText}>
+            {bookingDetails?.category_name || 'Category'} - {bookingDetails?.category_subchild_name || 'Service'}
+          </Text>
+        </View>
+
         <View style={styles.headerTopRow}>
           <Text style={styles.dateText}>{formatDateTime()}</Text>
+        </View>
+
+        <View style={styles.userRow}>
+          <Text style={styles.userName} numberOfLines={1}>
+            {bookingDetails?.customer_name || 'Customer'}
+          </Text>
           {isLate() && (
-            <View style={styles.lateWarningBox}>
+            <View style={[styles.lateWarningBox, { marginLeft: 10 }]}>
               <AlertTriangle size={14} color="#b91c1c" />
               <Text style={styles.lateWarningText}>Running Late</Text>
             </View>
           )}
         </View>
 
-        <View style={styles.userRow}>
-          <Text style={styles.userName}>
-            {bookingDetails?.customer_name || 'Customer'}
-          </Text>
-          <View style={styles.dot} />
+        <View style={styles.addressRow}>
           <Text style={styles.addressLine} numberOfLines={2}>
             {fullAddress}
           </Text>
@@ -111,9 +146,7 @@ export default function StartHeader({bookingDetails, providerDetails}) {
             <View style={styles.distanceWrapper}>
               <MapPin size={20} color="#4b5563" />
               <Text style={styles.distanceText}>
-                {`${
-                  bookingDetails?.distance || providerDetails?.distance || 0
-                } km away`}
+                {`${getFormattedDistance()} km away`}
               </Text>
             </View>
 
@@ -137,6 +170,14 @@ const styles = StyleSheet.create({
     paddingVertical: 18,
     paddingHorizontal: 18,
     marginHorizontal: 20,
+  },
+  categoryRow: {
+    marginBottom: 4,
+  },
+  categoryText: {
+    fontSize: 14,
+    color: theme.primary,
+    fontWeight: '700',
   },
   // section: { marginVertical: 10 },
   headerTopRow: {
@@ -173,19 +214,13 @@ const styles = StyleSheet.create({
     // position:"relative"
     // marginBottom: 10,
   },
-  userName: {color: '#4b5563', fontSize: 15, fontWeight: '600'},
-  dot: {
-    // position:"absolute",
-    width: 4,
-    height: 4,
-    borderRadius: 2,
-    backgroundColor: '#4b5563',
-    marginHorizontal: 8,
+  userName: { color: '#4b5563', fontSize: 16, fontWeight: '700', flexShrink: 1 },
+  addressRow: {
+    marginTop: 4,
   },
   addressLine: {
     color: '#6b7280',
     fontSize: 14,
-    flex: 1,
   },
   contactRow: {
     flexDirection: 'row',
@@ -193,7 +228,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 10,
   },
-  distanceWrapper: {flexDirection: 'row', alignItems: 'center'},
+  distanceWrapper: { flexDirection: 'row', alignItems: 'center' },
   distanceText: {
     marginLeft: 8,
     fontWeight: '700',
@@ -207,7 +242,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     textDecorationLine: 'underline',
   },
-  actionIcons: {flexDirection: 'row', gap: 15},
+  actionIcons: { flexDirection: 'row', gap: 15 },
   phoneCircle: {
     width: 52,
     height: 52,

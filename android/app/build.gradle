@@ -93,10 +93,10 @@ android {
             keyPassword 'android'
         }
         release {
-            storeFile file('my-release-key.keystore')
-            storePassword 'android123'
+            storeFile file('my-upload-key.keystore')
+            storePassword 'Moin@9525'
             keyAlias 'my-key-alias'
-            keyPassword 'android123'
+            keyPassword 'Moin@9525'
         }
     }
     buildTypes {

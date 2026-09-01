@@ -3,7 +3,7 @@ import { StyleSheet, TouchableOpacity, Text, ActivityIndicator, View, Platform, 
 import { useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 import ReactNativeBlobUtil from 'react-native-blob-util';
-import LinearGradient from 'react-native-linear-gradient';
+import { theme } from '../../styles/globalStyles';
 
 export default function InvoiceButton({ invoiceUrl }) {
   const navigation = useNavigation();
@@ -105,12 +105,7 @@ export default function InvoiceButton({ invoiceUrl }) {
       disabled={isDownloading}
       activeOpacity={0.8}
     >
-      <LinearGradient
-        colors={['#134E5E', '#71B280']}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={styles.gradientBtn}
-      >
+      <View style={styles.gradientBtn}>
         {isDownloading ? (
           <View style={styles.loadingRow}>
             <ActivityIndicator color="white" size="small" />
@@ -119,7 +114,7 @@ export default function InvoiceButton({ invoiceUrl }) {
         ) : (
           <Text style={styles.startBtnText}>Download Invoice</Text>
         )}
-      </LinearGradient>
+      </View>
     </TouchableOpacity>
   );
 }
@@ -139,6 +134,7 @@ const styles = StyleSheet.create({
   },
   gradientBtn: {
     flex: 1,
+    backgroundColor: theme.primary,
     justifyContent: 'center',
     alignItems: 'center',
   },
