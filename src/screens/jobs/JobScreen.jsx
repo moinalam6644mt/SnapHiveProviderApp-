@@ -7,6 +7,7 @@ import {
   ScrollView,
   StatusBar,
   ActivityIndicator,
+  RefreshControl,
 } from 'react-native';
 import { ChevronLeft, Calendar } from 'lucide-react-native';
 import JobHomeCard from '../../components/jobs/jobHomeCard';
@@ -42,6 +43,7 @@ const JobScreen = () => {
   const [ongoingPage, setOngoingPage] = useState(1);
   const [ongoingTotalPage, setOngoingTotalPage] = useState(1);
   const [ongoingLoadingMore, setOngoingLoadingMore] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const navigation = useNavigation();
   const { callApi } = AuthUser();
 
@@ -234,6 +236,20 @@ const JobScreen = () => {
     }
   };
 
+  const onRefresh = useCallback(async () => {
+    setLoading(true);
+    if (activeTab === 'Upcoming') {
+      // Upcoming syncs via context, just mock a short delay
+      setTimeout(() => setLoading(false), 500);
+    } else if (activeTab === 'Accepted') {
+      await fetchAcceptedBookingData(1);
+    } else if (activeTab === 'Ongoing') {
+      await fetchOngoingBookingData(1);
+    } else if (activeTab === 'Completed') {
+      await fetchCompletedBookingData(1);
+    }
+  }, [activeTab]);
+
   const tabs = ['Upcoming', 'Accepted', 'Ongoing','Completed'];
 
   return (
@@ -285,6 +301,9 @@ const JobScreen = () => {
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 100 }}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={[theme.primary]} />
+        }
       >
         {activeTab === 'Upcoming' && (
           <JobHomeCard myBookingData={myBookingData} userId={userId} />

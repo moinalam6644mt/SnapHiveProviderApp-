@@ -12,36 +12,45 @@ const SkeletonLoader = () => {
         <View key={item} style={styles.card}>
           {/* Header Row */}
           <View style={styles.headerRow}>
-            <ShimmerPlaceholder
-              style={styles.titleShimmer}
-            />
-            <View style={styles.iconGroup}>
-              <ShimmerPlaceholder
-                style={styles.iconShimmer}
-              />
-              <ShimmerPlaceholder
-                style={styles.iconShimmer}
-              />
+            <ShimmerPlaceholder style={styles.titleShimmer} />
+            <View style={styles.iconRow}>
+              <ShimmerPlaceholder style={styles.iconShimmer} />
+              <ShimmerPlaceholder style={styles.iconShimmer} />
             </View>
           </View>
 
-          {/* Content Body */}
-          <View style={styles.contentBody}>
-            <View style={styles.leftCol}>
-              <ShimmerPlaceholder style={styles.lineShimmer} />
-              <ShimmerPlaceholder style={styles.lineShimmer} />
-              <ShimmerPlaceholder style={styles.lineShimmer} />
+          {/* User Row */}
+          <View style={styles.userRow}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <ShimmerPlaceholder style={styles.smallIconShimmer} />
+              <ShimmerPlaceholder style={styles.nameShimmer} />
             </View>
-            <View style={styles.rightCol}>
-              <ShimmerPlaceholder style={styles.priceShimmer} />
-              <ShimmerPlaceholder style={styles.durationShimmer} />
+            <ShimmerPlaceholder style={styles.distanceShimmer} />
+          </View>
+
+          {/* Location Row */}
+          <View style={styles.infoRow}>
+            <View style={styles.rowLeft}>
+              <ShimmerPlaceholder style={styles.smallIconShimmer} />
+              <ShimmerPlaceholder style={styles.addressShimmer} />
             </View>
+            <ShimmerPlaceholder style={styles.priceShimmer} />
+          </View>
+
+          {/* Time Row */}
+          <View style={styles.infoRow}>
+            <View style={styles.rowLeft}>
+              <ShimmerPlaceholder style={styles.smallIconShimmer} />
+              <ShimmerPlaceholder style={styles.timeShimmer} />
+            </View>
+            <ShimmerPlaceholder style={styles.durationShimmer} />
           </View>
 
           {/* Footer Button */}
-          <ShimmerPlaceholder
-            style={styles.buttonShimmer}
-          />
+          <View style={styles.footerRow}>
+            <ShimmerPlaceholder style={styles.targetIconShimmer} />
+            <ShimmerPlaceholder style={styles.buttonShimmer} />
+          </View>
         </View>
       ))}
     </View>
@@ -54,71 +63,102 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
   card: {
-    backgroundColor: '#ffffff',
+    backgroundColor: '#f8fafc',
     borderRadius: 16,
     padding: 16,
-    marginHorizontal: 16,
     marginBottom: 16,
-    elevation: 4,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
-    borderWidth: 1,
-    borderColor: '#f4f4f5',
+    marginHorizontal: 20,
+    marginTop: 10,
+    borderWidth: 0.25,
+    borderColor: '#308695',
   },
   headerRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 15,
+    marginBottom: 10,
   },
   titleShimmer: {
     height: 20,
     width: 150,
     borderRadius: 4,
   },
-  iconGroup: {
+  iconRow: {
     flexDirection: 'row',
-    gap: 12,
+    gap: 10,
   },
   iconShimmer: {
-    height: 40,
-    width: 40,
-    borderRadius: 20,
+    height: 35,
+    width: 35,
+    borderRadius: 18,
   },
-  contentBody: {
+  userRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 20,
+    alignItems: 'center',
+    marginVertical: 6,
   },
-  leftCol: {
-    flex: 1,
-    gap: 10,
+  smallIconShimmer: {
+    height: 18,
+    width: 18,
+    borderRadius: 9,
+    marginRight: 8,
   },
-  rightCol: {
-    alignItems: 'flex-end',
-    justifyContent: 'center',
-    gap: 10,
-  },
-  lineShimmer: {
+  nameShimmer: {
     height: 14,
-    width: '80%',
+    width: 90,
+    borderRadius: 4,
+  },
+  distanceShimmer: {
+    height: 14,
+    width: 80,
+    borderRadius: 4,
+  },
+  infoRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    marginTop: 12,
+  },
+  rowLeft: {
+    flexDirection: 'row',
+    flex: 0.7,
+    alignItems: 'center',
+  },
+  addressShimmer: {
+    height: 14,
+    width: '90%',
+    borderRadius: 4,
+  },
+  timeShimmer: {
+    height: 14,
+    width: 110,
     borderRadius: 4,
   },
   priceShimmer: {
-    height: 24,
-    width: 80,
+    height: 16,
+    width: 50,
     borderRadius: 4,
   },
   durationShimmer: {
     height: 12,
-    width: 60,
+    width: 70,
     borderRadius: 4,
   },
-  buttonShimmer: {
+  footerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 15,
+    gap: 12,
+  },
+  targetIconShimmer: {
+    width: 48,
     height: 48,
-    width: '100%',
+    borderRadius: 24,
+  },
+  buttonShimmer: {
+    flex: 1,
+    height: 48,
     borderRadius: 24,
   },
 });

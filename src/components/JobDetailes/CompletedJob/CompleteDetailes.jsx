@@ -159,20 +159,16 @@ export default CompleteDetailes;
 
 // Styles same thakche...
 const styles = StyleSheet.create({
-  container: { marginHorizontal: 20, marginTop: 15 },
-  title: { fontSize: 16, fontWeight: '700', color: '#1E1B4B', marginBottom: 12 },
-  card: {
+  container: {
+    marginHorizontal: 20,
+    marginTop: 15,
     backgroundColor: theme.background,
     borderRadius: 16,
     padding: 16,
-    borderWidth: 1,
-    borderColor: '#2baab1',
-    elevation: 3,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
+    borderWidth: 0.25,
+    borderColor: '#308695',
   },
+  title: { fontSize: 16, fontWeight: '700', color: '#1E1B4B', marginBottom: 12 },
   row: {
     flexDirection: 'row',
     alignItems: 'center',

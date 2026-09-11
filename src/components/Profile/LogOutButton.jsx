@@ -1,12 +1,12 @@
 import React from 'react';
 import { useContext } from 'react';
-import { Pressable, Text, StyleSheet } from 'react-native';
+import { Pressable, Text, StyleSheet, View } from 'react-native';
 import { LogOut } from 'lucide-react-native';
 import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from '../../context/AuthContext';
-import LinearGradient from "react-native-linear-gradient";
 
 import { theme } from '../../styles/globalStyles';
+
 const LogOutButton = () => {
   const navigation = useNavigation();
   const { logout } = useContext(AuthContext);
@@ -17,24 +17,22 @@ const LogOutButton = () => {
 
   return (
     <Pressable
-      style={styles.buttonContainer}
+      style={({ pressed }) => [
+        styles.buttonContainer,
+        pressed && styles.buttonPressed
+      ]}
       onPress={handleLogout}
     >
-      <LinearGradient
-        colors={['#134E5E', '#71B280']}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={styles.buttonGradient}
-      >
+      <View style={styles.buttonContent}>
+        <LogOut
+          size={20}
+          color="#ef4444"
+          style={styles.icon}
+        />
         <Text style={styles.text}>
           Log Out
         </Text>
-        <LogOut
-          size={20}
-          color="#FFFFFF"
-          style={styles.icon}
-        />
-      </LinearGradient>
+      </View>
     </Pressable>
   );
 };
@@ -46,27 +44,29 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     height: 56,
     borderRadius: 16,
-    shadowColor: '#134E5E',
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.3,
-    shadowRadius: 15,
-    elevation: 8,
-    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: '#fee2e2',
+    backgroundColor: '#fef2f2',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  buttonGradient: {
-    flex: 1,
+  buttonPressed: {
+    opacity: 0.7,
+    backgroundColor: '#fee2e2',
+  },
+  buttonContent: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
   },
   text: {
-    fontWeight: 'bold',
+    fontFamily: 'Sora-SemiBold',
     fontSize: 16,
-    color: '#FFFFFF',
+    color: '#ef4444',
     letterSpacing: 0.5,
   },
   icon: {
-    marginLeft: 10,
+    marginRight: 10,
   },
 });
 

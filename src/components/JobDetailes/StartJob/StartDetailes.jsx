@@ -99,16 +99,11 @@ export default StartDetails;
 const styles = StyleSheet.create({
   detailsBox: {
     backgroundColor: '#ffffff',
-    borderRadius: 20,
+    borderRadius: 16,
     padding: 18,
     marginHorizontal: 20,
-    borderWidth: 1,
-    borderColor: '#e5e7eb',
-    elevation: 3,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 5,
+    borderWidth: 0.25,
+    borderColor: '#308695',
   },
   sectionLabel: {
     fontSize: 18,

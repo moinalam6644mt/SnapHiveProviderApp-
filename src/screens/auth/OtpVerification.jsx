@@ -340,7 +340,7 @@ const OtpVerification = () => {
                           otpInputs.current[i - 1]?.focus();
                       }}
                       editable={!loading}
-                      selectionColor="#2BAAB1"
+                      selectionColor="#308695"
                     />
                   ))}
                 </View>
@@ -357,7 +357,7 @@ const OtpVerification = () => {
                   disabled={!canResend || resendLoading}
                   onPress={handleResendOtp}>
                   {resendLoading ? (
-                    <ActivityIndicator size="small" color="#2BAAB1" />
+                    <ActivityIndicator size="small" color="#308695" />
                   ) : (
                     <Text
                       style={[
@@ -378,7 +378,7 @@ const OtpVerification = () => {
                 onPress={handleVerifyOtp}
                 disabled={loading}>
                 <LinearGradient
-                  colors={['#134E5E', '#71B280']}
+                  colors={['#308695', '#308695']}
                   start={{ x: 0, y: 0 }}
                   end={{ x: 1, y: 1 }}
                   style={styles.buttonGradient}

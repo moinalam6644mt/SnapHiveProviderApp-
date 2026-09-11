@@ -11,9 +11,10 @@ import {
   ActivityIndicator,
   Modal,
   Pressable,
+  InteractionManager,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { ChevronLeft, AlertCircle } from 'lucide-react-native';
+import { ChevronLeft, AlertCircle, MessageSquare, Phone } from 'lucide-react-native';
 import {
   useNavigation,
   useRoute,
@@ -24,6 +25,7 @@ import { AuthUser } from '../../../api/authUser';
 import { useOtpShared } from '../../context/OtpSharedContext';
 import Toast from 'react-native-toast-message';
 import handleChat from '../../services/ChatServiceFunction';
+import JobDetailsSkeleton from '../../components/JobDetailsSkeleton';
 
 import StartHeader from '../../components/JobDetailes/StartJob/StartHeader';
 import StartDetailes from '../../components/JobDetailes/StartJob/StartDetailes';
@@ -88,7 +90,7 @@ const JobDetailsScreen = () => {
   const [otpAttempts, setOtpAttempts] = useState(0);
   const [isBlocked, setIsBlocked] = useState(false);
   const [storedStartTime, setStoredStartTime] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [isPayment, setIsPayment] = useState(0);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const [calculation, setCalculation] = useState(null);
@@ -175,7 +177,12 @@ const JobDetailsScreen = () => {
 
   useFocusEffect(
     useCallback(() => {
-      fetchBookingDetails();
+      // Delay fetch to let the screen transition animation finish
+      // We cannot use InteractionManager because the skeleton animation loops infinitely and blocks it
+      const timer = setTimeout(() => {
+        fetchBookingDetails();
+      }, 400);
+      return () => clearTimeout(timer);
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [orderId]),
   );
@@ -209,7 +216,7 @@ const JobDetailsScreen = () => {
       if (typeof data === 'string') {
         try {
           parsedData = JSON.parse(data);
-        } catch {}
+        } catch { }
       }
       navigation.navigate('CallScreen', {
         callingData: parsedData,
@@ -398,13 +405,7 @@ const JobDetailsScreen = () => {
       style={styles.safeArea}
       edges={['top', 'left', 'right', 'bottom']}>
       {loading ? (
-        <View
-          style={[styles.loaderWrapper, { backgroundColor: 'rgba(0,0,0,0.4)' }]}>
-          <View style={styles.loaderCard}>
-            <ActivityIndicator size="large" color={theme.background} />
-            <Text style={styles.loadingText}>Loading details...</Text>
-          </View>
-        </View>
+        <JobDetailsSkeleton />
       ) : (
         <>
           <StatusBar
@@ -427,154 +428,146 @@ const JobDetailsScreen = () => {
               </Text>
               {(bookingDetails?.status === '2' ||
                 bookingDetails?.status === '3') && (
-                <View style={styles.headerActions}>
-                  <TouchableOpacity
-                    style={styles.headerIconWrapper}
-                    activeOpacity={0.8}
-                    onPress={handleMessageCustomer}>
-                    <View style={styles.headerIconSolid}>
-                      <Image
-                        source={require('../../../assets/app/jobs/messages-2.png')}
-                        style={styles.headerActionIcon}
-                        resizeMode="contain"
-                      />
-                    </View>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={styles.headerIconWrapper}
-                    activeOpacity={0.8}
-                    onPress={handleCallCustomer}>
-                    <View style={styles.headerIconSolid}>
-                      <Image
-                        source={require('../../../assets/app/jobs/material-symbols_call.png')}
-                        style={styles.headerActionIcon}
-                        resizeMode="contain"
-                      />
-                    </View>
-                  </TouchableOpacity>
-                </View>
-              )}
+                  <View style={styles.headerActions}>
+                    <TouchableOpacity
+                      style={styles.headerIconWrapper}
+                      activeOpacity={0.8}
+                      onPress={handleMessageCustomer}>
+                      <View style={styles.headerIconSolid}>
+                        <MessageSquare size={18} color="#fff" />
+                      </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={styles.headerIconWrapper}
+                      activeOpacity={0.8}
+                      onPress={handleCallCustomer}>
+                      <View style={styles.headerIconSolid}>
+                        <Phone size={18} color="#fff" />
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+                )}
             </View>
 
             {/* Scrollable Content inside Bottom Sheet */}
             <View style={styles.bottomSheet}>
               <ScrollView
                 style={styles.scrollView}
-              contentContainerStyle={styles.contentBody}
-              showsVerticalScrollIndicator={false}
-              keyboardShouldPersistTaps="handled"
-              bounces={false}>
-              <View style={styles.innerContent}>
-                {/* STATUS 2 = ACCEPTED */}
-                {bookingDetails?.status === '2' && (
-                  <View style={styles.statusWrapper}>
-                    <StartHeader
-                      bookingDetails={bookingDetails}
-                      providerDetails={providerDetails}
-                    />
-                    <StartDetailes
-                      bookingDetails={bookingDetails}
-                      providerDetails={providerDetails}
-                    />
-                    <Warning instructions={bookingDetails?.instructions} />
-                  </View>
-                )}
+                contentContainerStyle={styles.contentBody}
+                showsVerticalScrollIndicator={false}
+                keyboardShouldPersistTaps="handled"
+                bounces={false}>
+                <View style={styles.innerContent}>
+                  {/* STATUS 2 = ACCEPTED */}
+                  {bookingDetails?.status === '2' && (
+                    <View style={styles.statusWrapper}>
+                      <StartHeader
+                        bookingDetails={bookingDetails}
+                        providerDetails={providerDetails}
+                      />
+                      <StartDetailes
+                        bookingDetails={bookingDetails}
+                        providerDetails={providerDetails}
+                      />
+                      <Warning instructions={bookingDetails?.instructions} />
+                    </View>
+                  )}
 
-                {/* STATUS 3 = IN PROGRESS */}
-                {bookingDetails?.status === '3' && (
-                  <View style={styles.statusWrapper}>
-                    <EndHeader
-                      bookingDetails={bookingDetails}
-                      providerDetails={providerDetails}
-                      elapsedSeconds={elapsedSeconds}
-                      formatTime={formatTime}
-                    />
-                    {/* <UserProfile
+                  {/* STATUS 3 = IN PROGRESS */}
+                  {bookingDetails?.status === '3' && (
+                    <View style={styles.statusWrapper}>
+                      <EndHeader
+                        bookingDetails={bookingDetails}
+                        providerDetails={providerDetails}
+                        elapsedSeconds={elapsedSeconds}
+                        formatTime={formatTime}
+                      />
+                      {/* <UserProfile
                       bookingDetails={bookingDetails}
                       providerDetails={providerDetails}
                       onOpenIdCard={() => setShowIdCard(true)}
                     /> */}
-                    <EndDetailes
-                      bookingDetails={bookingDetails}
-                      providerDetails={providerDetails}
-                      elapsedSeconds={elapsedSeconds}
-                      formatTime={formatTime}
-                    />
-                  </View>
-                )}
+                      <EndDetailes
+                        bookingDetails={bookingDetails}
+                        providerDetails={providerDetails}
+                        elapsedSeconds={elapsedSeconds}
+                        formatTime={formatTime}
+                      />
+                    </View>
+                  )}
 
-                {/* STATUS 4 = COMPLETED */}
-                {bookingDetails?.status === '4' && (
-                  <View style={styles.statusWrapper}>
-                    <CompleteHeader
-                      bookingDetails={bookingDetails}
-                      providerDetails={providerDetails}
-                      elapsedSeconds={elapsedSeconds}
-                      formatTime={formatTime}
-                      calculation={calculation}
-                    />
-                    {/* <UserProfile
+                  {/* STATUS 4 = COMPLETED */}
+                  {bookingDetails?.status === '4' && (
+                    <View style={styles.statusWrapper}>
+                      <CompleteHeader
+                        bookingDetails={bookingDetails}
+                        providerDetails={providerDetails}
+                        elapsedSeconds={elapsedSeconds}
+                        formatTime={formatTime}
+                        calculation={calculation}
+                      />
+                      {/* <UserProfile
                       bookingDetails={bookingDetails}
                       providerDetails={providerDetails}
                     /> */}
-                    <CompleteDetailes
-                      bookingDetails={bookingDetails}
-                      providerDetails={providerDetails}
-                      elapsedSeconds={elapsedSeconds}
-                      formatTime={formatTime}
-                      calculation={calculation}
+                      <CompleteDetailes
+                        bookingDetails={bookingDetails}
+                        providerDetails={providerDetails}
+                        elapsedSeconds={elapsedSeconds}
+                        formatTime={formatTime}
+                        calculation={calculation}
+                      />
+                    </View>
+                  )}
+
+                  {/* Map */}
+                  <View style={styles.mapContainer}>
+                    <BookingMap
+                      lat={bookingDetails?.member_lat}
+                      lng={bookingDetails?.member_lng}
+                      address={`${bookingDetails?.member_address_1 || ''} ${bookingDetails?.member_address_2 || ''
+                        } ${bookingDetails?.member_landmark || ''}`}
+                      landmark={bookingDetails?.member_landmark}
                     />
                   </View>
-                )}
 
-                {/* Map */}
-                <View style={styles.mapContainer}>
-                  <BookingMap
-                    lat={bookingDetails?.member_lat}
-                    lng={bookingDetails?.member_lng}
-                    address={`${bookingDetails?.member_address_1 || ''} ${bookingDetails?.member_address_2 || ''
-                      } ${bookingDetails?.member_landmark || ''}`}
-                    landmark={bookingDetails?.member_landmark}
-                  />
+                  {/* Buttons */}
+                  {bookingDetails?.status === '2' && (
+                    <View style={styles.buttonWrapper}>
+                      <StartButtton
+                        setModalVisible={setModalVisible}
+                        isBlocked={isBlocked}
+                        loading={loading}
+                        onCancelPress={handleCancelJob}
+                      />
+                    </View>
+                  )}
+
+                  {bookingDetails?.status === '3' && (
+                    <View style={styles.buttonWrapper}>
+                      <EndButton
+                        setModalVisible={setModalVisible}
+                        isBlocked={isBlocked}
+                      />
+                    </View>
+                  )}
+
+                  {bookingDetails?.status === '4' && (
+                    <View style={styles.statusWrapper}>
+                      <InvoiceButton invoiceUrl={invoiceDetails?.invoice_url} />
+                      <MarkPaid
+                        isPayment={isPayment}
+                        workerId={userId}
+                        orderId={orderId}
+                      />
+                    </View>
+                  )}
                 </View>
-
-                {/* Buttons */}
-                {bookingDetails?.status === '2' && (
-                  <View style={styles.buttonWrapper}>
-                    <StartButtton
-                      setModalVisible={setModalVisible}
-                      isBlocked={isBlocked}
-                      loading={loading}
-                      onCancelPress={handleCancelJob}
-                    />
-                  </View>
-                )}
-
-                {bookingDetails?.status === '3' && (
-                  <View style={styles.buttonWrapper}>
-                    <EndButton
-                      setModalVisible={setModalVisible}
-                      isBlocked={isBlocked}
-                    />
-                  </View>
-                )}
-
-                {bookingDetails?.status === '4' && (
-                  <View style={styles.statusWrapper}>
-                    <InvoiceButton invoiceUrl={invoiceDetails?.invoice_url} />
-                    <MarkPaid
-                      isPayment={isPayment}
-                      workerId={userId}
-                      orderId={orderId}
-                    />
-                  </View>
-                )}
-              </View>
-            </ScrollView>
+              </ScrollView>
+            </View>
           </View>
-        </View>
-      </>
-    )}
+        </>
+      )}
 
       <OTPVerificationModal
         visible={modalVisible}
@@ -585,7 +578,7 @@ const JobDetailsScreen = () => {
       <Modal
         visible={cancelModalVisible}
         transparent
-        animationType="fade"
+        animationType="slide"
         onRequestClose={() => setCancelModalVisible(false)}>
         <View style={styles.modalOverlay}>
           <Pressable
@@ -593,6 +586,10 @@ const JobDetailsScreen = () => {
             onPress={() => setCancelModalVisible(false)}
           />
           <View style={styles.cancelModalCard}>
+            {/* Drag Handle */}
+            <View style={styles.dragHandleContainer}>
+              <View style={styles.dragHandle} />
+            </View>
             <View style={styles.iconContainer}>
               <AlertCircle size={moderateScale(50)} color={theme.danger} />
             </View>
@@ -652,16 +649,11 @@ const styles = StyleSheet.create({
   safeArea: { flex: 1, backgroundColor: theme.primary },
   solidBg: { flex: 1, backgroundColor: theme.primary },
   bottomSheet: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#F8FAFC',
     borderTopLeftRadius: moderateScale(40),
     borderTopRightRadius: moderateScale(40),
     flex: 1,
     paddingTop: verticalScale(20),
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: -10 },
-    shadowOpacity: 0.1,
-    shadowRadius: 20,
-    elevation: 20,
     marginTop: verticalScale(10),
     overflow: 'hidden',
   },
@@ -670,36 +662,39 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: horizontalScale(20),
     paddingVertical: verticalScale(15),
+    justifyContent: 'space-between',
   },
-  backButton: { marginRight: moderateScale(10), padding: moderateScale(4) },
+  backButton: {
+    padding: moderateScale(4),
+    width: moderateScale(40),
+  },
   mainTitle: {
     flex: 1,
-    fontSize: moderateScale(20),
+    fontSize: moderateScale(18),
     fontWeight: '700',
     color: '#fff',
+    textAlign: 'center',
   },
   headerActions: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: moderateScale(8),
-    marginLeft: moderateScale(8),
+    width: moderateScale(88), // width of 2 icons + gap for centering balance
+    justifyContent: 'flex-end',
   },
   headerIconWrapper: {
     width: moderateScale(38),
     height: moderateScale(38),
     borderRadius: moderateScale(19),
     overflow: 'hidden',
-    shadowColor: '#134E5E',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    elevation: 2,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.2)',
   },
   headerIconSolid: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#0a369d',
+    backgroundColor: 'rgba(255,255,255,0.15)', // Light translucent background for icons
   },
   headerActionIcon: {
     width: moderateScale(22),
@@ -736,24 +731,31 @@ const styles = StyleSheet.create({
   },
   modalOverlay: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: 'flex-end',
   },
   modalBackground: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: 'rgba(0,0,0,0.6)',
   },
   cancelModalCard: {
-    width: '85%',
-    backgroundColor: theme.background,
-    borderRadius: moderateScale(24),
+    width: '100%',
+    backgroundColor: '#ffffff',
+    borderTopLeftRadius: moderateScale(30),
+    borderTopRightRadius: moderateScale(30),
     padding: moderateScale(25),
+    paddingBottom: moderateScale(40),
     alignItems: 'center',
-    elevation: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
+  },
+  dragHandleContainer: {
+    width: '100%',
+    alignItems: 'center',
+    marginBottom: verticalScale(15),
+  },
+  dragHandle: {
+    width: 40,
+    height: 5,
+    borderRadius: 3,
+    backgroundColor: '#cbd5e1',
   },
   iconContainer: {
     width: moderateScale(80),
@@ -767,12 +769,12 @@ const styles = StyleSheet.create({
   cancelModalTitle: {
     fontSize: moderateScale(22),
     fontWeight: '800',
-    color: '#1e1b4b',
+    color: '#000',
     marginBottom: verticalScale(10),
   },
   cancelModalMessage: {
     fontSize: moderateScale(15),
-    color: '#6B7280',
+    color: '#000',
     textAlign: 'center',
     lineHeight: moderateScale(22),
     marginBottom: verticalScale(24),
@@ -785,7 +787,7 @@ const styles = StyleSheet.create({
   modalBtn: {
     flex: 1,
     height: verticalScale(50),
-    borderRadius: moderateScale(12),
+    borderRadius: moderateScale(27),
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -796,7 +798,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F3F4F6',
   },
   modalPrimaryBtnText: {
-    color: theme.background,
+    color: '#fff',
     fontSize: moderateScale(15),
     fontWeight: 'bold',
   },

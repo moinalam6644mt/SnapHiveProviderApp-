@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -7,26 +7,26 @@ import {
   Image,
   Linking,
   Alert,
+  InteractionManager,
 } from 'react-native';
-import {User, MapPin, Calendar} from 'lucide-react-native';
+import { User, MapPin, Calendar, MessageSquare, Phone, Navigation } from 'lucide-react-native';
 import Toast from 'react-native-toast-message';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { theme } from '../../styles/globalStyles';
 import handleChat from '../../services/ChatServiceFunction';
-import {AuthUser} from '../../../api/authUser';
+import { AuthUser } from '../../../api/authUser';
 
-const AcceptedJobCard = ({onStartJob, acceptedBookingData, userId}) => {
+const AcceptedJobCard = ({ onStartJob, acceptedBookingData, userId }) => {
   const [callingData, setCallingData] = useState('');
   const navigation = useNavigation();
-  const {callApi} = AuthUser();
+  const { callApi } = AuthUser();
 
   if (!acceptedBookingData || !acceptedBookingData.length) {
     return (
       <View style={styles.emptyContainer}>
-        <Text style={styles.emptyTitle}>No Accepted Jobs Yet</Text>
+        <Text style={styles.emptyTitle}>No Accepted Jobs Yet 🚀</Text>
         <Text style={styles.emptySubtitle}>
-          You haven't accepted any jobs yet. Start browsing and accept a job to
-          see it here.
+          You haven't accepted any jobs yet. Start browsing and accept a job to see it here.
         </Text>
       </View>
     );
@@ -80,10 +80,10 @@ const AcceptedJobCard = ({onStartJob, acceptedBookingData, userId}) => {
           const datePart = isToday
             ? 'Today'
             : bookingDate.toLocaleDateString('en-IN', {
-                day: 'numeric',
-                month: 'short',
-                year: 'numeric',
-              });
+              day: 'numeric',
+              month: 'short',
+              year: 'numeric',
+            });
 
           const timePart = bookingDate.toLocaleTimeString('en-IN', {
             hour: 'numeric',
@@ -148,94 +148,98 @@ const AcceptedJobCard = ({onStartJob, acceptedBookingData, userId}) => {
           }
         };
 
+        const handleRedirect = () => {
+          InteractionManager.runAfterInteractions(() => {
+            navigation.navigate('JobDetailsScreen', {
+              orderId: booking_id,
+              userId: userId,
+            });
+          });
+        };
+
+        const openGoogleMaps = () => {
+          const query = encodeURIComponent(fullAddress);
+          const url = `https://www.google.com/maps/dir/?api=1&destination=${query}`;
+          Linking.canOpenURL(url)
+            .then(supported => {
+              if (supported) {
+                Linking.openURL(url);
+              } else {
+                console.warn("Don't know how to open URI: " + url);
+              }
+            })
+            .catch(err => console.error('An error occurred', err));
+        };
+
         return (
           <View key={booking_id} style={styles.card}>
-            <View style={styles.headerRow}>
-              <Text style={styles.jobTitle}>
-                {category_subchild_name || 'Work_Type'}
-              </Text>
-              <View style={styles.iconGroup}>
-                {/* Chat Icon - Custom PNG */}
+            {/* Header */}
+            <View style={styles.cardHeader}>
+              <Text style={styles.title}>{category_subchild_name || 'Work_Type'}</Text>
+
+              <View style={styles.iconRow}>
                 <TouchableOpacity
                   style={styles.iconCircleWrapper}
                   activeOpacity={0.8}
                   onPress={() => {
-                    handleChat(
-                      userId,
-                      booking_id,
-                      item,
-                      navigation,
-                      member_name,
-                      logo,
-                      category_subchild_name,
-                    );
+                    handleChat(userId, booking_id, item, navigation, member_name, logo, category_subchild_name);
                   }}>
-                  <Image
-                    source={require('../../../assets/app/jobs/messages-2.png')}
-                    style={styles.iconImage}
-                    resizeMode="contain"
-                  />
+                  <MessageSquare size={18} color="#fff" />
                 </TouchableOpacity>
 
-                {/* Call Icon - Custom PNG */}
                 <TouchableOpacity
                   style={styles.iconCircleWrapper}
                   activeOpacity={0.8}
                   onPress={() => handleCall()}>
-                  <Image
-                    source={require('../../../assets/app/jobs/material-symbols_call.png')}
-                    style={styles.iconImage}
-                    resizeMode="contain"
-                  />
+                  <Phone size={18} color="#fff" />
                 </TouchableOpacity>
               </View>
             </View>
 
-            {/* Content Body */}
-            <View style={styles.contentBody}>
-              {/* Left Side */}
-              <View style={styles.leftCol}>
-                <View style={styles.infoRow}>
-                  <User size={18} color="#71717a" />
-                  <Text style={styles.userName}>
-                    {member_name || 'Customer'}
-                  </Text>
+            {/* User Info */}
+            <View style={styles.userRow}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <View style={styles.iconBackgroundSmall}>
+                  <User size={14} color="#fff" />
                 </View>
-                <View style={[styles.infoRow, {alignItems: 'flex-start'}]}>
-                  <MapPin size={18} color="#1e1b4b" />
-                  <Text style={styles.addressText}>{fullAddress}</Text>
-                </View>
-                <View style={styles.infoRow}>
-                  <Calendar size={18} color="#71717a" />
-                  <Text style={styles.dateTimeText}>{formatDateTime()}</Text>
-                </View>
+                <Text style={styles.userName}>{member_name || 'Customer'}</Text>
               </View>
-
-              {/* Right Side */}
-              <View style={styles.rightCol}>
-                <Text style={styles.distanceText}>
-                  {formattedDistance} km from you
-                </Text>
-                <Text style={styles.priceText}>₹{rate}/h</Text>
-                <Text style={styles.durationText}>
-                  Duration: {duration_hours} Hours
-                </Text>
-              </View>
+              <Text style={styles.distance}>{formattedDistance} km from you</Text>
             </View>
 
-            {/* Footer Button Section */}
+            {/* Location & Price */}
+            <View style={styles.infoRow}>
+              <View style={styles.rowLeft}>
+                <MapPin size={16} color="#FA4C03" style={styles.inlineIcon} />
+                <Text style={styles.address}>{fullAddress}</Text>
+              </View>
+              <Text style={styles.price}>₹{rate}/h</Text>
+            </View>
+
+            {/* Time & Duration */}
+            <View style={styles.infoRow}>
+              <View style={styles.rowLeft}>
+                <Calendar size={16} color="#FA4C03" style={styles.inlineIcon} />
+                <Text style={styles.time}>{formatDateTime()}</Text>
+              </View>
+              <Text style={styles.duration}>Duration: {duration_hours} Hours</Text>
+            </View>
+
+            {/* Footer */}
             <View style={styles.footerRow}>
-              {/* Teal Start Job Button */}
+              <TouchableOpacity
+                style={styles.targetIconContainer}
+                activeOpacity={0.8}
+                onPress={openGoogleMaps}
+              >
+                <Navigation size={22} color="#fff" />
+              </TouchableOpacity>
+
               <TouchableOpacity
                 style={styles.startBtnContainer}
                 activeOpacity={0.8}
-                onPress={() =>
-                  navigation.navigate('JobDetailsScreen', {
-                    orderId: booking_id,
-                    userId: userId,
-                  })
-                }>
-                <Text style={styles.startBtnText}>Start Job</Text>
+                onPress={handleRedirect}>
+                <Text style={styles.btnText}>Start Job</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -247,84 +251,110 @@ const AcceptedJobCard = ({onStartJob, acceptedBookingData, userId}) => {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#ffffff',
+    backgroundColor: '#f8fafc',
     borderRadius: 16,
     padding: 16,
+    marginBottom: 16,
     marginHorizontal: 20,
     marginTop: 20,
-    elevation: 4,
-    shadowColor: theme.primary,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
-    borderWidth: 1,
-    borderColor: 'rgba(6, 133, 133, 0.1)',
+    borderWidth: 0.25,
+    borderColor: "#308695",
   },
-  headerRow: {
+  cardHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 15,
   },
-  jobTitle: {fontSize: 15, fontWeight: 'bold', color: theme.primary},
-  iconGroup: {flexDirection: 'row', gap: 12},
-
-  iconCircleWrapper: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: theme.primary,
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: theme.primary,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    elevation: 2,
-  },
-  iconImage: {
-    width: 24,
-    height: 24,
-    // tintColor: "white", // Ensure icons are white if they are flat
-  },
-  contentBody: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 20,
-  },
-  leftCol: {flex: 1.2, gap: 10},
-  rightCol: {flex: 0.8, alignItems: 'flex-end', justifyContent: 'center'},
-  infoRow: {flexDirection: 'row', alignItems: 'center', gap: 8},
-  userName: {fontSize: 13, fontWeight: '600', color: '#3f3f46'},
-  addressText: {fontSize: 12, color: '#52525b', lineHeight: 16},
-  dateTimeText: {fontSize: 13, color: '#52525b'},
-  distanceText: {fontSize: 13, fontWeight: '600', color: '#3f3f46'},
-  priceText: {
+  title: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#18181b',
-    marginVertical: 4,
+    color: theme.primary,
   },
-  durationText: {fontSize: 11, color: '#71717a'},
-
-  // Footer Row Alignment
-  footerRow: {
+  iconRow: {
     flexDirection: 'row',
-    gap: 12,
-    alignItems: 'center',
-    marginTop: 5,
+    gap: 10,
   },
-  locationBtn: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: '#f3f4f6', // Light grey background for location circle
+  iconCircleWrapper: {
+    width: 35,
+    height: 35,
+    borderRadius: 18,
+    backgroundColor: '#FA4C03',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  locationImage: {
+  userRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginVertical: 2,
+  },
+  iconBackgroundSmall: {
     width: 24,
     height: 24,
+    borderRadius: 12,
+    backgroundColor: '#FA4C03',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 8,
+  },
+  userName: {
+    fontWeight: '600',
+    color: '#374151',
+  },
+  infoRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    marginTop: 4,
+  },
+  rowLeft: {
+    flexDirection: 'row',
+    flex: 0.7,
+    alignItems: 'flex-start',
+  },
+  inlineIcon: {
+    marginRight: 6,
+    marginTop: 1,
+  },
+  address: {
+    flex: 1,
+    fontSize: 12,
+    color: '#000',
+    lineHeight: 18,
+  },
+  distance: {
+    fontSize: 13,
+    fontWeight: 'bold',
+    color: '#000',
+  },
+  time: {
+    fontSize: 13,
+    color: '#000',
+  },
+  price: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#FA4C03',
+  },
+  duration: {
+    textAlign: 'right',
+    fontSize: 11,
+    color: '#FA4C03',
+    marginTop: 5,
+  },
+  footerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 15,
+    gap: 12,
+  },
+  targetIconContainer: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: '#FA4C03',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   startBtnContainer: {
     flex: 1,
@@ -333,32 +363,24 @@ const styles = StyleSheet.create({
     backgroundColor: theme.primary,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: theme.primary,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 4,
   },
-  startBtnText: {
+  btnText: {
     color: 'white',
     fontWeight: 'bold',
-    fontSize: 16,
+    fontSize: 15,
   },
-
   emptyContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     paddingVertical: 40,
   },
-
   emptyTitle: {
     fontSize: 16,
     fontWeight: 'bold',
     color: '#1e1b4b',
     marginBottom: 6,
   },
-
   emptySubtitle: {
     fontSize: 13,
     color: '#6B7280',

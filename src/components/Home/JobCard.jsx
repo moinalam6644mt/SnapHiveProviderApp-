@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Image,
   Linking,
+  InteractionManager,
 } from 'react-native';
 import { theme } from '../../styles/globalStyles';
 import {
@@ -15,6 +16,7 @@ import {
   Calendar,
   Compass,
   User,
+  Navigation,
 } from 'lucide-react-native';
 import { useNavigation } from '@react-navigation/native';
 import OTPVerificationModal from '../OtpVerification/jobStartWithOtp';
@@ -141,12 +143,29 @@ const JobCard = ({ acceptedBookingData, userId }) => {
   };
 
   const handleRedirect = () => {
-    navigation.navigate('JobDetailsScreen', {
-      orderId: booking_id,
-      userId: userId,
-      autoOpenOtp: true,
-    })
-  }
+    InteractionManager.runAfterInteractions(() => {
+      navigation.navigate('JobDetailsScreen', {
+        orderId: booking_id,
+        userId: userId,
+        autoOpenOtp: true,
+      });
+    });
+  };
+
+  const openGoogleMaps = () => {
+    const query = encodeURIComponent(fullAddress);
+    const url = `https://www.google.com/maps/dir/?api=1&destination=${query}`;
+    Linking.canOpenURL(url)
+      .then(supported => {
+        if (supported) {
+          Linking.openURL(url);
+        } else {
+          console.warn("Don't know how to open URI: " + url);
+        }
+      })
+      .catch(err => console.error('An error occurred', err));
+  };
+
 
 
   return (
@@ -165,7 +184,7 @@ const JobCard = ({ acceptedBookingData, userId }) => {
             style={styles.iconCircleWrapper}
             activeOpacity={0.8}
           >
-            <MessageSquare size={18} color="white" />
+            <MessageSquare size={18} color={theme.textPrimary} />
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -173,7 +192,7 @@ const JobCard = ({ acceptedBookingData, userId }) => {
             style={styles.iconCircleWrapper}
             activeOpacity={0.8}
           >
-            <Phone size={18} color="white" />
+            <Phone size={18} color={theme.textPrimary} />
           </TouchableOpacity>
         </View>
       </View>
@@ -182,7 +201,7 @@ const JobCard = ({ acceptedBookingData, userId }) => {
       <View style={styles.userRow}>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <View style={styles.iconBackgroundSmall}>
-            <User size={14} color="#374151" />
+            <User size={14} color="#fff" />
           </View>
           <Text style={styles.userName}>{member_name || 'Member name'}</Text>
         </View>
@@ -193,7 +212,7 @@ const JobCard = ({ acceptedBookingData, userId }) => {
       {/* Location & Distance */}
       <View style={styles.infoRow}>
         <View style={styles.rowLeft}>
-          <MapPin size={16} color="#1e1b4b" style={styles.inlineIcon} />
+          <MapPin size={16} color="#FA4C03" style={styles.inlineIcon} />
           <Text style={styles.address}>{fullAddress}</Text>
         </View>
 
@@ -203,7 +222,7 @@ const JobCard = ({ acceptedBookingData, userId }) => {
       {/* Time & Price */}
       <View style={styles.infoRow}>
         <View style={styles.rowLeft}>
-          <Calendar size={16} color="#1e1b4b" style={styles.inlineIcon} />
+          <Calendar size={16} color="#FA4C03" style={styles.inlineIcon} />
           <Text style={styles.time}>{formatDateTime()}</Text>
         </View>
         <Text style={styles.duration}>Duration: {duration_hours} Hours</Text>
@@ -211,25 +230,18 @@ const JobCard = ({ acceptedBookingData, userId }) => {
 
       {/* Footer */}
       <View style={styles.footerRow}>
-        <View style={styles.targetIconContainer}>
-          {/* <Compass size={24} color="#1e1b4b" /> */}
-          <Image
-            source={require('../../../assets/app/jobs/mage_location-fill.png')}
-            // style={styles.centerLogo}
-            resizeMode="contain"
-          />
-        </View>
+        <TouchableOpacity
+          style={styles.targetIconContainer}
+          activeOpacity={0.8}
+          onPress={openGoogleMaps}
+        >
+          <Navigation size={22} color="#fff" />
+        </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.startBtnContainer}
           activeOpacity={0.8}
-          onPress={() =>
-            navigation.navigate('JobDetailsScreen', {
-              orderId: booking_id,
-              userId: userId,
-              autoOpenOtp: true,
-            })
-          }
+          onPress={handleRedirect}
         >
           <Text style={styles.btnText}>Start Job</Text>
         </TouchableOpacity>
@@ -246,17 +258,12 @@ export default JobCard;
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#ffffff',
+    backgroundColor: '#f8fafc',
     borderRadius: 16,
     padding: 16,
     marginBottom: 16,
-    elevation: 4,
-    shadowColor: theme.primary,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
-    borderWidth: 1,
-    borderColor: 'rgba(6, 133, 133, 0.1)',
+    borderWidth: 0.25,
+    borderColor: "#308695",
   },
   cardHeader: {
     flexDirection: 'row',
@@ -276,14 +283,9 @@ const styles = StyleSheet.create({
     width: 35,
     height: 35,
     borderRadius: 18,
-    backgroundColor: theme.primary,
+    backgroundColor: '#FA4C03',
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: theme.primary,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    elevation: 2,
   },
   userRow: {
     flexDirection: 'row',
@@ -295,7 +297,7 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
     borderRadius: 12,
-    backgroundColor: '#F3F4F6',
+    backgroundColor: '#FA4C03',
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 8,
@@ -322,27 +324,27 @@ const styles = StyleSheet.create({
   address: {
     flex: 1,
     fontSize: 12,
-    color: '#6B7280',
+    color: '#000',
     lineHeight: 18,
   },
   distance: {
     fontSize: 13,
     fontWeight: 'bold',
-    color: '#374151',
+    color: '#000',
   },
   time: {
     fontSize: 13,
-    color: '#374151',
+    color: '#000',
   },
   price: {
     fontSize: 14,
     fontWeight: 'bold',
-    color: '#374151',
+    color: '#FA4C03',
   },
   duration: {
     textAlign: 'right',
     fontSize: 11,
-    color: '#9CA3AF',
+    color: '#FA4C03',
     marginTop: 5,
   },
   footerRow: {
@@ -355,9 +357,14 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: 24,
-    backgroundColor: '#F3F4F6',
+    backgroundColor: '#FA4C03',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  centerLogo: {
+    position: 'absolute',
+    width: 22,
+    height: 22,
   },
   startBtnContainer: {
     flex: 1,
@@ -366,11 +373,6 @@ const styles = StyleSheet.create({
     backgroundColor: theme.primary,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: theme.primary,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 4,
   },
   btnText: {
     color: 'white',

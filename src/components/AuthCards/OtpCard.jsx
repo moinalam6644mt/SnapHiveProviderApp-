@@ -1,5 +1,5 @@
 import { Pencil } from "lucide-react-native";
-import { useRef, useState,useContext } from "react";
+import { useRef, useState, useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -139,7 +139,7 @@ export default function OtpCard({ mobile, onBack }) {
             keyboardType="numeric"
             maxLength={1}
             textAlign="center"
-            selectionColor="#FF0000"
+            selectionColor={theme.primary}
           />
         ))}
       </View>
@@ -163,21 +163,23 @@ export default function OtpCard({ mobile, onBack }) {
 const styles = StyleSheet.create({
   card: {
     width: "100%",
-    backgroundColor: theme.background,
-    borderRadius: 12,
+    backgroundColor: '#f8fafc',
+    borderRadius: 16,
     paddingVertical: 32,
-    paddingHorizontal: 12,
+    paddingHorizontal: 16,
+    borderWidth: 0.25,
+    borderColor: '#308695',
   },
   title: {
     fontSize: 24,
     fontWeight: "800",
-    color: "#2E2E74",
+    color: "#1e293b",
     textAlign: "center",
     marginBottom: 6,
   },
   subtitle: {
     fontSize: 14,
-    color: "#474747",
+    color: "#64748b",
     textAlign: "center",
     lineHeight: 21,
   },
@@ -191,13 +193,13 @@ const styles = StyleSheet.create({
   mobile: {
     fontSize: 14,
     fontWeight: "600",
-    color: "#0C0C26",
+    color: "#1e293b",
   },
   editIcon: {
     width: 24,
     height: 24,
     borderRadius: 12,
-    backgroundColor: "#ED6E0A",
+    backgroundColor: theme.primary,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -210,18 +212,17 @@ const styles = StyleSheet.create({
   otpBox: {
     width: 48,
     height: 48,
-    backgroundColor: "#F6F6F6",
+    backgroundColor: "#ffffff",
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: "#D5D2D2",
+    borderColor: "#cbd5e1",
     fontSize: 18,
     fontWeight: "bold",
-    color: "#33266B",
+    color: "#1e293b",
   },
   otpBoxFocused: {
-    borderColor: "#FF0000",
+    borderColor: theme.primary,
     borderWidth: 1.5,
-    backgroundColor: "#FFF",
   },
   bottomRow: {
     flexDirection: "row",
@@ -232,24 +233,24 @@ const styles = StyleSheet.create({
   didntGet: {
     fontSize: 14,
     fontWeight: "600",
-    color: "#474747",
+    color: "#64748b",
   },
   timer: {
     fontSize: 16,
     fontWeight: "700",
-    color: "#33266B",
+    color: theme.primary,
   },
   button: {
     marginTop: 24,
     height: 48,
-    backgroundColor: "#ED6E0A",
-    borderRadius: 999,
+    backgroundColor: theme.primary,
+    borderRadius: 27,
     justifyContent: "center",
     alignItems: "center",
   },
   buttonText: {
-    color: theme.background,
-    fontSize: 14,
-    fontWeight: "600",
+    color: '#ffffff',
+    fontSize: 15,
+    fontWeight: "700",
   },
 });

@@ -23,11 +23,11 @@ const styles = StyleSheet.create({
   row: { flexDirection: "row", gap: 15 },
   card: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: "#f8fafc",
     borderRadius: 16,
     padding: 15,
     borderWidth: 1,
-    borderColor: "#e5e7eb",
+    borderColor: "#f1f5f9",
     height: 90,
     justifyContent: "center",
   },

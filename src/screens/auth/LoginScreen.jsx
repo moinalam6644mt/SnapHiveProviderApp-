@@ -192,7 +192,7 @@ const Login = () => {
                 disabled={loading}
               >
                 <LinearGradient
-                  colors={['#134E5E', '#71B280']}
+                  colors={['#308695', '#308695']}
                   start={{ x: 0, y: 0 }}
                   end={{ x: 1, y: 1 }}
                   style={styles.buttonGradient}

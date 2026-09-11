@@ -4,23 +4,23 @@ import { StyleSheet, Dimensions } from 'react-native';
 const { width, height } = Dimensions.get('window');
 
 export const theme = {
-  primary: '#068585ff', // Solid dark blue (removed e7 alpha to fix Android crashes)
-  accent: '#ff7a00',
-  danger: '#ff6b6b',
-  warning: '#f59e0b',
+  primary: '#308695',
+  accent: '#FA4C03',
+  danger: '#FA4C03',
+  warning: '#FDD866',
   success: '#1bb21b',
   surface: 'rgba(255, 255, 255, 0.15)',
-  background: '#068585ff', // Darker background
-  backgroundEnd: '#068585ff',
-  textPrimary: '#FFFFFF',
-  textSecondary: 'rgba(255, 255, 255, 0.8)',
+  background: '#308695',
+  backgroundEnd: '#1BA9A2',
+  textPrimary: '#FFF',
+  textSecondary: '#000',
   border: 'rgba(255, 255, 255, 0.3)',
 };
 
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0a58ca',
+    backgroundColor: '#1BA9A2',
   },
 
   backgroundImage: {
@@ -105,7 +105,7 @@ export default StyleSheet.create({
   title: {
     fontSize: 26,
     fontWeight: '700',
-    color: '#0a58ca',
+    color: '#1BA9A2',
     textAlign: 'center',
     marginBottom: 10,
     letterSpacing: -0.3,
@@ -140,12 +140,12 @@ export default StyleSheet.create({
     flex: 1,
     marginLeft: 12,
     fontSize: 16,
-    color: '#2C3E50',
+    color: '#1BA9A2',
     fontWeight: '500',
   },
 
   inputFocused: {
-    borderColor: '#0a58ca',
+    borderColor: '#1BA9A2',
     borderWidth: 2,
     backgroundColor: '#FFFFFF',
   },
@@ -170,8 +170,8 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 25,
-    backgroundColor: '#0a58ca',
-    shadowColor: '#0a58ca',
+    backgroundColor: '#1BA9A2',
+    shadowColor: '#1BA9A2',
     shadowOffset: {
       width: 0,
       height: 4,
@@ -265,13 +265,13 @@ export default StyleSheet.create({
   mobileNumber: {
     fontSize: 17,
     fontWeight: '700',
-    color: '#0a58ca',
+    color: '#1BA9A2',
     marginLeft: 8,
   },
 
   userNameText: {
     fontSize: 14,
-    color: '#0a58ca',
+    color: '#1BA9A2',
     marginTop: 6,
     fontWeight: '500',
   },
@@ -294,14 +294,14 @@ export default StyleSheet.create({
     textAlign: 'center',
     fontSize: 22,
     fontWeight: '700',
-    color: '#0a58ca',
+    color: '#1BA9A2',
     backgroundColor: '#F8F9FA',
     borderWidth: 2,
     borderColor: '#E8ECEF',
   },
 
   otpInputFocused: {
-    borderColor: '#0a58ca',
+    borderColor: '#1BA9A2',
     backgroundColor: '#FFFFFF',
     borderWidth: 2,
   },
@@ -338,7 +338,7 @@ export default StyleSheet.create({
 
   timerText: {
     fontSize: 14,
-    color: '#0a58ca',
+    color: '#1BA9A2',
     fontWeight: '700',
   },
 
@@ -347,7 +347,7 @@ export default StyleSheet.create({
   },
 
   resendActive: {
-    color: '#0a58ca',
+    color: '#1BA9A2',
     fontWeight: '700',
     fontSize: 14,
   },

@@ -164,12 +164,13 @@ export default function StartHeader({ bookingDetails, providerDetails }) {
 }
 const styles = StyleSheet.create({
   secBody: {
-    // width: "100%",
-    backgroundColor: '#fff',
-    borderRadius: 20,
+    backgroundColor: '#ffffff',
+    borderRadius: 16,
     paddingVertical: 18,
     paddingHorizontal: 18,
     marginHorizontal: 20,
+    borderWidth: 0.25,
+    borderColor: '#308695',
   },
   categoryRow: {
     marginBottom: 4,

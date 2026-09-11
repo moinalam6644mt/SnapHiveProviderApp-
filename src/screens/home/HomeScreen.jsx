@@ -12,6 +12,7 @@ import {
   View,
   StatusBar,
   ActivityIndicator,
+  RefreshControl,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
@@ -41,6 +42,7 @@ const HomeScreen = () => {
 
   const [acceptedBookingData, setAcceptedBookingData] = useState(cachedAcceptedBookingData);
   const [loading, setLoading] = useState(!cachedAcceptedBookingData);
+  const [refreshing, setRefreshing] = useState(false);
   const [isAvailable, setIsAvailable] = useState(true);
   const userName = userData?.profile_name;
   const joiningDate = userData?.register_date;
@@ -72,9 +74,18 @@ const HomeScreen = () => {
 
   useFocusEffect(
     useCallback(() => {
-      fetchAcceptedData();
+      // Delay to prevent UI jerk during back-navigation
+      const timer = setTimeout(() => {
+        fetchAcceptedData();
+      }, 400);
+      return () => clearTimeout(timer);
     }, []),
   );
+
+  const onRefresh = useCallback(async () => {
+    setLoading(true);
+    await fetchAcceptedData();
+  }, []);
 
   useEffect(() => {
     AsyncStorage.getItem('worker_is_offline').then(val => {
@@ -181,7 +192,11 @@ const HomeScreen = () => {
   return (
     <SafeAreaView style={styles.container} edges={['left', 'right', 'bottom']}>
       <StatusBar barStyle="dark-content" translucent={true} backgroundColor="transparent" />
-      <HeaderSection userName={userName} joiningDate={joiningDate} />
+      <HeaderSection
+        userName={userName}
+        joiningDate={joiningDate}
+        profileImage={userData?.profile_image || userData?.logo}
+      />
 
       {loading ? (
         <View style={styles.loaderWrapper}>
@@ -191,6 +206,9 @@ const HomeScreen = () => {
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.scrollContent}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={[theme.primary]} />
+          }
         >
           <AvailabilityToggle
             isAvailable={isAvailable}
@@ -219,7 +237,7 @@ export default HomeScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8F9FA',
+    backgroundColor: '#ffffff',
   },
   scrollContent: {
     paddingBottom: 100,

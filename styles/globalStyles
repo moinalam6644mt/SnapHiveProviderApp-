@@ -4,7 +4,7 @@ import { StyleSheet, Dimensions } from 'react-native';
 const { width, height } = Dimensions.get('window');
 
 export const theme = {
-    primary: '#091a86ff',
+    primary: '#c9c60760',
     accent: '#ff7a00',
     danger: '#ff6b6b',
     warning: '#f59e0b',

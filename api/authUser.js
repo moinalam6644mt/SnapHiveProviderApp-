@@ -15,7 +15,10 @@ const getMemberData = async () => {
 export const AuthUser = () => {
   const callApi = async ({ method, api, data = {}, onUploadProgress }) => {
     const memberData = await getMemberData();
-    const defaultHeaders = {};
+    const defaultHeaders = {
+      "User-Agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Mobile Safari/537.36",
+      "Accept": "application/json, text/plain, */*"
+    };
     let finalData = { ...data };
     let queryParams = {};
     if (memberData) {

@@ -147,18 +147,11 @@ const styles = StyleSheet.create({
   container: {
     marginHorizontal: 20,
     marginTop: 10,
-  },
-  card: {
-    backgroundColor: theme.background,
-    borderRadius: 18,
+    backgroundColor: theme.primary,
+    borderRadius: 16,
     padding: 18,
-    borderWidth: 1,
-    borderColor: '#2baab1',
-    elevation: 3,
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
+    borderWidth: 0.25,
+    borderColor: '#308695',
   },
   header: {
     flexDirection: 'row',

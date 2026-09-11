@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator } from "react-native";
-import LinearGradient from "react-native-linear-gradient";
 
 import { theme } from '../../styles/globalStyles';
 const AvailabilityToggle = ({ isAvailable, onToggle }) => {
@@ -26,12 +25,7 @@ const AvailabilityToggle = ({ isAvailable, onToggle }) => {
           disabled={toggling}
         >
           {isAvailable ? (
-            <LinearGradient
-              colors={['#134E5E', '#71B280']}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={styles.gradientBtn}
-            >
+            <View style={styles.flatBtn}>
               {toggling ? (
                 <ActivityIndicator size="small" color="#fff" />
               ) : (
@@ -39,7 +33,7 @@ const AvailabilityToggle = ({ isAvailable, onToggle }) => {
                   Available
                 </Text>
               )}
-            </LinearGradient>
+            </View>
           ) : (
             <Text style={styles.text}>
               Available
@@ -90,12 +84,13 @@ const styles = StyleSheet.create({
   activeBtnWrapper: {
     padding: 0,
   },
-  gradientBtn: {
+  flatBtn: {
     flex: 1,
     width: '100%',
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 25,
+    backgroundColor: theme.primary,
   },
   inactiveBtn: {
     backgroundColor: theme.danger,

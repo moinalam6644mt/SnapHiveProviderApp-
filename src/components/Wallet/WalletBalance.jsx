@@ -20,21 +20,24 @@ const WalletBalance = ({ walletData }) => {
   const [loading, setLoading] = useState(balance === null);
 
   const fetchBalance = async () => {
-    if (!userId) return;
+    if (!userId) {
+      if (loading) setLoading(false);
+      return;
+    }
     try {
       const response = await callApi({
         api: `/user/worker_balance?worker_id=${userId}`,
         method: "GET",
         data: {},
       });
-      
+
       if (response?.response?.data?.balance !== undefined) {
         setBalance(response.response.data.balance);
       }
     } catch (error) {
       console.warn("[WalletBalance Auto-Fetch] Error:", error);
     } finally {
-      if (loading) setLoading(false);
+      setLoading(false);
     }
   };
 
@@ -46,10 +49,17 @@ const WalletBalance = ({ walletData }) => {
     }, [userId])
   );
 
+  React.useEffect(() => {
+    if (walletData?.balance !== undefined) {
+      setBalance(walletData.balance);
+      setLoading(false);
+    }
+  }, [walletData?.balance]);
+
   const handleAddMoney = () => {
     // Ensure this screen exists in your navigator
-    navigation.navigate("Main",{
-      screen:"RechargeScreen"
+    navigation.navigate("Main", {
+      screen: "RechargeScreen"
     });
   };
 
@@ -81,7 +91,7 @@ const WalletBalance = ({ walletData }) => {
         onPress={handleAddMoney}
       >
         <LinearGradient
-          colors={['#134E5E', '#71B280']}
+          colors={['#308695', '#308695']}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
           style={styles.addMoneyGradient}
@@ -104,7 +114,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     overflow: "hidden",
-    marginTop: 10,
+    borderWidth: 0.25,
+    borderColor: "#308695",
   },
   bgPattern: {
     position: "absolute",
@@ -129,7 +140,7 @@ const styles = StyleSheet.create({
   },
   addMoneyBtnContainer: {
     borderRadius: 30,
-    shadowColor: '#134E5E',
+    shadowColor: '#308695',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,

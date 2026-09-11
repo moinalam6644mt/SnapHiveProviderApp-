@@ -1,4 +1,4 @@
-import React, { useState,useEffect,useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   StyleSheet,
   ScrollView,
@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   StatusBar,
   Dimensions,
+  RefreshControl,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -21,97 +22,100 @@ const moderateScale = (size, factor = 0.5) => size + (horizontalScale(size) - si
 import { Pencil } from "lucide-react-native";
 import LinearGradient from "react-native-linear-gradient";
 
-import ProfileHeader from "../../components/Profile/ProfileHeader";
 import WalletBalance from "../../components/Wallet/WalletBalance";
 import QuickActions from "../../components/Profile/QuickActions";
 import MenuOptions from "../../components/Profile/MenuOptions";
 import LogOutButton from "../../components/Profile/LogOutButton";
-import WalletHistoryDrawer from "../../components/Profile/Transaction/WalletHistoryDrawer";
+import ProfileSkeleton from "../../components/Profile/ProfileSkeleton";
+
 import { AuthUser } from "../../../api/authUser";
 import { AuthContext } from "../../context/AuthContext";
 
 import { theme } from '../../styles/globalStyles';
 const ProfileScreen = () => {
-  const [historyVisible, setHistoryVisible] = useState(false);
-  const [profile,setGetProfile]  = useState({});
-  const {callApi}=  AuthUser();
-  const {userId} = useContext(AuthContext);
-  // console.log(userId,'userId')
+  const [profile, setGetProfile] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  const { callApi } = AuthUser();
+  const { userId } = useContext(AuthContext);
 
   const getProfile = async () => {
     try {
       const resp = await callApi({
-      api:`/user/worker_profile?worker_id=${userId}`,
-      method:"GET",
-      data:{}
-    })
-    // console.log(resp?.response?.data?.['profile_det'],'resp')
-    setGetProfile(resp?.response?.data?.['profile_det'])
+        api: `/user/worker_profile?worker_id=${userId}`,
+        method: "GET",
+        data: {}
+      })
+      setGetProfile(resp?.response?.data?.['profile_det'])
     } catch (error) {
       console.warn(error)
     }
   };
 
   useEffect(() => {
-    getProfile();
-  }, []);
+    if (userId) {
+      setLoading(true);
+      getProfile().finally(() => setLoading(false));
+    }
+  }, [userId]);
+
+  const onRefresh = React.useCallback(() => {
+    if (!userId) return;
+    setRefreshing(true);
+    setLoading(true); // Show skeleton on refresh
+    getProfile().finally(() => {
+      setRefreshing(false);
+      setLoading(false);
+    });
+  }, [userId]);
 
   return (
-    <SafeAreaView style={styles.safeArea} edges={["left", "right", "bottom"]}>
+    <SafeAreaView style={styles.safeArea} edges={["left", "right", "bottom", "top"]}>
       <StatusBar
-        barStyle="light-content"
+        barStyle="dark-content"
         backgroundColor="transparent"
         translucent={true}
       />
-      <LinearGradient
-        colors={['#134E5E', '#71B280']}
-        style={styles.gradientBg}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-      >
+      {loading ? (
+        <ProfileSkeleton />
+      ) : (
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.scrollContent}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={["#308695"]} tintColor="#308695" />
+          }
+        >
+          <View style={styles.mainContainer}>
 
-      <View style={styles.header}>
-        <ProfileHeader />
-      </View>
+            <View style={styles.quickContainer}>
+              <View style={styles.userCard}>
+                <View style={styles.avatarContainer}>
+                  <View style={styles.avatarPlaceholder}>
+                    <Text style={styles.avatarText}>
+                      {profile?.worker_name ? profile.worker_name.charAt(0).toUpperCase() : "W"}
+                    </Text>
+                  </View>
+                </View>
+                <View style={styles.userInfoTextContainer}>
+                  <Text style={styles.welcomeText}>Welcome, </Text>
+                  <Text style={styles.userName} numberOfLines={1}>{profile?.worker_name || "Provider"}</Text>
+                  <Text style={styles.phoneText}>+91 {profile?.worker_phone || "N/A"}</Text>
+                </View>
 
-        <View style={styles.bottomSheet}>
-          <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
-            <View style={styles.mainContainer}>
+                <TouchableOpacity style={styles.editBtn}>
+                  <Pencil size={18} color="#64748b" />
+                </TouchableOpacity>
+              </View>
               <WalletBalance />
             </View>
+            <QuickActions />
+          </View>
 
-            {/* User Info Section with Edit Button */}
-            <View style={styles.quickContainer}>
-              <View style={styles.userSection}>
-                <View style={styles.userInfoRow}>
-                  <View>
-                    <View style={styles.nameRow}>
-                      <Text style={styles.welcomeText}>Welcome, </Text>
-                      <Text style={styles.userName}>{profile?.worker_name}</Text>
-                      {/* <View style={styles.verifiedCheck} /> */}
-                    </View>
-                    <Text style={styles.phoneText}>+91 {profile?.worker_phone}</Text>
-                  </View>
-
-                  {/* <TouchableOpacity style={styles.editBtn}>
-                    <Pencil size={20} color="#71717a" />
-                  </TouchableOpacity> */}
-                </View>
-              </View>
-
-              <QuickActions onOpenHistory={() => setHistoryVisible(true)} />
-            </View>
-
-            <MenuOptions />
-            <LogOutButton />
-          </ScrollView>
-        </View>
-      </LinearGradient>
-
-      <WalletHistoryDrawer
-        visible={historyVisible}
-        onClose={() => setHistoryVisible(false)}
-      />
+          <MenuOptions />
+          <LogOutButton />
+        </ScrollView>
+      )}
     </SafeAreaView>
   );
 };
@@ -121,23 +125,7 @@ export default ProfileScreen;
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: theme.background,
-  },
-  gradientBg: {
-    flex: 1,
-  },
-  bottomSheet: {
-    backgroundColor: '#FFFFFF',
-    borderTopLeftRadius: moderateScale(40),
-    borderTopRightRadius: moderateScale(40),
-    flex: 1,
-    paddingTop: verticalScale(20),
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: -10 },
-    shadowOpacity: 0.1,
-    shadowRadius: 20,
-    elevation: 20,
-    marginTop: verticalScale(10),
+    backgroundColor: "#ffffff",
   },
   scrollContent: {
     paddingBottom: verticalScale(100),
@@ -150,63 +138,68 @@ const styles = StyleSheet.create({
     paddingHorizontal: horizontalScale(20),
   },
   quickContainer: {
-    paddingHorizontal: horizontalScale(20),
     backgroundColor: "#FFFFFF",
     marginTop: verticalScale(10),
     paddingTop: 0,
     paddingBottom: verticalScale(25),
   },
-  userSection: {
-    marginTop: verticalScale(20),
+  userCard: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#f8fafc",
+    paddingVertical: verticalScale(15),
+    paddingHorizontal: horizontalScale(15),
+    borderRadius: moderateScale(16),
+    marginTop: verticalScale(15),
     marginBottom: verticalScale(10),
+    borderWidth: 0.25,
+    borderColor: "#308695",
   },
-  userInfoRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+  avatarContainer: {
+    marginRight: horizontalScale(15),
+  },
+  avatarPlaceholder: {
+    width: moderateScale(60),
+    height: moderateScale(60),
+    borderRadius: moderateScale(30),
+    backgroundColor: theme.primary || "#134E5E",
+    justifyContent: "center",
     alignItems: "center",
   },
-  nameRow: {
-    flexDirection: "row",
-    alignItems: "center",
+  avatarText: {
+    color: "#ffffff",
+    fontSize: moderateScale(24),
+    fontWeight: "bold",
+    fontFamily: "Sora-Bold",
+  },
+  userInfoTextContainer: {
+    flex: 1,
   },
   welcomeText: {
-    fontSize: moderateScale(18),
-    color: "#1e1b4b",
-    fontWeight: "bold",
-    fontFamily: "Sora-Bold",
+    fontSize: moderateScale(14),
+    color: "#64748b",
+    fontFamily: "Sora-Regular",
   },
   userName: {
-    fontSize: moderateScale(18),
+    fontSize: moderateScale(20),
     color: "#1e1b4b",
-    fontFamily: "Poppins-Regular",
-  },
-  verifiedCheck: {
-    width: moderateScale(10),
-    height: moderateScale(10),
-    backgroundColor: "#22c55e",
-    borderRadius: moderateScale(9),
-    marginLeft: horizontalScale(2),
-  },
-  phoneText: {
-    fontSize: moderateScale(16),
     fontWeight: "bold",
-    color: "#1e1b4b",
-    marginTop: verticalScale(4),
     fontFamily: "Sora-Bold",
   },
+  phoneText: {
+    fontSize: moderateScale(14),
+    color: "#64748b",
+    marginTop: verticalScale(2),
+    fontFamily: "Sora-Regular",
+  },
   editBtn: {
-    width: moderateScale(44),
-    height: moderateScale(44),
-    backgroundColor: "white",
-    borderRadius: moderateScale(22),
+    width: moderateScale(36),
+    height: moderateScale(36),
+    backgroundColor: "#f8fafc",
+    borderRadius: moderateScale(18),
     justifyContent: "center",
     alignItems: "center",
     borderWidth: moderateScale(1),
     borderColor: "#f1f5f9",
-    elevation: 2,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: verticalScale(1) },
-    shadowOpacity: 0.1,
-    shadowRadius: moderateScale(2),
   },
 });

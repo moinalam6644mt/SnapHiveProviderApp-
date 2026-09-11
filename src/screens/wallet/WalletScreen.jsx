@@ -7,30 +7,32 @@ import {
   TouchableOpacity,
   StatusBar,
   ActivityIndicator,
+  RefreshControl,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { ChevronLeft, ChevronRight } from 'lucide-react-native';
+import { ChevronRight } from 'lucide-react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import WalletBalance from '../../components/Wallet/WalletBalance';
 import EarningsCards from '../../components/Wallet/EarningsCards';
 import RedeemHistory from '../../components/Wallet/RedeemHistory';
-import EarningsDrawer from '../../components/Wallet/Drawer/EarningsDrawer';
+
 import { AuthContext } from '../../context/AuthContext';
 import { AuthUser } from '../../../api/authUser';
 import PusherService from '../../services/PusherService';
 import Toast from 'react-native-toast-message';
 import { useRoute } from '@react-navigation/native';
-import LinearGradient from 'react-native-linear-gradient';
+import WalletSkeleton from '../../components/Wallet/WalletSkeleton';
 
 import { theme } from '../../styles/globalStyles';
 const WalletScreen = () => {
-  const [earningsVisible, setEarningsVisible] = useState(false);
   const [sevenDaysData, setSevenDaysData] = useState([]);
   const [earningData, setEarningData] = useState(null);
   const [todayEarnings, setTodayEarnings] = useState(0);
   const [filterNumb,setFilterNumb] = useState(1);
   const [walletData,setWalletData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const navigation = useNavigation();
   const route = useRoute();
   
@@ -108,12 +110,29 @@ const WalletScreen = () => {
     };
 
 useEffect(()=>{
-  getWalletData();
-},[])
+  if (userId) {
+    setLoading(true);
+    Promise.all([
+      getWalletData(),
+      fetchBookingStatus()
+    ]).finally(() => {
+      setLoading(false);
+    });
+  }
+},[userId, filterNumb])
 
-  useEffect(()=>{
-    fetchBookingStatus();
-  },[filterNumb])
+  const onRefresh = React.useCallback(() => {
+    if (!userId) return;
+    setRefreshing(true);
+    setLoading(true); // Show skeleton on pull to refresh
+    Promise.all([
+      getWalletData(),
+      fetchBookingStatus()
+    ]).finally(() => {
+      setRefreshing(false);
+      setLoading(false);
+    });
+  }, [userId, filterNumb]);
 
   useEffect(() => {
     // Support nested navigation params structure
@@ -175,71 +194,49 @@ useEffect(()=>{
   }, [route.params, userId]);
 
   return (
-    <LinearGradient
-      colors={[theme.background, theme.backgroundEnd]}
-      style={styles.container}
-    >
-      <SafeAreaView style={{ flex: 1 }} edges={['top', 'left', 'right']}>
+    <View style={styles.container}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#ffffff' }} edges={['top', 'left', 'right']}>
         {/* Status Bar */}
         <StatusBar
-          barStyle="light-content"
+          barStyle="dark-content"
           backgroundColor="transparent"
           translucent={true}
         />
-
-      {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity
-          style={styles.backBtn}
-          onPress={() => {
-            if (navigation.canGoBack()) {
-              navigation.goBack();
-            } else {
-              navigation.replace('HomeMain');
+        
+        {loading ? (
+          <WalletSkeleton />
+        ) : (
+          <View style={styles.bottomSheet}>
+            <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.scrollContent}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={["#308695"]} tintColor="#308695" />
             }
-          }}
-          activeOpacity={0.7}
-        >
-          <ChevronLeft size={24} color="#FFFFFF" />
-        </TouchableOpacity>
-
-        <Text style={styles.headerTitle}>Wallet</Text>
-      </View>
-
-      <View style={styles.bottomSheet}>
-        <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContent}
-      >
-        <WalletBalance walletData={walletData} />
+            >
+            <WalletBalance walletData={walletData} />
 
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Earnings</Text>
         </View>
 
-        <EarningsCards todayEarnings={todayEarnings} onPress={() => setEarningsVisible(true)} />
+        <EarningsCards todayEarnings={todayEarnings} onPress={() => navigation.navigate("EarningsHistoryScreen")} />
 
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Earning History</Text>
           <Text style={styles.subTitle}>(Last 7 Days)</Text>
 
-          <TouchableOpacity style={styles.seeAllBtn} onPress={() => setEarningsVisible(true)}>
+          <TouchableOpacity style={styles.seeAllBtn} onPress={() => navigation.navigate("EarningsHistoryScreen")}>
             <ChevronRight size={20} color="#374151" />
           </TouchableOpacity>
         </View>
 
-        <RedeemHistory data={sevenDaysData} />
-        </ScrollView>
-      </View>
-
-      <EarningsDrawer
-        visible={earningsVisible}
-        earningData={earningData}
-        setFilterNumb={setFilterNumb}
-        onClose={() => setEarningsVisible(false)}
-      />
-    </SafeAreaView>
-  </LinearGradient>
+            <RedeemHistory data={sevenDaysData} />
+            </ScrollView>
+          </View>
+        )}
+      </SafeAreaView>
+    </View>
   );
 };
 
@@ -250,42 +247,16 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    marginTop: Platform.OS === 'android' ? 32 : 10,
-    marginBottom: 20,
-  },
-
-  backBtn: {
-    marginRight: 15,
-    padding: 5,
-  },
-
-  headerTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
-    fontFamily: 'Sora-Bold',
-  },
-
   bottomSheet: {
     flex: 1,
     backgroundColor: '#FFFFFF',
-    borderTopLeftRadius: 35,
-    borderTopRightRadius: 35,
-    paddingTop: 30,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: -4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 15,
-    elevation: 10,
+    paddingTop: 10,
   },
 
   scrollContent: {
     paddingHorizontal: 20,
-    paddingBottom: 40,
+    paddingBottom: 100,
+    paddingTop: 10,
   },
 
   sectionHeader: {

@@ -124,9 +124,9 @@ const UpcomingBookingCard = ({ bookings = [], userId }) => {
   if (!bookings.length) {
     return (
       <View style={styles.emptyContainer}>
-        <Text style={styles.emptyTitle}>No Upcoming Bookings</Text>
+        <Text style={styles.emptyTitle}>No Upcoming Bookings ☕</Text>
         <Text style={styles.emptySubtitle}>
-          You don't have any upcoming jobs at the moment.
+          You're all caught up! Take a well-deserved break ✨
         </Text>
       </View>
     );
@@ -346,17 +346,12 @@ export default UpcomingBookingCard;
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#ffffff',
+    backgroundColor: '#f8fafc',
     borderRadius: 16,
     padding: 16,
-    elevation: 4,
-    shadowColor: theme.primary,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: 'rgba(6, 133, 133, 0.1)',
+    borderColor: '#f1f5f9',
   },
   topRow: {
     flexDirection: 'row',
@@ -487,11 +482,8 @@ const styles = StyleSheet.create({
     paddingBottom: 40,
     maxHeight: '85%',
     width: '100%',
-    elevation: 25,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: -4 },
-    shadowOpacity: 0.15,
-    shadowRadius: 15,
+    borderWidth: 1,
+    borderColor: '#f1f5f9',
   },
   drawerHandle: {
     width: 50,
@@ -514,14 +506,15 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 16,
     right: 20,
-    backgroundColor: '#f1f5f9',
+    backgroundColor: '#f8fafc',
     width: 36,
     height: 36,
     borderRadius: 18,
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 10,
-    elevation: 2,
+    borderWidth: 1,
+    borderColor: '#f1f5f9',
   },
   titleContainer: {
     flexDirection: 'row',
@@ -559,33 +552,32 @@ const styles = StyleSheet.create({
   rejectBtn: {
     flex: 1,
     backgroundColor: '#FEF2F2',
-    height: 48,
-    borderRadius: 24,
+    height: 54,
+    borderRadius: 27,
     justifyContent: 'center',
     alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#fca5a5',
   },
   acceptBtnContainer: {
     flex: 1.5,
-    height: 48,
-    borderRadius: 24,
-    backgroundColor: theme.primary,
+    height: 54,
+    borderRadius: 27,
+    backgroundColor: 'transparent',
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: theme.primary,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 4,
+    borderWidth: 1.5,
+    borderColor: theme.primary,
   },
   rejectText: {
     color: theme.danger,
     fontWeight: 'bold',
-    fontSize: 14,
+    fontSize: 15,
   },
   acceptText: {
-    color: 'white',
+    color: theme.primary,
     fontWeight: 'bold',
-    fontSize: 14,
+    fontSize: 15,
   },
   emptyContainer: {
     flex: 1,

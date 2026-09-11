@@ -13,6 +13,8 @@ import {BookingContext} from '../context/BookingContext';
 import {CallContext} from '../context/CallContext';
 import NotificationHandlingScreen from '../screens/NotificationHandlingScreen';
 import CancelledBookingScreen from '../screens/CancelledBookingScreen';
+import WalletHistoryScreen from '../screens/wallet/WalletHistoryScreen';
+import EarningsHistoryScreen from '../screens/wallet/EarningsHistoryScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {navigationRef} from '../services/NavigationService';
 
@@ -74,6 +76,8 @@ export default function HomeNavigation() {
         <Stack.Screen name="ChatList" component={ChatListScreen} />
         <Stack.Screen name="ChatDetails" component={ChatDetailsScreen} />
         <Stack.Screen name="WebViewScreen" component={WebViewScreen} />
+        <Stack.Screen name="WalletHistoryScreen" component={WalletHistoryScreen} />
+        <Stack.Screen name="EarningsHistoryScreen" component={EarningsHistoryScreen} />
         <Stack.Screen
           name="NotificationHandling"
           component={NotificationHandlingScreen}

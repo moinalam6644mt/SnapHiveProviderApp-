@@ -10,8 +10,6 @@ import {
   Modal,
   Pressable,
 } from 'react-native';
-import { X } from 'lucide-react-native';
-import LinearGradient from 'react-native-linear-gradient';
 import { useOtpShared } from '../../context/OtpSharedContext';
 
 import { theme } from '../../styles/globalStyles';
@@ -93,12 +91,12 @@ const OTPVerificationModal = ({ visible, onClose }) => {
             { transform: [{ translateY: slideAnim }] },
           ]}
         >
-          {/* Close Button Top */}
-          <TouchableOpacity onPress={handleClose} style={styles.closeCircle}>
-            <X size={24} color="#404040" strokeWidth={3} />
-          </TouchableOpacity>
-
           <View style={styles.card}>
+            {/* Drag Handle */}
+            <View style={styles.dragHandleContainer}>
+              <View style={styles.dragHandle} />
+            </View>
+
             {/* Header Section */}
             <View style={styles.header}>
               {bookingDetails?.status === '2' ? (
@@ -136,18 +134,13 @@ const OTPVerificationModal = ({ visible, onClose }) => {
               activeOpacity={0.8}
               onPress={() => onVerify(otp.join(''))}
             >
-              <LinearGradient
-                colors={['#134E5E', '#71B280']}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-                style={styles.verifyBtnGradient}
-              >
+              <View style={styles.verifyBtnSolid}>
                 {bookingDetails?.status === '2' ? (
                   <Text style={styles.verifyBtnText}>Verify OTP & Start</Text>
                 ) : (
                   <Text style={styles.verifyBtnText}>Verify OTP & End</Text>
                 )}
-              </LinearGradient>
+              </View>
             </TouchableOpacity>
           </View>
         </Animated.View>
@@ -171,34 +164,37 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
   },
-  closeCircle: {
-    width: 48,
-    height: 48,
-    backgroundColor: 'white',
-    borderRadius: 24,
-    justifyContent: 'center',
+  dragHandleContainer: {
+    width: '100%',
     alignItems: 'center',
-    marginBottom: 15,
-    elevation: 5,
+    paddingVertical: 12,
+    backgroundColor: '#ffffff',
+  },
+  dragHandle: {
+    width: 40,
+    height: 5,
+    borderRadius: 3,
+    backgroundColor: '#cbd5e1',
   },
   card: {
     width: '100%',
     backgroundColor: 'white',
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
     paddingBottom: 40,
     overflow: 'hidden',
   },
   header: {
-    backgroundColor: '#FEF2F2',
-    paddingVertical: 25,
+    backgroundColor: '#ffffff',
+    paddingVertical: 15,
     paddingHorizontal: 20,
     width: '100%',
+    alignItems: 'center',
   },
   title: {
     fontSize: 20,
-    fontWeight: 'bold',
-    color: '#1e1b4b',
+    fontWeight: '800',
+    color: '#1e293b',
     fontFamily: 'Sora',
   },
   otpRow: {
@@ -208,35 +204,32 @@ const styles = StyleSheet.create({
     marginVertical: 40,
   },
   otpBox: {
-    width: 64,
-    height: 64,
-    backgroundColor: '#F5F5F5',
+    width: 60,
+    height: 60,
+    backgroundColor: '#F8FAFC',
     borderRadius: 12,
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#1e1b4b',
-    borderWidth: 1.5,
-    borderColor: 'transparent',
+    color: '#1e293b',
+    borderWidth: 1,
+    borderColor: '#cbd5e1',
   },
   otpBoxFocused: {
-    borderColor: theme.danger, // Red border on focus
+    borderColor: theme.primary, 
+    borderWidth: 1.5,
     backgroundColor: 'white',
   },
   verifyBtnContainer: {
     marginHorizontal: 20,
     height: 52,
-    borderRadius: 100,
-    elevation: 4,
-    shadowColor: '#134E5E',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
+    borderRadius: 27,
     overflow: 'hidden',
   },
-  verifyBtnGradient: {
+  verifyBtnSolid: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: theme.primary,
   },
   verifyBtnText: {
     color: 'white',

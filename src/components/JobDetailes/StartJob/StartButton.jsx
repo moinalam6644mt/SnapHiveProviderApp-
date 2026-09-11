@@ -58,16 +58,11 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   btn: {
-    height: 60,
-    borderRadius: 15,
+    height: 54,
+    borderRadius: 27,
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
   },
   startBtnContainer: {
     backgroundColor: theme.primary,

@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     height: 60,
     borderRadius: 16,
     marginTop: 15,
-    shadowColor: '#134E5E',
+    shadowColor: '#308695',
     shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.3,
     shadowRadius: 15,
@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 24,
     fontWeight: '700',
-    color: '#1E1B4B',
+    color: '#000',
     backgroundColor: '#FFFFFF',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -220,7 +220,7 @@ const styles = StyleSheet.create({
   },
   timerText: {
     fontSize: 15,
-    color: '#2BAAB1',
+    color: '#308695',
     fontWeight: '700',
   },
   timerTextDisabled: {

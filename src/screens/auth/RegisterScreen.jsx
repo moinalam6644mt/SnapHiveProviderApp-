@@ -233,7 +233,7 @@ export default function RegisterScreen() {
         backgroundColor="transparent"
       />
       <LinearGradient
-        colors={['#134E5E', '#71B280']}
+        colors={['#308695', '#308695']}
         style={styles.gradientBg}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
@@ -632,4 +632,4 @@ const styles = StyleSheet.create({
     color: "#474747",
     textAlign: "center",
   },
-});
+});

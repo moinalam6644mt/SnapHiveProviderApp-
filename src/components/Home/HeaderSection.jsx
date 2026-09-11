@@ -8,11 +8,10 @@ import {
   StatusBar,
   Image,
 } from 'react-native';
-import { Wallet } from 'lucide-react-native';
 import { useNavigation } from '@react-navigation/native';
 import { theme } from '../../styles/globalStyles';
 
-const HeaderSection = ({ userName, joiningDate }) => {
+const HeaderSection = ({ userName, joiningDate, profileImage }) => {
   const navigation = useNavigation();
   const [greeting, setGreeting] = useState('');
 
@@ -54,11 +53,7 @@ const HeaderSection = ({ userName, joiningDate }) => {
     >
       <StatusBar barStyle="light-content" backgroundColor="transparent" translucent={true} />
 
-      <Image
-        source={require('../../../assets/app/home/header.png')}
-        style={styles.centerLogo}
-        resizeMode="contain"
-      />
+
 
       <View style={styles.headerTop}>
         <View style={styles.welcomeContainer}>
@@ -73,11 +68,17 @@ const HeaderSection = ({ userName, joiningDate }) => {
           style={styles.walletCircle}
           onPress={() =>
             navigation.navigate('Main', {
-              screen: 'Wallet',
+              screen: 'Profile',
             })
           }
         >
-          <Wallet size={20} color="#1e1b4b" strokeWidth={2.5} />
+          {profileImage ? (
+             <Image source={{ uri: profileImage }} style={styles.profileImage} />
+          ) : (
+             <Text style={styles.avatarText}>
+               {userName ? userName.charAt(0).toUpperCase() : "U"}
+             </Text>
+          )}
         </TouchableOpacity>
       </View>
 
@@ -93,9 +94,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: Platform.OS === 'android' ? 30 : 10,
     paddingBottom: 22,
-    position: 'relative',
-    zIndex: 999,
     backgroundColor: theme.primary,
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 30,
   },
 
   centerLogo: {
@@ -103,8 +104,8 @@ const styles = StyleSheet.create({
     width: 75,
     height: 86,
     alignSelf: 'center',
-    top: 80,
-    opacity: 1,
+    top: 60,
+    opacity: 0.8,
     zIndex: 0,
   },
 
@@ -143,14 +144,12 @@ const styles = StyleSheet.create({
   walletCircle: {
     width: 42,
     height: 42,
-    backgroundColor: 'white',
+    backgroundColor: '#f8fafc',
     borderRadius: 21,
     justifyContent: 'center',
     alignItems: 'center',
-    elevation: 4,
-    shadowColor: '#000',
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
+    borderWidth: 0.25,
+    borderColor: '#308695',
   },
 
   joinDateText: {
@@ -158,6 +157,16 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginTop: 15,
     marginLeft: 13,
-    zIndex: 1,
+  },
+  profileImage: {
+    width: 42,
+    height: 42,
+    borderRadius: 21,
+  },
+  avatarText: {
+    color: theme.primary,
+    fontSize: 20,
+    fontWeight: "bold",
+    fontFamily: "Sora-Bold",
   },
 });
