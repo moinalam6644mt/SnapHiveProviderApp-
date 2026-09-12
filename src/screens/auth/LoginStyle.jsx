@@ -26,8 +26,8 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   logo: {
-    width: width * 0.55,
-    height: 70,
+    width: width * 0.65,
+    height: 150,
     resizeMode: 'contain',
     tintColor: '#FFFFFF',
   },

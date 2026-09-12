@@ -1,11 +1,9 @@
 import React from 'react';
-import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
-import {IdCard, User} from 'lucide-react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { IdCard, User } from 'lucide-react-native';
 
 import { theme } from '../../../styles/globalStyles';
-const UserProfile = ({bookingDetails, providerDetails, onOpenIdCard}) => {
-  console.log('Booking Details in UserProfile:', bookingDetails);
-  console.log('Provider Details in UserProfile:', providerDetails);
+const UserProfile = ({ bookingDetails, providerDetails, onOpenIdCard }) => {
 
   const formatDateTime = () => {
     if (!bookingDetails?.booking_date || !bookingDetails?.booking_time)
@@ -25,10 +23,10 @@ const UserProfile = ({bookingDetails, providerDetails, onOpenIdCard}) => {
     const datePart = isToday
       ? 'Today'
       : bookingDate.toLocaleDateString('en-IN', {
-          day: 'numeric',
-          month: 'short',
-          year: 'numeric',
-        });
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+      });
 
     const timePart = bookingDate.toLocaleTimeString('en-IN', {
       hour: 'numeric',
@@ -46,11 +44,11 @@ const UserProfile = ({bookingDetails, providerDetails, onOpenIdCard}) => {
           <View
             style={[
               styles.avatarWrapper,
-              {justifyContent: 'center', alignItems: 'center'},
+              { justifyContent: 'center', alignItems: 'center' },
             ]}>
             {bookingDetails?.logo && bookingDetails.logo !== '' ? (
               <Image
-                source={{uri: bookingDetails.logo}}
+                source={{ uri: bookingDetails.logo }}
                 style={styles.avatar}
               />
             ) : (
@@ -148,7 +146,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     shadowColor: '#F3F3F3',
-    shadowOffset: {width: 0, height: 0},
+    shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 1,
     shadowRadius: 17.5,
     elevation: 3,

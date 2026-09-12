@@ -15,8 +15,12 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 
 import { ChevronLeft } from 'lucide-react-native';
+import { createShimmerPlaceholder } from 'react-native-shimmer-placeholder';
+import LinearGradient from 'react-native-linear-gradient';
 
 import { theme } from '../../styles/globalStyles';
+
+const ShimmerPlaceholder = createShimmerPlaceholder(LinearGradient);
 const ChatListScreen = () => {
   const navigation = useNavigation();
   const [searchQuery, setSearchQuery] = useState('');
@@ -184,9 +188,42 @@ const ChatListScreen = () => {
 
   if (loading) {
     return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color={theme.accent} />
-      </View>
+      <SafeAreaView style={styles.container}>
+        <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent={true} />
+        
+        {/* Header Skeleton */}
+        <View style={styles.header}>
+          <TouchableOpacity style={styles.backBtn} onPress={handleBack}>
+            <ChevronLeft size={24} color="#1e1b4b" strokeWidth={3} />
+          </TouchableOpacity>
+          <Text style={styles.headerTitle}>Messages</Text>
+        </View>
+
+        {/* Search Bar Skeleton */}
+        <View style={styles.searchContainer}>
+          <ShimmerPlaceholder style={{ flex: 1, height: 20, borderRadius: 10 }} />
+        </View>
+
+        {/* List Skeleton */}
+        <View style={{ paddingHorizontal: 20 }}>
+          {[1, 2, 3, 4, 5, 6].map((key) => (
+            <View key={key} style={[styles.chatItem, { padding: 15, marginBottom: 10 }]}>
+              {/* Avatar Skeleton */}
+              <View style={styles.avatarContainer}>
+                <ShimmerPlaceholder style={{ width: 50, height: 50, borderRadius: 25 }} />
+              </View>
+              {/* Content Skeleton */}
+              <View style={styles.chatContent}>
+                <View style={styles.chatHeader}>
+                  <ShimmerPlaceholder style={{ width: 120, height: 16, borderRadius: 8 }} />
+                  <ShimmerPlaceholder style={{ width: 50, height: 12, borderRadius: 6 }} />
+                </View>
+                <ShimmerPlaceholder style={{ width: 180, height: 14, borderRadius: 7, marginTop: 8 }} />
+              </View>
+            </View>
+          ))}
+        </View>
+      </SafeAreaView>
     );
   }
 

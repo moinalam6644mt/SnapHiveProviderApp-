@@ -8,12 +8,13 @@ import {
   Linking,
   Alert,
 } from 'react-native';
-import {User, MapPin, Calendar} from 'lucide-react-native';
+import {User, MapPin, Calendar, Navigation} from 'lucide-react-native';
 import Toast from 'react-native-toast-message';
 import { useNavigation } from '@react-navigation/native';
 import { theme } from '../../styles/globalStyles';
 import handleChat from '../../services/ChatServiceFunction';
 import {AuthUser} from '../../../api/authUser';
+import EmptyState from '../EmptyState';
 
 const OnGoingJobCard = ({onStartJob, ongoingBookingData, userId}) => {
   const [callingData, setCallingData] = useState('');
@@ -22,13 +23,11 @@ const OnGoingJobCard = ({onStartJob, ongoingBookingData, userId}) => {
 
   if (!ongoingBookingData || !ongoingBookingData.length) {
     return (
-      <View style={styles.emptyContainer}>
-        <Text style={styles.emptyTitle}>No Ongoing Jobs Yet</Text>
-        <Text style={styles.emptySubtitle}>
-          You haven't started any jobs yet. Once you start a job, it will appear
-          here.
-        </Text>
-      </View>
+      <EmptyState 
+        title="No Ongoing Jobs"
+        subtitle="You haven't started any jobs yet. Once you start a job, it will appear here."
+        icon={<User size={56} color="#94a3b8" strokeWidth={1.5} />}
+      />
     );
   }
   return (
@@ -125,63 +124,82 @@ const OnGoingJobCard = ({onStartJob, ongoingBookingData, userId}) => {
         const rate = formatRate(price_per_unit);
         const formattedDistance = formatDistance(distance);
 
+        const openGoogleMaps = () => {
+          const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(fullAddress)}`;
+          Linking.openURL(url).catch(() =>
+            Alert.alert('Error', 'Unable to open Google Maps')
+          );
+        };
+
         return (
           <TouchableOpacity
             key={booking_id}
             style={styles.card}
+            activeOpacity={0.8}
             onPress={() =>
               navigation.navigate('JobDetailsScreen', {
                 orderId: booking_id,
                 userId: userId,
               })
             }>
-            <View style={styles.headerRow}>
-              <Text style={styles.jobTitle} numberOfLines={1}>
-                {category_subchild_name || 'Work_Type'}
-              </Text>
+            {/* Header */}
+            <View style={styles.cardHeader}>
+              <Text style={styles.title}>{category_subchild_name || 'Work_Type'}</Text>
               <View style={styles.statusBadge}>
                 <Text style={styles.statusText}>Ongoing</Text>
               </View>
             </View>
 
-            {/* Content Body */}
-            <View style={styles.contentBody}>
-              {/* Left Side */}
-              <View style={styles.leftCol}>
-                <View style={styles.infoRow}>
-                  <User size={18} color="#64748b" />
-                  <Text style={styles.userName}>
-                    {member_name || 'Customer'}
-                  </Text>
+            {/* User Info */}
+            <View style={styles.userRow}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <View style={styles.iconBackgroundSmall}>
+                  <User size={14} color="#fff" />
                 </View>
-                <View style={styles.infoRow}>
-                  <MapPin size={18} color="#64748b" />
-                  <Text style={styles.addressText} numberOfLines={2}>
-                    {fullAddress || 'Address not provided'}
-                  </Text>
-                </View>
-                <View style={styles.infoRow}>
-                  <Calendar size={18} color="#64748b" />
-                  <Text style={styles.dateTimeText}>{formatDateTime()}</Text>
-                </View>
+                <Text style={styles.userName}>{member_name || 'Customer'}</Text>
               </View>
+              <Text style={styles.distance}>{formattedDistance} km from you</Text>
+            </View>
 
-              {/* Right Side */}
-              <View style={styles.rightCol}>
-                <View style={styles.priceContainer}>
-                  <Text style={styles.priceLabel}>First Hour Rate</Text>
-                  <Text style={styles.priceText}>₹{rate}</Text>
-                </View>
-                <View style={styles.distanceWrapper}>
-                  <MapPin size={12} color="#059669" />
-                  <Text style={styles.distanceText}>
-                    {formattedDistance} km away
-                  </Text>
-                </View>
-                <Text style={styles.durationText}>
-                  {duration_hours} Hrs Duration
-                </Text>
+            {/* Location & Price */}
+            <View style={styles.infoRow}>
+              <View style={styles.rowLeft}>
+                <MapPin size={16} color="#FA4C03" style={styles.inlineIcon} />
+                <Text style={styles.address}>{fullAddress}</Text>
               </View>
+              <Text style={styles.price}>₹{rate}/h</Text>
+            </View>
+
+            {/* Time & Duration */}
+            <View style={styles.infoRow}>
+              <View style={styles.rowLeft}>
+                <Calendar size={16} color="#FA4C03" style={styles.inlineIcon} />
+                <Text style={styles.time}>{formatDateTime()}</Text>
+              </View>
+              <Text style={styles.duration}>Duration: {duration_hours} Hours</Text>
+            </View>
+
+            {/* Footer */}
+            <View style={styles.footerRow}>
+              <TouchableOpacity
+                style={styles.targetIconContainer}
+                activeOpacity={0.8}
+                onPress={openGoogleMaps}
+              >
+                <Navigation size={22} color="#fff" />
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.startBtnContainer}
+                activeOpacity={0.8}
+                onPress={() =>
+                  navigation.navigate('JobDetailsScreen', {
+                    orderId: booking_id,
+                    userId: userId,
+                  })
+                }>
+                <Text style={styles.btnText}>Continue Job</Text>
+              </TouchableOpacity>
             </View>
           </TouchableOpacity>
         );
@@ -192,182 +210,130 @@ const OnGoingJobCard = ({onStartJob, ongoingBookingData, userId}) => {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#ffffff',
+    backgroundColor: '#f8fafc',
     borderRadius: 16,
-    padding: 20,
-    marginHorizontal: 16,
-    marginTop: 16,
-    marginBottom: 4,
-    elevation: 4,
-    shadowColor: theme.primary,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
-    borderWidth: 1,
-    borderColor: 'rgba(6, 133, 133, 0.1)',
+    padding: 16,
+    marginBottom: 16,
+    marginHorizontal: 20,
+    marginTop: 20,
+    borderWidth: 0.25,
+    borderColor: "#308695",
   },
-  headerRow: {
+  cardHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 16,
-    paddingBottom: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#f4f4f5',
+    marginBottom: 8,
   },
-  jobTitle: {
+  title: {
     fontSize: 16,
-    fontWeight: '700',
+    fontWeight: 'bold',
     color: theme.primary,
-    flex: 1,
-    marginRight: 10,
   },
   statusBadge: {
-    backgroundColor: '#dbeafe', // Light blue background
+    backgroundColor: '#dbeafe', 
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 8,
   },
   statusText: {
-    color: '#2563eb', // Blue text
+    color: '#2563eb', 
     fontSize: 12,
     fontWeight: '600',
   },
-  iconGroup: {flexDirection: 'row', gap: 12},
-
-  // Icon Buttons
-  phoneIconBtn: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: theme.primary,
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: theme.primary,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    elevation: 2,
-  },
-  chatIconBtn: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: theme.primary,
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: theme.primary,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    elevation: 2,
-  },
-  iconImage: {
-    width: 24,
-    height: 24,
-  },
-  contentBody: {
+  userRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 8,
-  },
-  leftCol: {flex: 1.5, gap: 12},
-  rightCol: {flex: 1, alignItems: 'flex-end', justifyContent: 'flex-start'},
-  infoRow: {flexDirection: 'row', alignItems: 'flex-start', gap: 10},
-  userName: {fontSize: 14, fontWeight: '600', color: '#0f172a'},
-  addressText: {
-    fontSize: 13,
-    color: '#475569',
-    lineHeight: 18,
-    flexShrink: 1,
-    marginTop: -2,
-  },
-  dateTimeText: {fontSize: 13, color: '#475569', fontWeight: '500'},
-
-  priceContainer: {
-    alignItems: 'flex-end',
-    backgroundColor: '#f8fafc',
-    padding: 10,
-    borderRadius: 12,
-    width: '100%',
-  },
-  priceText: {
-    fontSize: 18,
-    fontWeight: '800',
-    color: '#1e1b4b',
-  },
-  priceLabel: {
-    fontSize: 11,
-    color: '#64748b',
-    marginTop: 2,
-    fontWeight: '500',
-  },
-  distanceWrapper: {
-    flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 12,
-    gap: 4,
+    marginVertical: 2,
   },
-  distanceText: {
-    fontSize: 12,
+  iconBackgroundSmall: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: '#FA4C03',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 8,
+  },
+  userName: {
     fontWeight: '600',
-    color: '#059669', // Emerald green for positive reinforcement
+    color: '#374151',
   },
-  durationText: {
-    fontSize: 12,
-    color: '#64748b',
+  infoRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
     marginTop: 4,
-    fontWeight: '500',
   },
-
-  // Footer Row Alignment
+  rowLeft: {
+    flexDirection: 'row',
+    flex: 0.7,
+    alignItems: 'flex-start',
+  },
+  inlineIcon: {
+    marginRight: 6,
+    marginTop: 1,
+  },
+  address: {
+    flex: 1,
+    fontSize: 12,
+    color: '#000',
+    lineHeight: 18,
+  },
+  distance: {
+    fontSize: 13,
+    fontWeight: 'bold',
+    color: '#000',
+  },
+  time: {
+    fontSize: 13,
+    color: '#000',
+  },
+  price: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#FA4C03',
+  },
+  duration: {
+    textAlign: 'right',
+    fontSize: 11,
+    color: '#FA4C03',
+    marginTop: 5,
+  },
   footerRow: {
     flexDirection: 'row',
-    gap: 12,
     alignItems: 'center',
-    marginTop: 16,
-    paddingTop: 16,
-    borderTopWidth: 1,
-    borderTopColor: '#f4f4f5',
+    marginTop: 15,
+    gap: 12,
   },
-  locationBtn: {
+  targetIconContainer: {
     width: 48,
     height: 48,
     borderRadius: 24,
-    backgroundColor: '#f1f5f9',
+    backgroundColor: '#FA4C03',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  locationImage: {
-    width: 24,
-    height: 24,
-  },
-  startBtn: {
+  startBtnContainer: {
     flex: 1,
-    backgroundColor: '#2E2E74',
     height: 48,
     borderRadius: 24,
+    backgroundColor: theme.primary,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#2E2E74',
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
-    shadowOffset: {width: 0, height: 4},
-    elevation: 2,
   },
-  startBtnText: {
+  btnText: {
     color: 'white',
-    fontWeight: '700',
+    fontWeight: 'bold',
     fontSize: 15,
   },
-
   emptyContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     paddingVertical: 60,
   },
-
   emptyTitle: {
     fontSize: 18,
     fontWeight: 'bold',

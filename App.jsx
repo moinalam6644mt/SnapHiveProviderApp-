@@ -11,6 +11,7 @@ import { OneSignal, LogLevel } from 'react-native-onesignal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Platform } from 'react-native';
 import { CallProvider } from './src/context/CallContext';
+import RNCallKeep from 'react-native-callkeep';
 import {
   navigationRef,
   navigate,
@@ -149,6 +150,13 @@ OneSignal.Notifications.addEventListener('click', async event => {
   }
 });
 
+// ─── Setup CallKeep Listeners ───────────────────────────────────────────────
+RNCallKeep.addEventListener('answerCall', ({ callUUID }) => {
+  RNCallKeep.backToForeground();
+  // Get call data from somewhere or navigate
+  // But wait, we need incomingCall data. This will be handled in App component
+});
+
 export default function App() {
   const [isReady, setIsReady] = useState(false);
 
@@ -176,6 +184,22 @@ export default function App() {
             }
           },
         );
+
+        OneSignal.Notifications.addEventListener('foregroundWillDisplay', event => {
+          const data = event?.notification?.additionalData;
+          if (data?.type === 'call' || data?.screen === 'call') {
+            // Must be a valid UUID format (8-4-4-4-12)
+            const getUUID = () => 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+              const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+              return v.toString(16);
+            });
+            const uuid = getUUID();
+            const callerName = data?.member_name || 'Customer';
+            RNCallKeep.displayIncomingCall(uuid, 'SnapHive', callerName, 'generic', true);
+            // Optionally prevent default OneSignal banner
+            event.preventDefault();
+          }
+        });
 
         // console.log('OneSignal: Setup check hochche... Waiting for permission');
 

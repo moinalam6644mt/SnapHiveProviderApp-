@@ -10,15 +10,20 @@ import {
   ActivityIndicator,
   PermissionsAndroid,
 } from 'react-native';
-import { User, MapPin, Calendar, X, Download, Clock, CheckCircle } from 'lucide-react-native';
+import { User, MapPin, Calendar, X, Download, Clock, CheckCircle, Wallet, Zap, Moon, AlertCircle, Info, Phone } from 'lucide-react-native';
 import axios from 'axios';
 import ReactNativeBlobUtil from 'react-native-blob-util';
 import Toast from 'react-native-toast-message';
+import { createShimmerPlaceholder } from 'react-native-shimmer-placeholder';
+import LinearGradient from 'react-native-linear-gradient';
 import { AuthUser } from '../../../api/authUser';
 import { theme } from '../../styles/globalStyles';
+import EmptyState from '../EmptyState';
+
+const ShimmerPlaceholder = createShimmerPlaceholder(LinearGradient);
 
 const CompleteJobCard = ({ completeBookingData, userId }) => {
-  const {callApi} = AuthUser();
+  const { callApi } = AuthUser();
   const [selectedJob, setSelectedJob] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [loadingDetails, setLoadingDetails] = useState(false);
@@ -27,14 +32,12 @@ const CompleteJobCard = ({ completeBookingData, userId }) => {
   const [markingPaidId, setMarkingPaidId] = useState(null);
   const [localPaymentStatus, setLocalPaymentStatus] = useState({});
 
-  console.log("completeBookingData",completeBookingData);
-
   const fetchJobDetails = async (bookingId) => {
     try {
       setLoadingDetails(true);
-      const url = `https://maidfort.com/app/booking_details?worker_id=${userId}&booking_id=${bookingId}`;
+      const url = `https://snaphive.online/app/booking_details?worker_id=${userId}&booking_id=${bookingId}`;
       const response = await axios.get(url);
-      
+
       if (response.data && response.data.status === 1) {
         setJobDetails(response.data.response.data);
       } else {
@@ -60,7 +63,7 @@ const CompleteJobCard = ({ completeBookingData, userId }) => {
       const response = await callApi({
         api: `/mark_as_paid?worker_id=${userId}`,
         method: 'CUSTOM_POST',
-        data:{order_id:bookingId}
+        data: { order_id: bookingId }
       });
 
       const status = response?.status ?? response?.response?.status;
@@ -93,7 +96,7 @@ const CompleteJobCard = ({ completeBookingData, userId }) => {
 
   const handleOpenModal = (bookingId) => {
     setSelectedJob(bookingId);
-    setJobDetails(null); 
+    setJobDetails(null);
     setModalVisible(true);
     fetchJobDetails(bookingId);
   };
@@ -159,33 +162,44 @@ const CompleteJobCard = ({ completeBookingData, userId }) => {
     try {
       const dateTimeString = `${dateStr}T${timeStr}`;
       const d = new Date(dateTimeString);
-      
+
       const datePart = d.toLocaleDateString('en-IN', {
         day: 'numeric',
         month: 'short',
         year: 'numeric',
       });
-      
+
       const timePart = d.toLocaleTimeString('en-IN', {
         hour: 'numeric',
         minute: '2-digit',
         hour12: true,
       });
-      
+
       return { date: datePart, time: timePart };
-    } catch(e) {
+    } catch (e) {
       return { date: dateStr, time: timeStr };
     }
   };
+
+  const formatWorkingTime = decimalHours => {
+    if (!decimalHours || isNaN(decimalHours)) return '00h 00m 00s';
+    const totalSeconds = Math.floor(decimalHours * 3600);
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+    const hDisplay = hours > 0 ? `${hours}h ` : '00h ';
+    const mDisplay = minutes > 0 ? `${minutes}m ` : '00m ';
+    const sDisplay = seconds > 0 ? `${seconds}s` : '00s';
+    return hDisplay + mDisplay + sDisplay;
+  };
+
   if (!completeBookingData || !completeBookingData.length) {
     return (
-      <View style={styles.emptyContainer}>
-        <Text style={styles.emptyTitle}>No Completed Jobs Yet</Text>
-        <Text style={styles.emptySubtitle}>
-          You haven't completed any jobs yet. Once you finish a job, it will
-          appear here.
-        </Text>
-      </View>
+      <EmptyState 
+        title="No Completed Jobs"
+        subtitle="You haven't completed any jobs yet. Once you finish a job, it will appear here."
+        icon={<CheckCircle size={56} color="#94a3b8" strokeWidth={1.5} />}
+      />
     );
   }
 
@@ -244,10 +258,10 @@ const CompleteJobCard = ({ completeBookingData, userId }) => {
             const datePart = isToday
               ? 'Today'
               : bookingDate.toLocaleDateString('en-IN', {
-                  day: 'numeric',
-                  month: 'short',
-                  year: 'numeric',
-                });
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric',
+              });
 
             const timePart = bookingDate.toLocaleTimeString('en-IN', {
               hour: 'numeric',
@@ -295,49 +309,63 @@ const CompleteJobCard = ({ completeBookingData, userId }) => {
           return (
             <View key={booking_id} style={styles.container}>
               {/* Job Card */}
-              <TouchableOpacity 
-                style={styles.card} 
-                onPress={() => handleOpenModal(booking_id)}
+              <View
+                style={styles.card}
               >
-                {/* Top Header Row */}
+                {/* Header */}
                 <View style={styles.cardHeader}>
-                  <Text style={styles.title}>
-                    {category_subchild_name || 'Job_Type'}
-                  </Text>
-                  <Text style={styles.jobId}>#{booking_id}</Text>
+                  <Text style={styles.title}>{category_subchild_name || 'Work_Type'}</Text>
+                  <View style={styles.statusBadge}>
+                    <Text style={styles.statusText}>Completed</Text>
+                  </View>
                 </View>
 
                 {/* User Info */}
                 <View style={styles.userRow}>
                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <View style={styles.iconBackgroundSmall}>
-                      <User size={14} color="#FFFFFF" />
+                      <User size={14} color="#fff" />
                     </View>
-                    <Text style={styles.userName}>{member_name || 'Member name'}</Text>
+                    <Text style={styles.userName}>{member_name || 'Customer'}</Text>
                   </View>
+                  <Text style={styles.distance}>#{booking_id}</Text>
                 </View>
 
                 {/* Location & Earning */}
-                <View style={styles.infoRow2}>
+                <View style={styles.infoRow}>
                   <View style={styles.rowLeft}>
-                    <MapPin size={16} color="#71B280" style={styles.inlineIcon} />
+                    <MapPin size={16} color="#16a34a" style={styles.inlineIcon} />
                     <Text style={styles.address}>{fullAddress}</Text>
                   </View>
                   <View style={{ alignItems: 'flex-end' }}>
-                    <Text style={styles.earningLabel}>Total Earning</Text>
-                    <Text style={styles.price}>₹{rate}</Text>
+                    <Text style={styles.earningLabel}>Earning</Text>
+                    <Text style={[styles.price, { color: '#16a34a' }]}>₹{rate}</Text>
                   </View>
                 </View>
 
                 {/* Time & Duration */}
-                <View style={styles.infoRow2}>
+                <View style={styles.infoRow}>
                   <View style={styles.rowLeft}>
-                    <Calendar size={16} color="#71B280" style={styles.inlineIcon} />
+                    <Calendar size={16} color="#16a34a" style={styles.inlineIcon} />
                     <Text style={styles.time}>{formatDateTime()}</Text>
                   </View>
-                  <Text style={styles.duration}>Duration: {duration_hours} Hours</Text>
+                  <Text style={[styles.duration, { color: '#16a34a' }]}>Duration: {duration_hours} Hrs</Text>
                 </View>
-              </TouchableOpacity>
+
+                {/* Footer */}
+                <View style={styles.footerRow}>
+                  <View style={[styles.targetIconContainer, { backgroundColor: '#f0fdf4' }]}>
+                     <CheckCircle size={22} color="#16a34a" />
+                  </View>
+                  <TouchableOpacity 
+                    style={[styles.startBtnContainer, { backgroundColor: '#16a34a' }]}
+                    activeOpacity={0.8}
+                    onPress={() => handleOpenModal(booking_id)}
+                  >
+                    <Text style={styles.btnText}>View Details</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
             </View>
           );
         })}
@@ -351,22 +379,38 @@ const CompleteJobCard = ({ completeBookingData, userId }) => {
         onRequestClose={() => setModalVisible(false)}
       >
         <View style={styles.modalOverlay}>
+          <TouchableOpacity activeOpacity={1} style={StyleSheet.absoluteFill} onPress={() => setModalVisible(false)} />
           <View style={styles.modalContent}>
-            <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>Job Details</Text>
-              <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.closeButton}>
-                <X size={24} color="#1e1b4b" />
-              </TouchableOpacity>
+            <View style={styles.dragHandleContainer}>
+              <View style={styles.dragHandle} />
             </View>
-            
+            <View style={[styles.modalHeader, { justifyContent: 'center' }]}>
+              <Text style={styles.modalTitle}>Job Details</Text>
+            </View>
+
             {loadingDetails ? (
-              <View style={styles.loaderContainer}>
-                <ActivityIndicator size="large" color="#2E2E74" />
-                <Text style={styles.loadingText}>Fetching details...</Text>
-              </View>
+              <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.modalBody}>
+                <View style={styles.detailCard}>
+                  {[1, 2, 3, 4].map((_, i) => (
+                    <View key={`skel-row-${i}`} style={{ paddingVertical: 8 }}>
+                      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <ShimmerPlaceholder style={{ width: 67, height: 67, borderRadius: 10, marginRight: 12 }} />
+                        <View style={{ flex: 1 }}>
+                          <ShimmerPlaceholder style={{ width: 100, height: 12, borderRadius: 4, marginBottom: 6 }} />
+                          <ShimmerPlaceholder style={{ width: 160, height: 16, borderRadius: 4 }} />
+                        </View>
+                      </View>
+                      {i < 3 && <View style={styles.divider} />}
+                    </View>
+                  ))}
+                </View>
+
+                {/* Skeleton for action buttons */}
+                <ShimmerPlaceholder style={{ width: '100%', height: 50, borderRadius: 12, marginTop: 15 }} />
+                <ShimmerPlaceholder style={{ width: '100%', height: 50, borderRadius: 12, marginTop: 12 }} />
+              </ScrollView>
             ) : jobDetails ? (
               <ScrollView
-                style={{ maxHeight: 400 }}
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={styles.modalBody}
               >
@@ -416,6 +460,37 @@ const CompleteJobCard = ({ completeBookingData, userId }) => {
                       </Text>
                     </View>
                   </View>
+
+                  <View style={styles.divider} />
+
+                  <View style={styles.detailRow}>
+                    <View style={[styles.detailIconContainer, { backgroundColor: '#f3e8ff' }]}>
+                      <MapPin size={20} color="#7e22ce" />
+                    </View>
+                    <View style={styles.detailTextContainer}>
+                      <Text style={styles.detailLabel}>Address</Text>
+                      <Text style={styles.detailValue}>
+                        {[selectedBooking?.member_address_1, selectedBooking?.member_address_2, selectedBooking?.member_landmark].filter(Boolean).join(', ') || 'N/A'}
+                      </Text>
+                    </View>
+                  </View>
+
+                  {jobDetails.calculation?.actual_hours && (
+                    <>
+                      <View style={styles.divider} />
+                      <View style={styles.detailRow}>
+                        <View style={[styles.detailIconContainer, { backgroundColor: '#fce7f3' }]}>
+                          <Clock size={20} color="#be185d" />
+                        </View>
+                        <View style={styles.detailTextContainer}>
+                          <Text style={styles.detailLabel}>Task Time</Text>
+                          <Text style={styles.detailValue}>
+                            {formatWorkingTime(jobDetails.calculation.actual_hours)}
+                          </Text>
+                        </View>
+                      </View>
+                    </>
+                  )}
                 </View>
 
                 {jobDetails.inv_det?.invoice_url && (
@@ -425,53 +500,53 @@ const CompleteJobCard = ({ completeBookingData, userId }) => {
                     disabled={downloading}
                     activeOpacity={0.8}
                   >
-                      {downloading ? (
-                        <>
-                          <ActivityIndicator size="small" color="white" />
-                          <Text style={styles.downloadButtonText}>Downloading...</Text>
-                        </>
-                      ) : (
-                        <>
-                          <Download size={20} color="white" style={{ marginRight: 8 }} />
-                          <Text style={styles.downloadButtonText}>Download Invoice</Text>
-                        </>
-                      )}
+                    {downloading ? (
+                      <>
+                        <ActivityIndicator size="small" color="white" />
+                        <Text style={styles.downloadButtonText}>Downloading...</Text>
+                      </>
+                    ) : (
+                      <>
+                        <Download size={20} color="white" style={{ marginRight: 8 }} />
+                        <Text style={styles.downloadButtonText}>Download Invoice</Text>
+                      </>
+                    )}
                   </TouchableOpacity>
                 )}
 
                 {/* Mark as Paid button inside modal, below invoice */}
                 {modalPaymentStatus === 1 ? (
-                  <View style={[styles.btnContainer, styles.paymentButtonDisabled, { marginTop: 12 }]}>
+                  <View style={[styles.markPaidBtn, styles.paymentButtonDisabled]}>
                     <CheckCircle size={20} color="#9CA3AF" style={{ marginRight: 8 }} />
                     <Text style={styles.paymentButtonTextDisabled}>Marked as Paid</Text>
                   </View>
                 ) : (
                   <TouchableOpacity
                     activeOpacity={0.8}
-                    style={[styles.btnContainer, { marginTop: 12 }]}
+                    style={[styles.markPaidBtn, markingPaidId === selectedJob && styles.markPaidBtnDisabled]}
                     onPress={() => handleMarkAsPaid(selectedJob)}
                     disabled={markingPaidId === selectedJob}
                   >
-                      {markingPaidId === selectedJob ? (
-                        <>
-                          <ActivityIndicator size="small" color="#fff" />
-                          <Text style={styles.paymentButtonText}>Marking...</Text>
-                        </>
-                      ) : (
-                        <Text style={styles.paymentButtonText}>Mark as Paid</Text>
-                      )}
+                    {markingPaidId === selectedJob ? (
+                      <>
+                        <ActivityIndicator size="small" color="#fff" />
+                        <Text style={styles.paymentButtonText}>Marking...</Text>
+                      </>
+                    ) : (
+                      <Text style={styles.paymentButtonText}>Mark as Paid</Text>
+                    )}
                   </TouchableOpacity>
                 )}
               </ScrollView>
             ) : (
-                <View style={styles.loaderContainer}>
-                   <Text style={{color: '#64748b'}}>Details not available.</Text>
-                </View>
+              <View style={styles.loaderContainer}>
+                <Text style={{ color: '#64748b' }}>Details not available.</Text>
+              </View>
             )}
           </View>
         </View>
-      </Modal>
-    </View>
+      </Modal >
+    </View >
   );
 };
 
@@ -481,25 +556,14 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   card: {
-    backgroundColor: theme.background,
+    backgroundColor: '#f8fafc',
     borderRadius: 16,
     padding: 16,
+    marginBottom: 16,
     marginHorizontal: 20,
     marginTop: 20,
-    borderWidth: 1,
-    borderColor: theme.primary,
-    // Soft shadow logic
-    ...Platform.select({
-      ios: {
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.15,
-        shadowRadius: 10,
-      },
-      android: {
-        elevation: 3,
-      },
-    }),
+    borderWidth: 0.25,
+    borderColor: "#308695",
   },
   cardHeader: {
     flexDirection: 'row',
@@ -510,37 +574,43 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#FFFFFF',
+    color: theme.primary,
   },
-  jobId: {
+  statusBadge: {
+    backgroundColor: '#dcfce7', 
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 8,
+  },
+  statusText: {
+    color: '#16a34a', 
     fontSize: 12,
-    color: 'rgba(255,255,255,0.8)',
+    fontWeight: '600',
   },
   userRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginVertical: 4,
+    marginVertical: 2,
   },
   iconBackgroundSmall: {
     width: 24,
     height: 24,
     borderRadius: 12,
-    backgroundColor: 'rgba(255,255,255,0.2)',
+    backgroundColor: '#16a34a',
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 8,
   },
   userName: {
     fontWeight: '600',
-    color: '#FFFFFF',
-    fontSize: 13,
+    color: '#374151',
   },
-  infoRow2: {
+  infoRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-    marginTop: 6,
+    marginTop: 4,
   },
   rowLeft: {
     flexDirection: 'row',
@@ -554,28 +624,61 @@ const styles = StyleSheet.create({
   address: {
     flex: 1,
     fontSize: 12,
-    color: 'rgba(255,255,255,0.8)',
+    color: '#000',
     lineHeight: 18,
+  },
+  distance: {
+    fontSize: 13,
+    fontWeight: 'bold',
+    color: '#94a3b8',
   },
   time: {
     fontSize: 13,
-    color: '#FFFFFF',
+    color: '#000',
   },
   price: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
-    color: theme.primary,
+    color: '#16a34a',
   },
+
   duration: {
     textAlign: 'right',
     fontSize: 11,
-    color: 'rgba(255,255,255,0.8)',
+    color: '#16a34a',
     marginTop: 5,
   },
   earningLabel: {
     fontSize: 11,
-    color: 'rgba(255,255,255,0.8)',
+    color: '#64748b',
     marginBottom: 2,
+  },
+  footerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 15,
+    gap: 12,
+  },
+  targetIconContainer: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: '#f0fdf4',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  startBtnContainer: {
+    flex: 1,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: '#16a34a',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  btnText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 15,
   },
   // Floating Button Styling
   fab: {
@@ -621,10 +724,23 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     backgroundColor: 'white',
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
     padding: 24,
-    minHeight: 250,
+    paddingTop: 16,
+    minHeight: '50%',
+    maxHeight: '90%',
+  },
+  dragHandleContainer: {
+    width: '100%',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  dragHandle: {
+    width: 45,
+    height: 5,
+    borderRadius: 3,
+    backgroundColor: '#cbd5e1',
   },
   modalHeader: {
     flexDirection: 'row',
@@ -697,14 +813,18 @@ const styles = StyleSheet.create({
     marginLeft: 52, // Align with text
   },
   btnContainer: {
-    height: 48,
+    height: 50,
+    backgroundColor: theme.primary,
     borderRadius: 12,
-    shadowColor: '#134E5E',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: theme.primary,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
     elevation: 4,
-    overflow: 'hidden',
+    marginTop: 15,
   },
   gradientButton: {
     flex: 1,
@@ -713,15 +833,34 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 8,
   },
+  markPaidBtn: {
+    height: 50,
+    backgroundColor: '#10b981', // emerald-500
+    borderRadius: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#10b981',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 4,
+    marginTop: 12,
+  },
+  markPaidBtnDisabled: {
+    backgroundColor: '#6ee7b7', // emerald-300
+    shadowOpacity: 0,
+    elevation: 0,
+  },
   downloadButtonText: {
     color: 'white',
     fontSize: 16,
     fontWeight: 'bold',
   },
   paymentButtonDisabled: {
-    backgroundColor: '#e5e7eb',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: '#f1f5f9',
+    borderColor: '#e2e8f0',
+    borderWidth: 1,
     shadowOpacity: 0,
     elevation: 0,
   },
@@ -734,6 +873,47 @@ const styles = StyleSheet.create({
     color: '#9CA3AF',
     fontSize: 14,
     fontWeight: '600',
+  },
+  calcRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 4,
+  },
+  calcLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+  calcLabel: {
+    fontSize: 14,
+    color: '#FFFFFF',
+    fontWeight: '500',
+  },
+  calcValue: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: '#FFFFFF',
+  },
+  calcLine: {
+    height: 1,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    marginVertical: 6,
+  },
+  calcTotalRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  calcTotalLabel: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#FFFFFF',
+  },
+  calcTotalValue: {
+    fontSize: 22,
+    fontWeight: '900',
+    color: '#4ade80',
   },
 });
 

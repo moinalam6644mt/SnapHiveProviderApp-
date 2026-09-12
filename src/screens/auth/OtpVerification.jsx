@@ -4,7 +4,6 @@ import {
   View,
   TextInput,
   TouchableOpacity,
-  SafeAreaView,
   KeyboardAvoidingView,
   Platform,
   Image,
@@ -269,10 +268,10 @@ const OtpVerification = () => {
     n ? `+91 ${n.slice(0, 5)} ${n.slice(5)}` : '';
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={[styles.container, { paddingTop: Platform.OS === 'ios' ? 40 : StatusBar.currentHeight }]}>
       <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
       <LinearGradient
-        colors={['#134E5E', '#71B280']}
+        colors={['#0f172a', '#1e293b']}
         style={styles.gradientBg}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
@@ -280,7 +279,11 @@ const OtpVerification = () => {
         <KeyboardAvoidingView
           style={styles.keyboardView}
           behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-          <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
+          <ScrollView 
+            contentContainerStyle={styles.scrollContent} 
+            showsVerticalScrollIndicator={false}
+            keyboardShouldPersistTaps="handled"
+          >
             {/* TOP */}
             <View style={styles.topSection}>
               <Image
@@ -409,7 +412,7 @@ const OtpVerification = () => {
         message={modalMsg}
         onClose={() => setModalVisible(false)}
       />
-    </SafeAreaView>
+    </View>
   );
 };
 

@@ -1,5 +1,4 @@
-import React, { useEffect, useRef } from 'react';
-import { useContext } from 'react';
+import React, { useEffect, useRef, useContext } from 'react';
 import {
   View,
   Text,
@@ -8,9 +7,10 @@ import {
   Animated,
   Image,
   StatusBar,
+  Easing
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Award } from 'lucide-react-native';
+import { ShieldCheck } from 'lucide-react-native';
 import { AuthContext } from '../context/AuthContext';
 import LinearGradient from 'react-native-linear-gradient';
 import { theme } from '../styles/globalStyles';
@@ -22,40 +22,74 @@ export default function SplashScreen() {
   const { isLoggedIn } = useContext(AuthContext);
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
-  const scaleAnim = useRef(new Animated.Value(0)).current;
+  const scaleAnim = useRef(new Animated.Value(0.8)).current;
+  const translateYAnim = useRef(new Animated.Value(30)).current;
+  const pulseAnim = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
+    // Initial entry animations
     Animated.parallel([
       Animated.timing(fadeAnim, {
         toValue: 1,
-        duration: 1500,
+        duration: 1000,
+        easing: Easing.out(Easing.cubic),
         useNativeDriver: true,
       }),
       Animated.spring(scaleAnim, {
         toValue: 1,
-        friction: 6,
+        friction: 5,
         tension: 40,
         useNativeDriver: true,
       }),
+      Animated.timing(translateYAnim, {
+        toValue: 0,
+        duration: 1000,
+        easing: Easing.out(Easing.cubic),
+        useNativeDriver: true,
+      })
     ]).start();
+
+    // Gentle logo pulse loop
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(pulseAnim, {
+          toValue: 1.05,
+          duration: 2000,
+          easing: Easing.inOut(Easing.ease),
+          useNativeDriver: true,
+        }),
+        Animated.timing(pulseAnim, {
+          toValue: 1,
+          duration: 2000,
+          easing: Easing.inOut(Easing.ease),
+          useNativeDriver: true,
+        })
+      ])
+    ).start();
+
   }, []);
 
   return (
     <LinearGradient
-      colors={[theme.background, theme.backgroundEnd]}
+      colors={['#0f172a', '#1e293b']}
       style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="transparent" translucent={true} />
 
-      <View style={styles.topCurve} />
-      <View style={styles.topCurveOverlay} />
+      {/* Decorative Background Elements */}
+      <View style={styles.blurCircleTop} />
+      <View style={styles.blurCircleBottom} />
 
       <View style={styles.content}>
         <Animated.View
           style={[
-            styles.logoContainer,
+            styles.logoWrapper,
             {
               opacity: fadeAnim,
-              transform: [{ scale: scaleAnim }],
+              transform: [
+                { scale: scaleAnim },
+                { translateY: translateYAnim },
+                { scale: pulseAnim }
+              ],
             },
           ]}>
           <Image
@@ -65,16 +99,24 @@ export default function SplashScreen() {
           />
         </Animated.View>
 
-        <View style={styles.footer}>
-          <View style={styles.iconBadge}>
-            <Award color="white" size={32} strokeWidth={2} />
+        <Animated.View 
+          style={[
+            styles.footer,
+            {
+              opacity: fadeAnim,
+              transform: [{ translateY: translateYAnim }]
+            }
+          ]}>
+          <View style={styles.trustContainer}>
+            <View style={styles.iconContainer}>
+              <ShieldCheck color="#10b981" size={24} strokeWidth={2.5} />
+            </View>
+            <View>
+              <Text style={styles.trustedLabel}>Verified Service Partner</Text>
+              <Text style={styles.trustedText}>Join <Text style={styles.boldText}>1,000+</Text> Professionals</Text>
+            </View>
           </View>
-
-          <Text style={styles.trustedText}>
-            Trusted By{'\n'}
-            <Text style={styles.boldText}>1000+ Professionals</Text>
-          </Text>
-        </View>
+        </Animated.View>
       </View>
     </LinearGradient>
   );
@@ -83,36 +125,37 @@ export default function SplashScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: '#0f172a',
   },
-  topCurve: {
-    width: width * 3,
-    height: width * 3,
-    borderRadius: (width * 3) / 2,
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+  blurCircleTop: {
     position: 'absolute',
-    top: -width * 2.7,
-    alignSelf: 'center',
+    top: -width * 0.4,
+    right: -width * 0.3,
+    width: width * 1.1,
+    height: width * 1.1,
+    borderRadius: width * 0.55,
+    backgroundColor: theme.background,
+    opacity: 0.15,
   },
-  topCurveOverlay: {
-    width: width * 2.5,
-    height: width * 2.5,
-    borderRadius: (width * 2.5) / 2,
-    backgroundColor: 'rgba(255, 255, 255, 0.03)',
+  blurCircleBottom: {
     position: 'absolute',
-    top: -width * 2.3,
-    alignSelf: 'center',
+    bottom: -width * 0.3,
+    left: -width * 0.4,
+    width: width * 1.2,
+    height: width * 1.2,
+    borderRadius: width * 0.6,
+    backgroundColor: '#3b82f6',
+    opacity: 0.1,
   },
   content: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    width: '100%',
+    paddingHorizontal: 24,
   },
-  logoContainer: {
-    width: width * 0.75,
-    height: 120,
+  logoWrapper: {
+    width: width * 0.7,
+    height: 130,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -123,27 +166,43 @@ const styles = StyleSheet.create({
   footer: {
     position: 'absolute',
     bottom: 60,
+    width: '100%',
     alignItems: 'center',
   },
-  iconBadge: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
-    backgroundColor: 'rgba(255, 255, 255, 0.12)',
+  trustContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.06)',
+    paddingHorizontal: 22,
+    paddingVertical: 16,
+    borderRadius: 24,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.1)',
+  },
+  iconContainer: {
+    width: 46,
+    height: 46,
+    borderRadius: 16,
+    backgroundColor: 'rgba(16, 185, 129, 0.15)',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 12,
+    marginRight: 16,
+  },
+  trustedLabel: {
+    color: '#94a3b8',
+    fontSize: 11,
+    fontFamily: 'Sora-Bold',
+    textTransform: 'uppercase',
+    letterSpacing: 1.2,
+    marginBottom: 4,
   },
   trustedText: {
-    color: 'white',
-    fontSize: 16,
-    textAlign: 'center',
-    lineHeight: 24,
+    color: '#f8fafc',
+    fontSize: 14,
+    fontFamily: 'Sora-Regular',
   },
   boldText: {
-    fontSize: 22,
-    fontWeight: '800',
-    color: 'white',
-    marginTop: 4,
+    fontFamily: 'Sora-Bold',
+    color: '#10b981',
   },
 });

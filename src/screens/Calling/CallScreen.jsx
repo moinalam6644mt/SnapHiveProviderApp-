@@ -192,7 +192,8 @@ const CallScreen = () => {
       resetAudio();
       setIsSpeakerOn(false);
 
-      await endCallApi();
+      // Fire and forget the API call so it doesn't block navigation
+      endCallApi();
 
       setTimeout(() => {
         setIsEndingCall(false);

@@ -5,16 +5,17 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  StatusBar,
   ActivityIndicator,
   RefreshControl,
+  StatusBar,
+  Platform,
 } from 'react-native';
 import { ChevronLeft, Calendar } from 'lucide-react-native';
 import JobHomeCard from '../../components/jobs/jobHomeCard';
 import AcceptedJobCard from '../../components/jobs/acceptedJobCard';
 import CompleteJobCard from '../../components/jobs/completeJobCard';
 import OnGoingJobCard from "../../components/jobs/onGoingJobCard"
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
   useNavigation,
   useFocusEffect,
@@ -28,6 +29,7 @@ import { AuthUser } from '../../../api/authUser';
 import SkeletonLoader from '../../components/SkeletonLoader';
 
 const JobScreen = () => {
+  const insets = useSafeAreaInsets();
   const [activeTab, setActiveTab] = useState('Upcoming');
   const [modalVisible, setModalVisible] = useState(false);
   const [acceptedBookingData, setAcceptedBookingData] = useState(null);
@@ -253,120 +255,132 @@ const JobScreen = () => {
   const tabs = ['Upcoming', 'Accepted', 'Ongoing','Completed'];
 
   return (
-    <SafeAreaView style={styles.container}>
-      {loading && (
-        <View style={styles.loaderWrapper}>
-          <SkeletonLoader />
-        </View>
-      )}
-      <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent={true} />
+    <View style={styles.container}>
+
+      <StatusBar barStyle="light-content" backgroundColor="transparent" translucent={true} />
 
       {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.backBtn} onPress={handleBack}>
-          <ChevronLeft size={24} color="#1e1b4b" strokeWidth={3} />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Jobs</Text>
+      <View style={[styles.header, { paddingTop: insets.top > 0 ? insets.top + 15 : Platform.OS === 'android' ? 50 : 65 }]}>
+        <Text style={styles.headerTitle}>My Jobs</Text>
       </View>
 
-      {/* Tabs */}
-      <View style={styles.tabWrapper}>
-        <View style={styles.tabUnderlineBase} />
-        <ScrollView 
-          horizontal 
-          showsHorizontalScrollIndicator={false} 
-          style={styles.tabsContainer}
-          contentContainerStyle={{ paddingHorizontal: 20 }}
-        >
-          {tabs.map(tab => (
-            <TouchableOpacity
-              key={tab}
-              style={styles.tabItem}
-              onPress={() => setActiveTab(tab)}
-            >
-              <Text
-                style={[
-                  styles.tabText,
-                  activeTab === tab && styles.activeTabText,
-                ]}
-              >
-                {tab}
-              </Text>
-              {activeTab === tab && <View style={styles.activeUnderline} />}
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
-      </View>
-
+      {/* Main Scrollable Content */}
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 100 }}
+        stickyHeaderIndices={[0]}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={[theme.primary]} />
         }
       >
-        {activeTab === 'Upcoming' && (
-          <JobHomeCard myBookingData={myBookingData} userId={userId} />
-        )}
-
-        {activeTab === 'Accepted' && (
-          <AcceptedJobCard
-            acceptedBookingData={acceptedBookingData}
-            onStartJob={() => setModalVisible(true)}
-            userId={userId}
-          />
-        )}
-        {activeTab === 'Accepted' && acceptedPage < acceptedTotalPage && (
-          <View style={{ alignItems: 'center', marginVertical: 20 }}>
-            <TouchableOpacity
-              onPress={handleLoadMoreAccepted}
-              style={styles.loadMoreBtn}
-              disabled={acceptedLoadingMore}
-            >
-              <Text style={styles.loadMoreText}>
-                {acceptedLoadingMore ? 'Loading...' : 'Load More'}
-              </Text>
-            </TouchableOpacity>
+        {/* Sticky Tabs */}
+        <View style={styles.tabWrapper}>
+          <ScrollView 
+            horizontal 
+            showsHorizontalScrollIndicator={false} 
+            style={styles.tabsContainer}
+            contentContainerStyle={{ paddingHorizontal: 20, gap: 10, paddingBottom: 10 }}
+          >
+            {tabs.map(tab => (
+              <TouchableOpacity
+                key={tab}
+                style={[
+                  styles.tabItem,
+                  activeTab === tab && styles.activeTabItem,
+                ]}
+                activeOpacity={0.8}
+                onPress={() => {
+                  if (activeTab !== tab) {
+                    setLoading(true);
+                    setActiveTab(tab);
+                  }
+                }}
+              >
+                <Text
+                  style={[
+                    styles.tabText,
+                    activeTab === tab && styles.activeTabText,
+                  ]}
+                >
+                  {tab}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        </View>
+        {loading ? (
+          <View style={{ flex: 1, marginTop: 10 }}>
+            <SkeletonLoader />
           </View>
-        )}
+        ) : (
+          <>
+            {activeTab === 'Upcoming' && (
+              <JobHomeCard myBookingData={myBookingData} userId={userId} />
+            )}
 
-        {activeTab === 'Ongoing' && (
-          <OnGoingJobCard
-            ongoingBookingData={ongoingBookingData}
-            onStartJob={() => setModalVisible(true)}
-            userId={userId}
-          />
-        )}
-        {activeTab === 'Ongoing' && ongoingPage < ongoingTotalPage && (
-          <View style={{ alignItems: 'center', marginVertical: 20 }}>
-            <TouchableOpacity
-              onPress={handleLoadMoreOngoing}
-              style={styles.loadMoreBtn}
-              disabled={ongoingLoadingMore}
-            >
-              <Text style={styles.loadMoreText}>
-                {ongoingLoadingMore ? 'Loading...' : 'Load More'}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        )}
+            {activeTab === 'Accepted' && (
+              <AcceptedJobCard
+                acceptedBookingData={acceptedBookingData}
+                onStartJob={() => setModalVisible(true)}
+                userId={userId}
+              />
+            )}
+            {activeTab === 'Accepted' && acceptedPage < acceptedTotalPage && (
+              <View style={{ alignItems: 'center', marginVertical: 20 }}>
+                <TouchableOpacity
+                  onPress={handleLoadMoreAccepted}
+                  style={styles.loadMoreBtn}
+                  disabled={acceptedLoadingMore}
+                >
+                  <Text style={styles.loadMoreText}>
+                    {acceptedLoadingMore ? 'Loading...' : 'Load More'}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            )}
 
-        {activeTab === 'Completed' && (
-          <CompleteJobCard completeBookingData={completeBookingData} 
-            userId={userId} />
-        )}
-        {activeTab === 'Completed' && completePage < completeTotalPage && (
-          <View style={{ alignItems: 'center', marginVertical: 20 }}>
-            <TouchableOpacity
-              onPress={handleLoadMoreComplete}
-              style={styles.loadMoreBtn}
-              disabled={loadingMore}
-            >
-              <Text style={styles.loadMoreText}>
-                {loadingMore ? 'Loading...' : 'Load More'}
-              </Text>
-            </TouchableOpacity>
-          </View>
+            {activeTab === 'Ongoing' && (
+              <OnGoingJobCard
+                ongoingBookingData={ongoingBookingData}
+                onStartJob={() => setModalVisible(true)}
+                userId={userId}
+              />
+            )}
+            {activeTab === 'Ongoing' && ongoingPage < ongoingTotalPage && (
+              <View style={{ alignItems: 'center', marginVertical: 20 }}>
+                <TouchableOpacity
+                  onPress={handleLoadMoreOngoing}
+                  style={styles.loadMoreBtn}
+                  disabled={ongoingLoadingMore}
+                >
+                  <Text style={styles.loadMoreText}>
+                    {ongoingLoadingMore ? 'Loading...' : 'Load More'}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            )}
+
+            {activeTab === 'Completed' && (
+              <CompleteJobCard
+                completeBookingData={completeBookingData}
+                onStartJob={() => setModalVisible(true)}
+                userId={userId}
+              />
+            )}
+            {activeTab === 'Completed' && completePage < completeTotalPage && (
+              <View style={{ alignItems: 'center', marginVertical: 20 }}>
+                <TouchableOpacity
+                  onPress={handleLoadMoreComplete}
+                  style={styles.loadMoreBtn}
+                  disabled={loadingMore}
+                >
+                  <Text style={styles.loadMoreText}>
+                    {loadingMore ? 'Loading...' : 'Load More'}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            )}
+          </>
         )}
       </ScrollView>
 
@@ -381,7 +395,7 @@ const JobScreen = () => {
           <Calendar size={28} color="white" />
         </TouchableOpacity>
       )}
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -393,66 +407,57 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5F5F5',
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
     paddingHorizontal: 20,
-    paddingVertical: 5,
-  },
-  backBtn: {
-    width: 24,
-    height: 24,
-    marginRight: 10,
+    paddingBottom: 30,
+    backgroundColor: theme.primary,
+    borderBottomLeftRadius: 32,
+    borderBottomRightRadius: 32,
+    shadowColor: theme.primary,
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.3,
+    shadowRadius: 10,
+    elevation: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   headerTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: theme.primary,
+    fontSize: 28,
+    fontWeight: '900',
+    color: '#ffffff',
   },
   tabWrapper: {
-    marginTop: 20,
-    position: 'relative',
+    paddingTop: 15,
+    paddingBottom: 5,
+    backgroundColor: '#F5F5F5',
   },
   tabsContainer: {
     flexDirection: 'row',
   },
   tabItem: {
-    paddingHorizontal: 15,
-    paddingBottom: 15,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 24,
+    backgroundColor: '#e2e8f0',
     alignItems: 'center',
+    justifyContent: 'center',
+  },
+  activeTabItem: {
+    backgroundColor: theme.primary,
+    shadowColor: theme.primary,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 4,
   },
   tabText: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#9ca3af',
+    color: '#64748b',
   },
   activeTabText: {
-    color: theme.primary,
+    color: '#ffffff',
   },
-  tabUnderlineBase: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: 2,
-    backgroundColor: '#e5e7eb',
-  },
-  activeUnderline: {
-    position: 'absolute',
-    bottom: 0,
-    width: '100%',
-    height: 3,
-    backgroundColor: theme.primary,
-    borderRadius: 30,
-  },
-  loaderWrapper: {
-    position: 'absolute',
-    top: 60,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: '#F5F5F5',
-    zIndex: 999,
-  },
+
   fab: {
     position: 'absolute',
     bottom: 30,

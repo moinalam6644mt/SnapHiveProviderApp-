@@ -39,8 +39,12 @@ import {AuthUser} from '../../../api/authUser';
 import PusherService from '../../services/PusherService';
 import {AuthContext} from '../../context/AuthContext';
 import Toast from 'react-native-toast-message';
+import { createShimmerPlaceholder } from 'react-native-shimmer-placeholder';
+import LinearGradient from 'react-native-linear-gradient';
 
 import { theme } from '../../styles/globalStyles';
+
+const ShimmerPlaceholder = createShimmerPlaceholder(LinearGradient);
 const ChatDetailsScreen = () => {
   const route = useRoute();
   const navigation = useNavigation();
@@ -509,22 +513,51 @@ const ChatDetailsScreen = () => {
     </View>
   );
 
-  // Show loading while getting current user ID
-  if (!currentUserId && loading) {
+  // Show full chat skeleton while loading
+  if (loading || (!currentUserId && loading)) {
     return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color={theme.accent} />
-        <Text style={styles.loadingText}>Loading user data...</Text>
-      </View>
-    );
-  }
+      <SafeAreaView style={styles.container}>
+        <StatusBar barStyle="dark-content" backgroundColor="#fff" />
+        <View style={styles.header}>
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => navigation.goBack()}>
+            <ArrowLeft size={24} color="#333" />
+          </TouchableOpacity>
+          <View style={[styles.headerInfo, { flexDirection: 'row', alignItems: 'center' }]}>
+             <ShimmerPlaceholder style={{ width: 40, height: 40, borderRadius: 20, marginRight: 10 }} />
+             <View>
+               <ShimmerPlaceholder style={{ width: 100, height: 16, borderRadius: 4, marginBottom: 6 }} />
+               <ShimmerPlaceholder style={{ width: 60, height: 12, borderRadius: 4 }} />
+             </View>
+          </View>
+        </View>
 
-  if (loading) {
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color={theme.accent} />
-        <Text style={styles.loadingText}>Loading chat...</Text>
-      </View>
+        <View style={{ flex: 1, padding: 16, backgroundColor: '#f9fafb' }}>
+           {/* Left Bubble */}
+           <View style={{ flexDirection: 'row', marginBottom: 20 }}>
+              <ShimmerPlaceholder style={{ width: '60%', height: 60, borderRadius: 16, borderBottomLeftRadius: 4 }} />
+           </View>
+           {/* Right Bubble */}
+           <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginBottom: 20 }}>
+              <ShimmerPlaceholder style={{ width: '45%', height: 50, borderRadius: 16, borderBottomRightRadius: 4 }} />
+           </View>
+           {/* Left Bubble */}
+           <View style={{ flexDirection: 'row', marginBottom: 20 }}>
+              <ShimmerPlaceholder style={{ width: '70%', height: 80, borderRadius: 16, borderBottomLeftRadius: 4 }} />
+           </View>
+           {/* Right Bubble */}
+           <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginBottom: 20 }}>
+              <ShimmerPlaceholder style={{ width: '55%', height: 60, borderRadius: 16, borderBottomRightRadius: 4 }} />
+           </View>
+        </View>
+        
+        {/* Input area skeleton */}
+        <View style={styles.inputContainer}>
+           <ShimmerPlaceholder style={{ flex: 1, height: 50, borderRadius: 25 }} />
+           <ShimmerPlaceholder style={{ width: 50, height: 50, borderRadius: 25, marginLeft: 10 }} />
+        </View>
+      </SafeAreaView>
     );
   }
 

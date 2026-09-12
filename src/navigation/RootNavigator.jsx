@@ -7,12 +7,15 @@ import AuthNavigator from '../navigation/AuthNavigator';
 import HomeNavigator from './HomeNavigator';
 import NotFound from '../screens/NotFound';
 import {AuthContext} from '../context/AuthContext';
+import {CallContext} from '../context/CallContext';
 import CallScreen from "../screens/Calling/CallScreen";
+import IncomingCallModal from '../components/Calling/IncomingCallModal';
 
 const Stack = createNativeStackNavigator();
 
 export default function RootNavigator() {
-  const {isLoggedIn, isLoading} = useContext(AuthContext);
+  const {isLoggedIn, isLoading, userId} = useContext(AuthContext);
+  const {incomingCall} = useContext(CallContext);
   const [showSplash, setShowSplash] = React.useState(true);
 
   useEffect(() => {
@@ -27,7 +30,14 @@ export default function RootNavigator() {
   if (isLoading || showSplash) {
     return <SplashScreen />;
   }
+
+  const isCallValid =
+    incomingCall &&
+    userId &&
+    String(userId) !== String(incomingCall?.caller_id);
+
   return (
+    <>
     <Stack.Navigator screenOptions={{headerShown: false}}>
       {isLoggedIn ? (
         <Stack.Screen name="Main" component={HomeNavigator} />
@@ -37,5 +47,7 @@ export default function RootNavigator() {
       <Stack.Screen name="NotFound" component={NotFound} />
       <Stack.Screen name="CallScreen" component={CallScreen} />
     </Stack.Navigator>
+      {isCallValid && <IncomingCallModal />}
+    </>
   );
 }

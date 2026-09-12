@@ -374,14 +374,14 @@ export default function CompleteProfileScreen() {
   };
 
   return (
-    <SafeAreaView edges={["left", "right", "bottom"]} style={styles.container}>
+    <View style={[styles.container, { paddingTop: Platform.OS === 'ios' ? 40 : StatusBar.currentHeight }]}>
       <StatusBar
         barStyle="light-content"
         translucent={true}
         backgroundColor="transparent"
       />
       <LinearGradient
-        colors={['#134E5E', '#71B280']}
+        colors={['#0f172a', '#1e293b']}
         style={styles.gradientBg}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
@@ -603,7 +603,7 @@ export default function CompleteProfileScreen() {
 
           <TouchableOpacity style={styles.buttonContainer} onPress={handleSubmit} activeOpacity={0.85}>
             <LinearGradient
-              colors={['#134E5E', '#71B280']}
+              colors={['#0f172a', '#1e293b']}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
               style={styles.buttonGradient}
@@ -650,7 +650,7 @@ export default function CompleteProfileScreen() {
 
 
 
-    </SafeAreaView>
+    </View>
   );
 }
 

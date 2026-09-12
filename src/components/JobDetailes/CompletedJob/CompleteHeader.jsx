@@ -1,7 +1,7 @@
-import React, {useMemo} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
-import {Clock, Wallet, Zap, Timer} from 'lucide-react-native';
-import {calculateAmount} from '../../../services/calculateAmount';
+import React, { useMemo } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import { Clock, Wallet, Zap, Timer } from 'lucide-react-native';
+import { calculateAmount } from '../../../services/calculateAmount';
 
 import { theme } from '../../../styles/globalStyles';
 const CompleteHeader = ({
@@ -16,9 +16,9 @@ const CompleteHeader = ({
   if (!calculation) {
     return (
       <View style={styles.container}>
-        <Text style={[styles.title, {color: '#1E1B4B', marginBottom: 10}]}>Payment Details</Text>
-        <View style={[styles.card, {alignItems: 'center', padding: 20}]}>
-          <Text style={{color: '#FFFFFF'}}>Calculating billing details...</Text>
+        <Text style={[styles.title, { color: '#1E1B4B', marginBottom: 10 }]}>Payment Details</Text>
+        <View style={[styles.card, { alignItems: 'center', padding: 20 }]}>
+          <Text style={{ color: '#FFFFFF' }}>Calculating billing details...</Text>
         </View>
       </View>
     );
@@ -26,7 +26,10 @@ const CompleteHeader = ({
 
   const startDate = useMemo(() => {
     if (!providerDetails?.start_time) return null;
-    return new Date(providerDetails.start_time.replace(' ', 'T'));
+    const formattedStart = providerDetails.start_time.includes('Z') 
+      ? providerDetails.start_time 
+      : providerDetails.start_time.replace(' ', 'T') + 'Z';
+    return new Date(formattedStart);
   }, [providerDetails]);
 
   const formattedStartTime = useMemo(() => {
@@ -132,7 +135,7 @@ const CompleteHeader = ({
                 <Clock size={16} color={theme.warning} strokeWidth={2} />
                 <Text style={styles.label}>Overtime Rate</Text>
               </View>
-              <Text style={[styles.value, {color: theme.warning}]}>₹{ot_rate}</Text>
+              <Text style={[styles.value, { color: theme.warning }]}>₹{ot_rate}</Text>
             </View>
           )}
         </View>

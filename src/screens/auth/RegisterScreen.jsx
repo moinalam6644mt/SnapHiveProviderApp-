@@ -226,7 +226,7 @@ export default function RegisterScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
+    <View style={styles.safe}>
       <StatusBar
         barStyle="light-content"
         translucent={true}
@@ -376,7 +376,7 @@ export default function RegisterScreen() {
 
               <TouchableOpacity style={styles.buttonContainer} onPress={registerData} activeOpacity={0.85}>
                 <LinearGradient
-                  colors={['#134E5E', '#71B280']}
+                  colors={['#0f172a', '#1e293b']}
                   start={{ x: 0, y: 0 }}
                   end={{ x: 1, y: 1 }}
                   style={styles.buttonGradient}
@@ -443,7 +443,7 @@ export default function RegisterScreen() {
           setOpenDatePicker(false);
         }}
       />
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -487,10 +487,13 @@ function GenderButton({ label, selected, onPress }) {
 
 /* ================= STYLES ================= */
 const styles = StyleSheet.create({
-  safe: { flex: 1 },
+  safe: {
+    flex: 1,
+    paddingTop: Platform.OS === 'ios' ? 40 : StatusBar.currentHeight,
+  },
   gradientBg: { flex: 1 },
   scrollContent: {
-    paddingBottom: scale(40),
+    flexGrow: 1,
   },
   header: {
     flexDirection: "row",

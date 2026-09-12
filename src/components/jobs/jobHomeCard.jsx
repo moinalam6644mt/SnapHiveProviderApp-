@@ -3,8 +3,8 @@ import { Animated, Dimensions, Modal, PanResponder, Pressable, ScrollView, Style
 import { User, MapPin, Calendar, Clock, Info, X } from 'lucide-react-native';
 import { useNavigation } from '@react-navigation/native';
 import { BookingContext } from '../../context/BookingContext';
-
 import { theme } from '../../styles/globalStyles';
+import EmptyState from '../EmptyState';
 const BookingTimer = ({ orderId, receivedAt, onExpire }) => {
   const [timeLeft, setTimeLeft] = useState(() => {
     const start = receivedAt || Date.now();
@@ -112,12 +112,11 @@ const JobHomeCard = ({ myBookingData = [], userId }) => {
 
   if (!myBookingData.length) {
     return (
-      <View style={styles.emptyContainer}>
-        <Text style={styles.emptyTitle}>No Upcoming Bookings</Text>
-        <Text style={styles.emptySubtitle}>
-          You don't have any upcoming jobs at the moment.
-        </Text>
-      </View>
+      <EmptyState 
+        title="No Upcoming Bookings"
+        subtitle="You don't have any upcoming jobs at the moment."
+        icon={<Calendar size={56} color="#94a3b8" strokeWidth={1.5} />}
+      />
     );
   }
 

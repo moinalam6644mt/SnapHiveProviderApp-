@@ -15,6 +15,7 @@ import { useNavigation } from '@react-navigation/native';
 import { theme } from '../../styles/globalStyles';
 import handleChat from '../../services/ChatServiceFunction';
 import { AuthUser } from '../../../api/authUser';
+import EmptyState from '../EmptyState';
 
 const AcceptedJobCard = ({ onStartJob, acceptedBookingData, userId }) => {
   const [callingData, setCallingData] = useState('');
@@ -23,12 +24,11 @@ const AcceptedJobCard = ({ onStartJob, acceptedBookingData, userId }) => {
 
   if (!acceptedBookingData || !acceptedBookingData.length) {
     return (
-      <View style={styles.emptyContainer}>
-        <Text style={styles.emptyTitle}>No Accepted Jobs Yet 🚀</Text>
-        <Text style={styles.emptySubtitle}>
-          You haven't accepted any jobs yet. Start browsing and accept a job to see it here.
-        </Text>
-      </View>
+      <EmptyState 
+        title="No Accepted Jobs"
+        subtitle="You haven't accepted any jobs yet. Start browsing and accept a job to see it here."
+        icon={<MapPin size={56} color="#94a3b8" strokeWidth={1.5} />}
+      />
     );
   }
   return (

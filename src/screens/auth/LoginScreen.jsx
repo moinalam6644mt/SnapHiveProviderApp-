@@ -4,7 +4,6 @@ import {
   View,
   TextInput,
   TouchableOpacity,
-  SafeAreaView,
   KeyboardAvoidingView,
   Platform,
   Image,
@@ -130,10 +129,10 @@ const Login = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={[styles.container, { paddingTop: Platform.OS === 'ios' ? 40 : StatusBar.currentHeight }]}>
       <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
       <LinearGradient
-        colors={['#134E5E', '#71B280']}
+        colors={['#308695', '#308695']}
         style={styles.gradientBg}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
@@ -142,7 +141,11 @@ const Login = () => {
           style={styles.keyboardView}
           behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         >
-          <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
+          <ScrollView 
+            contentContainerStyle={styles.scrollContent} 
+            showsVerticalScrollIndicator={false}
+            keyboardShouldPersistTaps="handled"
+          >
             {/* TOP */}
             <View style={styles.topSection}>
               <Image
@@ -231,7 +234,7 @@ const Login = () => {
         message={modalMsg}
         onClose={() => setModalVisible(false)}
       />
-    </SafeAreaView>
+    </View>
   );
 };
 

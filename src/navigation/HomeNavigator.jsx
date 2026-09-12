@@ -7,10 +7,8 @@ import RechargeWalletScreen from '../screens/wallet/RechargeWalletScreen';
 import ChatListScreen from '../screens/Message/ChatListScreen';
 import ChatDetailsScreen from '../screens/Message/ChatDetailsScreen';
 import WebViewScreen from '../screens/WebView';
-import IncomingCallModal from '../components/Calling/IncomingCallModal';
 import {AuthContext} from '../context/AuthContext';
 import {BookingContext} from '../context/BookingContext';
-import {CallContext} from '../context/CallContext';
 import NotificationHandlingScreen from '../screens/NotificationHandlingScreen';
 import CancelledBookingScreen from '../screens/CancelledBookingScreen';
 import WalletHistoryScreen from '../screens/wallet/WalletHistoryScreen';
@@ -23,11 +21,9 @@ const Stack = createNativeStackNavigator();
 export default function HomeNavigation() {
   const {userId} = useContext(AuthContext);
   const {currentBookingId} = useContext(BookingContext);
-  const {incomingCall} = useContext(CallContext);
 
   console.log('Current Booking ID:', currentBookingId);
   console.log('User ID:', userId);
-  console.log('Incoming Call Data:', incomingCall);
 
   // ─── Killed-state notification handler ──────────────────────────────────────
   // This runs once when HomeNavigator mounts (i.e. after splash + auth loading).
@@ -62,11 +58,6 @@ export default function HomeNavigation() {
     checkPendingNotification();
   }, []); // runs once on mount
 
-  const isCallValid =
-    incomingCall &&
-    userId &&
-    String(userId) !== String(incomingCall?.caller_id);
-
   return (
     <>
       <Stack.Navigator screenOptions={{headerShown: false}}>
@@ -87,7 +78,6 @@ export default function HomeNavigation() {
           component={CancelledBookingScreen}
         />
       </Stack.Navigator>
-      {isCallValid && <IncomingCallModal />}
     </>
   );
 }

@@ -99,14 +99,20 @@ const JobDetailsScreen = () => {
   useEffect(() => {
     if (!providerDetails?.start_time) return;
 
-    const startDate = new Date(providerDetails.start_time.replace(' ', 'T'));
+    const formattedStart = providerDetails.start_time.includes('Z') 
+      ? providerDetails.start_time 
+      : providerDetails.start_time.replace(' ', 'T') + 'Z';
+    const startDate = new Date(formattedStart);
 
     const durationSeconds =
       parseFloat(bookingDetails?.duration_hours || 0) * 3600;
 
     if (bookingDetails?.status === '4') {
       if (providerDetails?.end_time) {
-        const endDate = new Date(providerDetails.end_time.replace(' ', 'T'));
+        const formattedEnd = providerDetails.end_time.includes('Z') 
+          ? providerDetails.end_time 
+          : providerDetails.end_time.replace(' ', 'T') + 'Z';
+        const endDate = new Date(formattedEnd);
 
         const diff = Math.max(0, Math.floor((endDate - startDate) / 1000));
         setElapsedSeconds(diff);

@@ -61,15 +61,15 @@ const IncomingCallModal = () => {
       }).start();
 
       // start 10 sec timer
-      timeoutRef.current = setTimeout(async () => {
-        await callApi({
+      timeoutRef.current = setTimeout(() => {
+        callApi({
           method: 'CUSTOM_POST',
           api: `/user/end_call?member_id=${incomingCall.provider_id}`,
           data: {
             booking_id: incomingCall.booking_id,
             roomId: incomingCall.roomId,
           },
-        });
+        }).catch(e => console.log('Timeout end call err:', e));
 
         hideIncomingCall();
       }, 60000); // 1 minute
@@ -111,20 +111,19 @@ const IncomingCallModal = () => {
       clearTimeout(timeoutRef.current);
     }
 
-    try {
-      await callApi({
-        method: 'CUSTOM_POST',
-        api: `/user/end_call?member_id=${incomingCall.provider_id}`,
-        data: {
-          booking_id: incomingCall.booking_id,
-          roomId: incomingCall.roomId,
-        },
-      });
-    } finally {
-      hideIncomingCall();
-      swipeYAnim.setValue(0);
-      isDecliningRef.current = false;
-    }
+    // Fire and forget the API call so the modal closes immediately
+    callApi({
+      method: 'CUSTOM_POST',
+      api: `/user/end_call?member_id=${incomingCall.provider_id}`,
+      data: {
+        booking_id: incomingCall.booking_id,
+        roomId: incomingCall.roomId,
+      },
+    }).catch(e => console.log('Error declining call:', e));
+    
+    hideIncomingCall();
+    swipeYAnim.setValue(0);
+    isDecliningRef.current = false;
   }, [callApi, hideIncomingCall, incomingCall, swipeYAnim]);
 
   const panResponder = useRef(

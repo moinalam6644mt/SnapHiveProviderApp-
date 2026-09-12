@@ -1,13 +1,19 @@
-import React, {useEffect, useRef, useMemo} from 'react';
-import {View, Text, StyleSheet, Animated} from 'react-native';
-import {calculateAmount} from '../../../services/calculateAmount';
+import React, { useEffect, useRef, useMemo } from 'react';
+import { View, Text, StyleSheet, Animated } from 'react-native';
+import { Clock, PlayCircle, AlertTriangle } from 'lucide-react-native';
+import { calculateAmount } from '../../../services/calculateAmount';
 import { theme } from '../../../styles/globalStyles';
+import LinearGradient from 'react-native-linear-gradient';
+import { createShimmerPlaceholder } from 'react-native-shimmer-placeholder';
+
+const ShimmerPlaceholder = createShimmerPlaceholder(LinearGradient);
 
 const EndHeader = ({
   bookingDetails,
   providerDetails,
   elapsedSeconds,
   formatTime,
+  isLoading,
 }) => {
   const progressAnim = useRef(new Animated.Value(0)).current;
 
@@ -15,7 +21,10 @@ const EndHeader = ({
 
   const startDate = useMemo(() => {
     if (!providerDetails?.start_time) return null;
-    return new Date(providerDetails.start_time.replace(' ', 'T'));
+    const formattedStart = providerDetails.start_time.includes('Z') 
+      ? providerDetails.start_time 
+      : providerDetails.start_time.replace(' ', 'T') + 'Z';
+    return new Date(formattedStart);
   }, [providerDetails]);
 
   const formattedStartTime = useMemo(() => {
@@ -46,7 +55,7 @@ const EndHeader = ({
   const otPricePerMinute = parseFloat(bookingDetails?.ot_price_per_minute || 0);
 
   const progressPercent = totalDurationSeconds
-    ? Math.min(workingSeconds / totalDurationSeconds, 1)
+    ? Math.min(elapsedSeconds / totalDurationSeconds, 1)
     : 0;
 
   const progressWidth = progressAnim.interpolate({
@@ -62,63 +71,103 @@ const EndHeader = ({
     }).start();
   }, [progressPercent]);
 
+  if (isLoading) {
+    return (
+      <View style={styles.container}>
+        <LinearGradient
+          colors={['#1e293b', '#0f172a']}
+          style={styles.gradientBg}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+        >
+          <View style={styles.card}>
+            <ShimmerPlaceholder style={styles.skeletonTitle} />
+            <ShimmerPlaceholder style={styles.skeletonProgressBar} />
+            <View style={styles.row}>
+               <ShimmerPlaceholder style={styles.skeletonTextMedium} />
+               <ShimmerPlaceholder style={styles.skeletonTextMedium} />
+            </View>
+            <ShimmerPlaceholder style={styles.skeletonTextLong} />
+          </View>
+        </LinearGradient>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
-      <View style={styles.card}>
-        <Text style={styles.title}>
-          Services {isCompleted ? 'Completed' : 'In Progress'}
-        </Text>
-
-        {/* Progress Bar */}
-        {!isCompleted && (
-          <View style={styles.progressBackground}>
-            <Animated.View style={{width: progressWidth}}>
-              <View
-                style={[
-                  styles.progressFill,
-                  { backgroundColor: isOvertime ? '#f59e0b' : '#2FCA00' }
-                ]}
-              />
-            </Animated.View>
-          </View>
-        )}
-
-        {isOvertime && (
-          <Text style={styles.warningText}>
-            Time limit exceeded. Overtime charges may apply.
-          </Text>
-        )}
-
-        <View style={styles.row}>
-          <Text style={styles.startText}>Start: {formattedStartTime}</Text>
-
-          <Text style={styles.timeText}>
-            Working Time: {formatTime(workingSeconds)}
-          </Text>
-        </View>
-
-        {isOvertime && (
-          <Text style={styles.warningText}>
-            Overtime: {formatTime(overtimeSeconds)}
-          </Text>
-        )}
-
-        <Text style={styles.billingText}>
-          Billing calculated based on service duration
-        </Text>
-
-        {/* <View style={styles.amountRow}>
-          <Text style={styles.amountText}>
-            Current Amount: ₹{currentAmount}
+      <LinearGradient
+        colors={['#0f2027', '#203a43', '#2c5364']}
+        style={styles.gradientBg}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+      >
+        <LinearGradient
+          colors={['rgba(255,255,255,0.15)', 'transparent']}
+          style={styles.cardTopHighlight}
+          start={{ x: 0.5, y: 0 }}
+          end={{ x: 0.5, y: 1 }}
+        />
+        <View style={styles.card}>
+          <Text style={styles.title}>
+            Service {isCompleted ? 'Completed' : 'In Progress'}
           </Text>
 
-          {isOvertime && otPricePerMinute > 0 && otAmount > 0 && (
-            <Text style={styles.otAmount}>
-              (+ ₹{parseFloat(otAmount).toFixed(2)} OT)
-            </Text>
+          {/* Progress Bar */}
+          {!isCompleted && (
+            <View style={styles.progressBackground}>
+              <Animated.View style={{ width: progressWidth }}>
+                <LinearGradient
+                  colors={isOvertime ? ['#f59e0b', '#d97706'] : ['#4ade80', '#22c55e']}
+                  style={styles.progressFill}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 0 }}
+                />
+              </Animated.View>
+            </View>
           )}
-        </View> */}
-      </View>
+
+          {isOvertime && (
+            <View style={styles.warningRow}>
+              <AlertTriangle size={14} color="#f59e0b" strokeWidth={2.5} />
+              <Text style={styles.warningText}>
+                Time limit exceeded. Overtime charges apply.
+              </Text>
+            </View>
+          )}
+
+          <View style={styles.dividerLight} />
+
+          <View style={styles.row}>
+            <View style={styles.infoBlock}>
+              <PlayCircle size={16} color="#71B280" strokeWidth={2} />
+              <Text style={styles.startText}>Start: {formattedStartTime}</Text>
+            </View>
+
+            <View style={styles.infoBlock}>
+              <Clock size={16} color="#FFFFFF" strokeWidth={2} />
+              <Text style={styles.timeText}>
+                {formatTime(elapsedSeconds)}
+              </Text>
+            </View>
+          </View>
+
+          {isOvertime && (
+            <View style={[styles.row, { marginTop: 8 }]}>
+              <Text style={styles.billingText}>Overtime Duration:</Text>
+              <Text style={[styles.timeText, { color: '#f59e0b' }]}>
+                {formatTime(overtimeSeconds)}
+              </Text>
+            </View>
+          )}
+
+          <View style={styles.footerRow}>
+            <Text style={styles.billingText}>
+              Billing calculated based on actual service duration
+            </Text>
+          </View>
+        </View>
+      </LinearGradient>
     </View>
   );
 };
@@ -127,83 +176,124 @@ export default EndHeader;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: theme.primary,
-    borderRadius: 16,
-    padding: 18,
     marginHorizontal: 20,
-    borderWidth: 0.25,
-    borderColor: '#308695',
+    marginBottom: 16,
+    borderRadius: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.3,
+    shadowRadius: 15,
+    elevation: 8,
   },
-
-  card: {},
-
+  gradientBg: {
+    borderRadius: 20,
+    padding: 20,
+    borderWidth: 1.5,
+    borderColor: 'rgba(255, 255, 255, 0.2)',
+    overflow: 'hidden',
+  },
+  cardTopHighlight: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 40,
+    opacity: 0.8,
+  },
+  card: {
+    zIndex: 1,
+  },
   title: {
-    fontSize: 16,
-    fontWeight: '700',
+    fontSize: 18,
+    fontWeight: '800',
     color: '#FFFFFF',
+    marginBottom: 12,
+    letterSpacing: 0.5,
+    textShadowColor: 'rgba(0,0,0,0.3)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 3,
+  },
+  progressBackground: {
+    height: 8,
+    width: '100%',
+    backgroundColor: 'rgba(255,255,255,0.15)',
+    borderRadius: 4,
+    overflow: 'hidden',
+    marginVertical: 10,
+    borderWidth: 0.5,
+    borderColor: 'rgba(255,255,255,0.1)',
+  },
+  progressFill: {
+    height: '100%',
+    borderRadius: 4,
+  },
+  warningRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 6,
     marginBottom: 4,
   },
-
-  progressBackground: {
-    height: 6,
-    width: '100%',
-    backgroundColor: 'rgba(255,255,255,0.2)',
-    borderRadius: 60,
-    overflow: 'hidden',
-    marginVertical: 8,
+  warningText: {
+    color: '#f59e0b',
+    fontWeight: '700',
+    fontSize: 12,
+    marginLeft: 6,
   },
-
-  progressFill: {
-    height: 6,
-    borderRadius: 60,
+  dividerLight: {
+    height: 1,
+    backgroundColor: 'rgba(255,255,255,0.15)',
+    marginVertical: 14,
   },
-
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 6,
+    alignItems: 'center',
   },
-
-  startText: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#71B280',
-  },
-
-  timeText: {
-    fontSize: 13,
-    fontWeight: '600',
-    color: '#FFFFFF',
-  },
-
-  billingText: {
-    fontSize: 13,
-    color: 'rgba(255,255,255,0.8)',
-    marginBottom: 6,
-  },
-
-  amountRow: {
+  infoBlock: {
     flexDirection: 'row',
     alignItems: 'center',
   },
-
-  amountText: {
+  startText: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: '#4ade80',
+    marginLeft: 6,
+  },
+  timeText: {
     fontSize: 14,
     fontWeight: '700',
     color: '#FFFFFF',
+    marginLeft: 6,
   },
-
-  otAmount: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: '#f59e0b',
-    marginLeft: 8,
+  footerRow: {
+    marginTop: 14,
   },
-
-  warningText: {
-    color: '#f59e0b',
-    fontWeight: '600',
+  billingText: {
     fontSize: 12,
-    marginBottom: 4,
+    color: 'rgba(255,255,255,0.7)',
+    fontWeight: '500',
+  },
+  skeletonTitle: {
+    height: 20,
+    width: 130,
+    borderRadius: 4,
+    marginBottom: 12,
+  },
+  skeletonProgressBar: {
+    height: 8,
+    width: '100%',
+    borderRadius: 4,
+    marginBottom: 20,
+  },
+  skeletonTextMedium: {
+    height: 16,
+    width: 100,
+    borderRadius: 4,
+  },
+  skeletonTextLong: {
+    height: 12,
+    width: 220,
+    borderRadius: 4,
+    marginTop: 16,
   },
 });
