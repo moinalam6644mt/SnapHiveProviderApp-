@@ -1,13 +1,21 @@
-import React, { createContext, useEffect, useState, useRef } from 'react';
+import React, { createContext, useEffect, useState, useRef, useContext } from 'react';
 import PusherService from '../services/PusherService';
 import { AuthUser } from '../../api/authUser';
 import Toast from 'react-native-toast-message';
 import { playBookingChime, stopBookingChime } from '../services/ringToneService';
 import { navigate } from '../services/NavigationService';
+import { AuthContext } from './AuthContext';
 
 export const BookingContext = createContext();
 
 export const BookingProvider = ({ children }) => {
+  const { userId } = useContext(AuthContext);
+  const userIdRef = useRef(userId);
+
+  useEffect(() => {
+    userIdRef.current = userId;
+  }, [userId]);
+
   const [bookings, setBookings] = useState([]);
   const [countMatchOtp, setCountMatchOtp] = useState(1);
   const [currentBookingId, setCurrentBookingId] = useState(null);
@@ -49,6 +57,23 @@ export const BookingProvider = ({ children }) => {
             }
           }
           if (!data) data = event;
+
+          const currentUserId = userIdRef.current;
+          const targetWorkerId = data.worker_ids || data.worker_id || data.provider_id || data.member_id;
+
+          if (targetWorkerId && currentUserId) {
+            const isForMe = Array.isArray(targetWorkerId)
+              ? targetWorkerId.some(id => String(id) === String(currentUserId))
+              : String(targetWorkerId) === String(currentUserId);
+
+            if (!isForMe) {
+              console.log('Booking skipped: Not for this worker.', {
+                targetWorkerId,
+                currentUserId,
+              });
+              return;
+            }
+          }
 
           const exists = latestBookings.current.some(
             item => String(item.order_id) === String(data.order_id),

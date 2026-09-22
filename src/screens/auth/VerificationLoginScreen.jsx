@@ -9,8 +9,11 @@ import {
   BackHandler,
   Animated,
   Easing,
+  ScrollView,
+  Platform,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import sharedStyles from './LoginStyle';
 
 const { width } = Dimensions.get('window');
 const scale = (size) => (width / 375) * size;
@@ -89,93 +92,64 @@ export default function VerificationLoginScreen() {
   }, [fadeAnim, floatAnim, pulseAnim, slideAnim]);
 
   return (
-    <View style={[styles.safe, { paddingTop: Platform.OS === 'ios' ? 40 : StatusBar.currentHeight }]}>
+    <View style={[sharedStyles.container, { paddingTop: Platform.OS === 'ios' ? 40 : StatusBar.currentHeight }]}>
       <StatusBar
         barStyle="light-content"
         translucent={true}
         backgroundColor="transparent"
       />
       <LinearGradient
-        colors={['#0f2027', '#203a43', '#2c5364']}
-        style={styles.gradientBg}
+        colors={['#308695', '#308695']}
+        style={sharedStyles.gradientBg}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
       >
-        <View style={styles.container}>
-          <View style={styles.card}>
-            {/* Top decorative gradient inside card */}
-            <LinearGradient
-              colors={['rgba(255,255,255,0.2)', 'transparent']}
-              style={styles.cardTopHighlight}
-              start={{ x: 0.5, y: 0 }}
-              end={{ x: 0.5, y: 1 }}
+        <ScrollView 
+          contentContainerStyle={sharedStyles.scrollContent} 
+          showsVerticalScrollIndicator={false}
+        >
+          {/* TOP SECTION */}
+          <View style={sharedStyles.topSection}>
+            <Image
+              source={require('../../../assets/images/logo1.png')}
+              style={sharedStyles.logo}
             />
+            <Text style={sharedStyles.tagline}>Powered by People</Text>
+          </View>
 
-            <View style={styles.imageContainer}>
-              <Animated.View style={[styles.glow, { transform: [{ scale: pulseAnim }] }]} />
+          {/* BOTTOM SHEET */}
+          <View style={[sharedStyles.bottomSheet, { alignItems: 'center', flex: 1 }]}>
+            <View style={localStyles.imageContainer}>
+              <Animated.View style={[localStyles.glow, { transform: [{ scale: pulseAnim }] }]} />
               <Animated.Image
                 source={require('../../../assets/app/splashImage/verify.png')}
-                style={[styles.image, { transform: [{ translateY: floatAnim }] }]}
+                style={[localStyles.image, { transform: [{ translateY: floatAnim }] }]}
                 resizeMode="contain"
               />
             </View>
 
-            <Animated.View style={{ opacity: fadeAnim, transform: [{ translateY: slideAnim }], alignItems: 'center' }}>
-              <Text style={styles.title}>Verification{'\n'}in progress</Text>
+            <Animated.View style={{ opacity: fadeAnim, transform: [{ translateY: slideAnim }], alignItems: 'center', width: '100%' }}>
+              <Text style={sharedStyles.title}>Verification</Text>
+              <Text style={[sharedStyles.subtitle, { marginBottom: 20 }]}>in progress</Text>
 
-              <View style={styles.badgeContainer}>
-                <View style={styles.badgeDot} />
-                <Text style={styles.wait}>Please wait</Text>
+              <View style={localStyles.badgeContainer}>
+                <View style={localStyles.badgeDot} />
+                <Text style={localStyles.wait}>Please wait</Text>
               </View>
 
-              <Text style={styles.desc}>
+              <Text style={localStyles.desc}>
                 We're processing your verification. The status will be updated within
                 24 hours.
               </Text>
             </Animated.View>
           </View>
-        </View>
+        </ScrollView>
       </LinearGradient>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  safe: {
-    flex: 1,
-  },
-  gradientBg: {
-    flex: 1,
-  },
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: scale(24),
-  },
-  card: {
-    backgroundColor: "rgba(255, 255, 255, 0.1)",
-    borderRadius: scale(32),
-    padding: scale(32),
-    alignItems: 'center',
-    borderWidth: 1.5,
-    borderColor: "rgba(255, 255, 255, 0.2)",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 20 },
-    shadowOpacity: 0.3,
-    shadowRadius: 35,
-    elevation: 10,
-    width: '100%',
-    overflow: 'hidden',
-  },
-  cardTopHighlight: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    height: scale(60),
-    opacity: 0.7,
-  },
+const localStyles = StyleSheet.create({
   imageContainer: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -186,40 +160,24 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: scale(110),
     height: scale(110),
-    backgroundColor: 'rgba(255,255,255,0.15)',
+    backgroundColor: 'rgba(48, 134, 149, 0.15)',
     borderRadius: scale(55),
-    shadowColor: '#FFF',
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 1,
-    shadowRadius: 40,
-    elevation: 20,
   },
   image: {
     width: scale(120),
     height: scale(120),
     zIndex: 2,
   },
-  title: {
-    fontSize: scale(28),
-    fontWeight: '800',
-    color: '#FFF',
-    textAlign: 'center',
-    lineHeight: scale(36),
-    marginBottom: scale(20),
-    textShadowColor: 'rgba(0,0,0,0.25)',
-    textShadowOffset: { width: 0, height: 2 },
-    textShadowRadius: 8,
-  },
   badgeContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.15)',
+    backgroundColor: '#F3F4F6',
     paddingHorizontal: scale(16),
     paddingVertical: scale(8),
     borderRadius: scale(20),
     marginBottom: scale(24),
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.3)',
+    borderColor: '#E5E7EB',
   },
   badgeDot: {
     width: scale(8),
@@ -227,22 +185,18 @@ const styles = StyleSheet.create({
     borderRadius: scale(4),
     backgroundColor: '#4ade80',
     marginRight: scale(8),
-    shadowColor: '#4ade80',
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.8,
-    shadowRadius: 6,
   },
   wait: {
     fontSize: scale(14),
     fontWeight: '700',
-    color: '#FFF',
+    color: '#333333',
     textTransform: 'uppercase',
     letterSpacing: 1.5,
   },
   desc: {
     fontSize: scale(15),
     fontWeight: '500',
-    color: 'rgba(255,255,255,0.85)',
+    color: '#6B7280',
     textAlign: 'center',
     lineHeight: scale(24),
     paddingHorizontal: scale(8),
