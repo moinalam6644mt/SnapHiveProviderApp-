@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1098414031391",
+    "project_id": "snahive-provider",
+    "storage_bucket": "snahive-provider.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1098414031391:android:e8bf769fc8723eeb45cb2a",
+        "android_client_info": {
+          "package_name": "com.snaphiveprovider"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-8nGH8ZEmkEPiBYQ-3hGIuVuvCBkKqto"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

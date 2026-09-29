@@ -123,14 +123,12 @@ const HomeScreen = () => {
   // One signal call
   useEffect(() => {
     const loadData = async () => {
-      const onesignalId = await AsyncStorage.getItem('onesignal_id');
       const deviceType = await AsyncStorage.getItem('device_type');
-      if (onesignalId && deviceType && userId) {
+      if (deviceType && userId) {
         const resp = await callApi({
           method: 'CUSTOM_POST',
           api: `/user/add_device?worker_id=${userId}`,
           data: {
-            device_token: onesignalId,
             device_type: deviceType,
           },
         });

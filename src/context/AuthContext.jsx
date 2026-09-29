@@ -18,7 +18,6 @@ export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [userData, setUserData] = useState(null);
-  const [onesignalId, setOnesignalId] = useState(null);
   const [deviceType, setDeviceType] = useState('');
 
   const { callApi } = AuthUser();
@@ -181,9 +180,7 @@ export const AuthProvider = ({ children }) => {
         login,
         logout,
         verifyOtpCentral,
-        onesignalId,
         deviceType,
-        setOnesignalId,
         setDeviceType,
       }}>
       {children}
