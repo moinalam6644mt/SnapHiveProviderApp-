@@ -6,10 +6,10 @@ import {AppRegistry} from 'react-native';
 import App from './App';
 import {name as appName} from './app.json';
 import RNCallKeep from 'react-native-callkeep';
-import messaging from '@react-native-firebase/messaging';
+import { getMessaging, setBackgroundMessageHandler } from '@react-native-firebase/messaging';
 
 // Register background handler for Push Notifications
-messaging().setBackgroundMessageHandler(async remoteMessage => {
+setBackgroundMessageHandler(getMessaging(), async remoteMessage => {
   console.log('Message handled in the background!', remoteMessage);
 });
 
@@ -19,6 +19,7 @@ const callKeepOptions = {
     appName: 'SnapHiveProvider',
   },
   android: {
+    selfManaged: true,
     alertTitle: 'Permissions required',
     alertDescription: 'This application needs to access your phone accounts',
     cancelButton: 'Cancel',

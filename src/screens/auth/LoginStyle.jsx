@@ -114,6 +114,22 @@ const styles = StyleSheet.create({
   buttonDisabled: {
     opacity: 0.7,
   },
+  googleButton: {
+    height: 60,
+    borderRadius: 16,
+    marginTop: 15,
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  googleButtonText: {
+    color: '#374151',
+    fontSize: 16,
+    fontWeight: '700',
+  },
   buttonText: {
     color: '#FFFFFF',
     fontSize: 18,

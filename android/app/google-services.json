@@ -1,26 +1,52 @@
 {
   "project_info": {
-    "project_number": "1098414031391",
-    "project_id": "snahive-provider",
-    "storage_bucket": "snahive-provider.firebasestorage.app"
+    "project_number": "601679475180",
+    "project_id": "snaphive-provider",
+    "storage_bucket": "snaphive-provider.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1098414031391:android:e8bf769fc8723eeb45cb2a",
+        "mobilesdk_app_id": "1:601679475180:android:5d3cfd37b65582e99590c9",
         "android_client_info": {
           "package_name": "com.snaphiveprovider"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "601679475180-htsb0pho7j7m9716hq3kk5cv4bdv5bfo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.snaphiveprovider",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "601679475180-rirtav1b2h8iogtml4a5s0q1j258tr7h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.snaphiveprovider",
+            "certificate_hash": "d07bb93df69de76e13e1619c1df032a23d12795d"
+          }
+        },
+        {
+          "client_id": "601679475180-218vcc0spvb4idk43fpu7oi6cdsnngnf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyB-8nGH8ZEmkEPiBYQ-3hGIuVuvCBkKqto"
+          "current_key": "AIzaSyDAwPKfnneCIeUGSV6J1goo1ED9pmR3vu8"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "601679475180-218vcc0spvb4idk43fpu7oi6cdsnngnf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

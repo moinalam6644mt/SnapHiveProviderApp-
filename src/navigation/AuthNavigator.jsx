@@ -3,10 +3,11 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import LoginScreen from "../screens/auth/LoginScreen";
 import RegisterScreen from "../screens/auth/RegisterScreen";
-import CompleteProfileScreen from "../screens/auth/CompleteProfileScreen"
-import VerificationScreen from "../screens/auth/VerificationScreen"
-import VerificationLoginScreen from "../screens/auth/VerificationLoginScreen"
-import OtpVerification from "../screens/auth/OtpVerification"
+import CompleteProfileScreen from "../screens/auth/CompleteProfileScreen";
+import KycVerificationScreen from "../screens/auth/KycVerificationScreen";
+import VerificationScreen from "../screens/auth/VerificationScreen";
+import VerificationLoginScreen from "../screens/auth/VerificationLoginScreen";
+import OtpVerification from "../screens/auth/OtpVerification";
 
 const Stack = createNativeStackNavigator();
 
@@ -18,6 +19,7 @@ export default function AuthNavigator() {
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Register" component={RegisterScreen} />
       <Stack.Screen name="CompleteProfile" component={CompleteProfileScreen} />
+      <Stack.Screen name="KycVerification" component={KycVerificationScreen} />
       <Stack.Screen name="Verification" component={VerificationScreen} />
       <Stack.Screen name="VerificationLoginScreen" component={VerificationLoginScreen} />
       <Stack.Screen name="Otp" component={OtpVerification} />

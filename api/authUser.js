@@ -4,12 +4,36 @@ const baseURL = "https://snaphive.online/app";
 
 const getMemberData = async () => {
   try {
-    const token = await AsyncStorage.getItem("member_data");
-    return token ? JSON.parse(token) : null;
+    const memberDataRaw = await AsyncStorage.getItem("member_data");
+    if (memberDataRaw) {
+      return JSON.parse(memberDataRaw);
+    }
+    const authDataRaw = await AsyncStorage.getItem("authData");
+    if (authDataRaw) {
+      return JSON.parse(authDataRaw);
+    }
+    return null;
   } catch (error) {
     console.error("Error getting token:", error);
     return null;
   }
+};
+
+const buildUrlEncodedBody = (obj) => {
+  const parts = [];
+  for (const key in obj) {
+    const val = obj[key];
+    if (val === undefined || val === null) continue;
+    if (Array.isArray(val)) {
+      val.forEach((item) => {
+        const arrayKey = key.endsWith("[]") ? key : `${key}[]`;
+        parts.push(`${encodeURIComponent(arrayKey)}=${encodeURIComponent(String(item))}`);
+      });
+    } else {
+      parts.push(`${encodeURIComponent(key)}=${encodeURIComponent(String(val))}`);
+    }
+  }
+  return parts.join("&");
 };
 
 export const AuthUser = () => {
@@ -22,14 +46,20 @@ export const AuthUser = () => {
     let finalData = { ...data };
     let queryParams = {};
     if (memberData) {
-      const { member_id, member_token } = memberData?.data || {};
-      await AsyncStorage.setItem("member_id", member_id);
-      defaultHeaders["flance"] = `Bearer ${member_token}`;
+      const dataObj = memberData?.data || memberData;
+      const actualId = dataObj?.worker_id || dataObj?.member_id;
+      const actualToken = dataObj?.token || dataObj?.member_token;
 
-      queryParams = {
-        member_id: member_id,
-        orginatesoft_lang: "en",
-      };
+      if (actualId) {
+        await AsyncStorage.setItem("member_id", String(actualId));
+        queryParams = {
+          member_id: actualId,
+          orginatesoft_lang: "en",
+        };
+      }
+      if (actualToken) {
+        defaultHeaders["flance"] = `Bearer ${actualToken}`;
+      }
     }
 
     const finalURL = `${baseURL}${api}`;
@@ -44,28 +74,70 @@ export const AuthUser = () => {
           });
           break;
 
-        case "POST":
-          response = await axios.post(finalURL, finalData, {
-            headers: defaultHeaders,
-            params: queryParams,
-          });
-          break;
-
-        case "CUSTOM_POST":
-          const imageDataToSend = new FormData();
-          for (const key in finalData) {
-            imageDataToSend.append(key, finalData[key]);
-          }
-
-          response = await axios.post(finalURL, imageDataToSend, {
+        case "POST": {
+          const encodedBody =
+            typeof finalData === "object" && !(finalData instanceof FormData)
+              ? buildUrlEncodedBody(finalData)
+              : finalData;
+          response = await axios.post(finalURL, encodedBody, {
             headers: {
               ...defaultHeaders,
-              "Content-Type": "multipart/form-data",
+              "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
             },
             params: queryParams,
-            ...(onUploadProgress && { onUploadProgress }),
           });
           break;
+        }
+
+        case "CUSTOM_POST": {
+          const hasNativeFile = Object.values(finalData).some(
+            (v) => v && typeof v === "object" && typeof v.uri === "string"
+          );
+
+          if (hasNativeFile) {
+            const formData = new FormData();
+            for (const key in finalData) {
+              const val = finalData[key];
+              if (val === undefined || val === null) continue;
+
+              if (Array.isArray(val)) {
+                val.forEach((item) => {
+                  const arrayKey = key.endsWith("[]") ? key : `${key}[]`;
+                  formData.append(
+                    arrayKey,
+                    typeof item === "object" && item?.uri ? item : String(item)
+                  );
+                });
+              } else if (typeof val === "object" && val?.uri) {
+                formData.append(key, val);
+              } else {
+                formData.append(key, String(val));
+              }
+            }
+
+            // Do NOT manually set Content-Type so React Native generates boundary automatically
+            const multipartHeaders = { ...defaultHeaders };
+            delete multipartHeaders["Content-Type"];
+
+            response = await axios.post(finalURL, formData, {
+              headers: multipartHeaders,
+              params: queryParams,
+              ...(onUploadProgress && { onUploadProgress }),
+            });
+          } else {
+            // Text and Base64 data: send as application/x-www-form-urlencoded
+            const encodedBody = buildUrlEncodedBody(finalData);
+            response = await axios.post(finalURL, encodedBody, {
+              headers: {
+                ...defaultHeaders,
+                "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+              },
+              params: queryParams,
+              ...(onUploadProgress && { onUploadProgress }),
+            });
+          }
+          break;
+        }
 
         case "DELETE":
           response = await axios.delete(finalURL, {
@@ -80,7 +152,12 @@ export const AuthUser = () => {
 
       return response.data;
     } catch (error) {
-      console.error("API call failed:", error.message);
+      console.error(
+        "API call failed:",
+        error.message,
+        error.response?.status,
+        error.response?.data
+      );
       throw error;
     }
   };

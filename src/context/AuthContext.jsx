@@ -32,10 +32,11 @@ export const AuthProvider = ({ children }) => {
 
         if (storedUser) {
           const parsed = JSON.parse(storedUser);
+          const currentId = parsed?.worker_id || parsed?.member_id;
 
           setUserData(parsed);
-          setUserId(parsed?.member_id);
-          setUserToken(parsed?.token || null);
+          setUserId(currentId);
+          setUserToken(parsed?.token || parsed?.member_token || null);
           setIsLoggedIn(true);
         }
       } catch (error) {
@@ -125,11 +126,22 @@ export const AuthProvider = ({ children }) => {
 
   const login = async fullUserData => {
     try {
-      await AsyncStorage.setItem('authData', JSON.stringify(fullUserData));
+      const currentId = fullUserData?.worker_id || fullUserData?.member_id;
+      const normalizedData = {
+        ...fullUserData,
+        worker_id: currentId,
+        member_id: currentId,
+      };
 
-      setUserData(fullUserData);
-      setUserId(fullUserData?.member_id);
-      setUserToken(fullUserData?.token || null);
+      await AsyncStorage.setItem('authData', JSON.stringify(normalizedData));
+      await AsyncStorage.setItem('member_data', JSON.stringify({ data: normalizedData }));
+      if (currentId) {
+        await AsyncStorage.setItem('member_id', String(currentId));
+      }
+
+      setUserData(normalizedData);
+      setUserId(currentId);
+      setUserToken(normalizedData?.token || normalizedData?.member_token || null);
       setIsLoggedIn(true);
     } catch (error) {
       console.warn('Login Save Error:', error);
@@ -138,8 +150,14 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      await AsyncStorage.removeItem('authData');
+      await AsyncStorage.multiRemove([
+        'authData',
+        'member_data',
+        'member_id',
+        'userData',
+      ]);
 
+      setUserData(null);
       setUserId(null);
       setUserToken(null);
       setIsLoggedIn(false);

@@ -9,11 +9,10 @@ import {
   BackHandler,
   Animated,
   Easing,
+  TouchableOpacity,
+  Platform,
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import Toast from "react-native-toast-message";
-import { AuthUser } from "../../../api/authUser";
 import LinearGradient from "react-native-linear-gradient";
 
 const { width } = Dimensions.get("window");
@@ -22,19 +21,12 @@ const scale = (size) => (width / 375) * size;
 export default function VerificationScreen() {
   const navigation = useNavigation();
   const route = useRoute();
-  const { callApi } = AuthUser();
   const pulseAnim = useRef(new Animated.Value(1)).current;
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(30)).current;
   const floatAnim = useRef(new Animated.Value(0)).current;
 
-  const { finalData } = route.params || {};
-
-  console.log(finalData)
-
   useEffect(() => {
-    submitFinalData();
-    
     // Continuous pulse for the background glow
     Animated.loop(
       Animated.sequence([
@@ -91,7 +83,7 @@ export default function VerificationScreen() {
 
   useEffect(() => {
     const onBackPress = () => {
-      BackHandler.exitApp();
+      navigation.navigate("Login");
       return true;
     };
 
@@ -101,99 +93,7 @@ export default function VerificationScreen() {
     );
 
     return () => backHandler.remove();
-  }, []);
-
-  const submitFinalData = async () => {
-  try {
-    if (!finalData) {
-      Toast.show({
-        type: "error",
-        text1: "No Data Found",
-      });
-
-      navigation.navigate("CompleteProfile");
-      return;
-    }
-
-    const parsedData = JSON.parse(finalData);
-
-    let apiPayload = {
-      ...parsedData,
-      worker_address: parsedData.address,
-      worker_city: parsedData.city,
-      worker_state: parsedData.state_id,
-      worker_pincode: parsedData.postal_code,
-      worker_landmark: parsedData.landmark,
-      lat: parsedData.lat,
-      lng: parsedData.lng,
-    };
-
-    // PHP handles service_id[0], service_id[1] exactly the same as service_id[]
-    if (Array.isArray(parsedData.service_id)) {
-      parsedData.service_id.forEach((id, index) => {
-        apiPayload[`service_id[${index}]`] = id;
-      });
-    }
-
-    if (Array.isArray(parsedData.service_name)) {
-      parsedData.service_name.forEach((name, index) => {
-        apiPayload[`service_name[${index}]`] = name;
-      });
-    }
-
-  console.log(apiPayload)
-
-    const response = await callApi({
-      api: "/signupPro",
-      method: "CUSTOM_POST",
-      data: apiPayload,
-    });
-
-
-    if (response?.status === 1) {
-  const userName = response?.response?.name || "User";
-
-  Toast.show({
-    type: "success",
-    text1: `Profile setup successfully, ${userName}`,
-    text2: "Please Waiting for Verification",
-  });
-
-  // setTimeout(() => {
-  //   navigation.navigate("Auth", {
-  //     screen: "Login",
-  //   });
-  // }, 1500);
-}
- else {
-      Toast.show({
-        type: "error",
-        text1:
-          response?.response?.errors?.[0]?.message ||
-          "Registration Failed",
-      });
-
-      setTimeout(() => {
-        navigation.navigate("CompleteProfile", {
-          userData: finalData,
-        });
-      }, 1500);
-    }
-  } catch (error) {
-
-    Toast.show({
-      type: "error",
-      text1: "Something went wrong",
-    });
-
-    setTimeout(() => {
-      navigation.navigate("CompleteProfile", {
-        userData: finalData,
-      });
-    }, 1500);
-  }
-};
-
+  }, [navigation]);
 
   return (
     <View style={[styles.safe, { paddingTop: Platform.OS === 'ios' ? 40 : StatusBar.currentHeight }]}>
@@ -237,9 +137,16 @@ export default function VerificationScreen() {
               </View>
 
               <Text style={styles.desc}>
-                We're processing your verification. The status will be updated
-                within 24 hours.
+                We're reviewing your KYC documents and details. Your account will be activated within 24 hours.
               </Text>
+
+              <TouchableOpacity
+                style={styles.loginBtn}
+                onPress={() => navigation.navigate("Login")}
+                activeOpacity={0.8}
+              >
+                <Text style={styles.loginBtnText}>Back to Login</Text>
+              </TouchableOpacity>
             </Animated.View>
           </View>
         </View>
@@ -354,5 +261,20 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     lineHeight: scale(24),
     paddingHorizontal: scale(8),
+  },
+  loginBtn: {
+    marginTop: scale(28),
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    paddingVertical: scale(12),
+    paddingHorizontal: scale(28),
+    borderRadius: scale(24),
+    borderWidth: 1.5,
+    borderColor: 'rgba(255, 255, 255, 0.4)',
+  },
+  loginBtnText: {
+    fontSize: scale(15),
+    fontWeight: '700',
+    color: '#ffffff',
+    letterSpacing: 0.5,
   },
 });

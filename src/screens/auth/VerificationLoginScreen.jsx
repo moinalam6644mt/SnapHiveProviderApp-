@@ -11,7 +11,9 @@ import {
   Easing,
   ScrollView,
   Platform,
+  TouchableOpacity,
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
 import sharedStyles from './LoginStyle';
 
@@ -19,6 +21,7 @@ const { width } = Dimensions.get('window');
 const scale = (size) => (width / 375) * size;
 
 export default function VerificationLoginScreen() {
+  const navigation = useNavigation();
   const pulseAnim = useRef(new Animated.Value(1)).current;
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(30)).current;
@@ -79,7 +82,7 @@ export default function VerificationLoginScreen() {
     ]).start();
 
     const onBackPress = () => {
-      BackHandler.exitApp();
+      navigation.navigate('Login');
       return true;
     };
 
@@ -89,7 +92,7 @@ export default function VerificationLoginScreen() {
     );
 
     return () => backHandler.remove();
-  }, [fadeAnim, floatAnim, pulseAnim, slideAnim]);
+  }, [fadeAnim, floatAnim, navigation, pulseAnim, slideAnim]);
 
   return (
     <View style={[sharedStyles.container, { paddingTop: Platform.OS === 'ios' ? 40 : StatusBar.currentHeight }]}>
@@ -134,13 +137,20 @@ export default function VerificationLoginScreen() {
 
               <View style={localStyles.badgeContainer}>
                 <View style={localStyles.badgeDot} />
-                <Text style={localStyles.wait}>Please wait</Text>
+                <Text style={localStyles.wait}>Under Admin Review</Text>
               </View>
 
               <Text style={localStyles.desc}>
-                We're processing your verification. The status will be updated within
-                24 hours.
+                Your application has been submitted and is currently being reviewed by our admin team. Once approved, you will be able to access your dashboard.
               </Text>
+
+              <TouchableOpacity
+                style={localStyles.backLoginBtn}
+                onPress={() => navigation.navigate('Login')}
+                activeOpacity={0.8}
+              >
+                <Text style={localStyles.backLoginBtnText}>Back to Login</Text>
+              </TouchableOpacity>
             </Animated.View>
           </View>
         </ScrollView>
@@ -200,5 +210,23 @@ const localStyles = StyleSheet.create({
     textAlign: 'center',
     lineHeight: scale(24),
     paddingHorizontal: scale(8),
+  },
+  backLoginBtn: {
+    marginTop: scale(24),
+    backgroundColor: '#308695',
+    paddingVertical: scale(14),
+    paddingHorizontal: scale(36),
+    borderRadius: scale(24),
+    shadowColor: '#308695',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 8,
+    elevation: 4,
+  },
+  backLoginBtnText: {
+    fontSize: scale(15),
+    fontWeight: '700',
+    color: '#ffffff',
+    letterSpacing: 0.5,
   },
 });
