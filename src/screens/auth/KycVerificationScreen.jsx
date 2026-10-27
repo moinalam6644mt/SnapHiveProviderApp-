@@ -1,7 +1,8 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   View,
   Text,
+  TextInput,
   TouchableOpacity,
   ScrollView,
   Image,
@@ -10,7 +11,6 @@ import {
   StatusBar,
   Modal,
   StyleSheet,
-  Dimensions,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -19,46 +19,53 @@ import Toast from 'react-native-toast-message';
 import ImagePicker from 'react-native-image-crop-picker';
 import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import { AuthUser } from '../../../api/authUser';
-import { AuthContext } from '../../context/AuthContext';
-
-const { width } = Dimensions.get('window');
 
 const DOC_TYPES = [
   {
     key: 'aadhaar_front',
+    type: 'aadhaar_front',
     title: 'Aadhaar Card (Front)',
     subtitle: 'Upload clear front side with photo and name',
     icon: 'id-card-outline',
     allowGallery: true,
+    required: true,
   },
   {
     key: 'aadhaar_back',
+    type: 'aadhaar_back',
     title: 'Aadhaar Card (Back)',
     subtitle: 'Upload clear back side with address and QR code',
     icon: 'id-card-outline',
     allowGallery: true,
+    required: true,
   },
   {
     key: 'pan_front',
+    type: 'pan_front',
     title: 'PAN Card (Front)',
-    subtitle: 'Upload clear front side showing PAN number',
+    subtitle: 'Upload clear front side showing PAN number and name',
     icon: 'card-outline',
     allowGallery: true,
+    required: true,
   },
   {
     key: 'pan_back',
+    type: 'pan_back',
     title: 'PAN Card (Back)',
-    subtitle: 'Upload back side of your PAN card',
+    subtitle: 'Upload clear back side of PAN card',
     icon: 'card-outline',
     allowGallery: true,
+    required: true,
   },
   {
     key: 'live_photo',
+    type: 'live_image',
     title: 'Live Camera Selfie',
     subtitle: 'Take a clear, well-lit live selfie using your front camera',
     icon: 'camera-outline',
     allowGallery: false, // Live capture only for fraud prevention
     isLive: true,
+    required: true,
   },
 ];
 
@@ -66,7 +73,6 @@ export default function KycVerificationScreen() {
   const navigation = useNavigation();
   const route = useRoute();
   const { callApi } = AuthUser();
-  const { login } = useContext(AuthContext);
 
   const { userData } = route.params || {};
   let parsedUser = {};
@@ -77,7 +83,9 @@ export default function KycVerificationScreen() {
   }
 
   const workerId = parsedUser?.worker_id || parsedUser?.id;
+  const userPhone = parsedUser?.phone || parsedUser?.mobile || parsedUser?.worker_phone || '';
 
+  // App State: Keeps only local preview URI and server-generated file_name (No heavy base64 strings!)
   const [documents, setDocuments] = useState({
     aadhaar_front: null,
     aadhaar_back: null,
@@ -86,7 +94,10 @@ export default function KycVerificationScreen() {
     live_photo: null,
   });
 
+  const [aadhaarNumber, setAadhaarNumber] = useState(parsedUser?.aadhaar_number || '');
+  const [panNumber, setPanNumber] = useState(parsedUser?.pan_number || '');
   const [activeDocKey, setActiveDocKey] = useState(null);
+  const activeDocKeyRef = useRef(null);
   const [showPickerModal, setShowPickerModal] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
@@ -106,33 +117,175 @@ export default function KycVerificationScreen() {
     return true;
   };
 
-  const handleCaptureCamera = async (isFrontCamera = false) => {
+  /**
+   * Instant Upload Handler:
+   * Uploads file immediately upon capture/selection to POST /app/post_upload_document
+   * Saves the returned file_name in state.
+   */
+  const uploadInstantDoc = async (docKey, pickedImage) => {
+    const docConfig = DOC_TYPES.find((d) => d.key === docKey);
+    const backendType = docConfig?.type || docKey;
+
+    // 1. Immediately update UI state with local preview and uploading spinner
+    setDocuments((prev) => ({
+      ...prev,
+      [docKey]: {
+        uri: pickedImage.path,
+        fileName: null,
+        fileUrl: null,
+        uploading: true,
+        error: null,
+        rawImage: pickedImage, // Temporarily kept for retry if upload fails
+      },
+    }));
+
+    try {
+      const base64Data = pickedImage.data
+        ? `data:${pickedImage.mime || 'image/jpeg'};base64,${pickedImage.data}`
+        : null;
+
+      let response;
+
+      // 1. Primary: Send Base64 to /upload_document (Fast, tested 200 OK on LiteSpeed server)
+      if (base64Data) {
+        response = await callApi({
+          api: '/upload_document',
+          method: 'POST',
+          data: {
+            file: base64Data,
+            type: backendType,
+          },
+        });
+      }
+
+      let resData = response?.response;
+      let fileName = resData?.file_name || response?.file_name;
+      let fileUrl = resData?.file_url || response?.file_url;
+
+      // 2. Fallback: If Base64 didn't return fileName, try multipart upload
+      if (!fileName) {
+        const fileObj = {
+          uri: Platform.OS === 'android' ? pickedImage.path : pickedImage.path.replace('file://', ''),
+          type: pickedImage.mime || 'image/jpeg',
+          name: `${docKey}_${Date.now()}.jpg`,
+        };
+
+        response = await callApi({
+          api: '/upload_document',
+          method: 'CUSTOM_POST',
+          data: {
+            file: fileObj,
+            type: backendType,
+          },
+        });
+
+        resData = response?.response;
+        fileName = resData?.file_name || response?.file_name;
+        fileUrl = resData?.file_url || response?.file_url;
+      }
+
+      // 3. Fallback: If /upload_document failed, try /post_upload_document
+      if (!fileName && base64Data) {
+        response = await callApi({
+          api: '/post_upload_document',
+          method: 'POST',
+          data: {
+            file: base64Data,
+            type: backendType,
+          },
+        });
+        resData = response?.response;
+        fileName = resData?.file_name || response?.file_name;
+        fileUrl = resData?.file_url || response?.file_url;
+      }
+
+      if ((response?.status === 1 || resData?.status === 'OK') && fileName) {
+        // SUCCESS: Keep only fileName and local URI; drop heavy base64/rawImage from memory
+        setDocuments((prev) => ({
+          ...prev,
+          [docKey]: {
+            uri: pickedImage.path,
+            fileName: fileName,
+            fileUrl: fileUrl,
+            uploading: false,
+            error: null,
+            rawImage: null,
+          },
+        }));
+
+        Toast.show({
+          type: 'success',
+          text1: `${docConfig?.title || 'Document'} uploaded successfully`,
+        });
+      } else {
+        const errMsg =
+          resData?.message ||
+          response?.message ||
+          'Failed to upload document. Please retry.';
+        setDocuments((prev) => ({
+          ...prev,
+          [docKey]: {
+            uri: pickedImage.path,
+            fileName: null,
+            fileUrl: null,
+            uploading: false,
+            error: errMsg,
+            rawImage: pickedImage,
+          },
+        }));
+
+        Toast.show({
+          type: 'error',
+          text1: errMsg,
+        });
+      }
+    } catch (error) {
+      const errMsg = error.message || 'Network error while uploading';
+      setDocuments((prev) => ({
+        ...prev,
+        [docKey]: {
+          uri: pickedImage.path,
+          fileName: null,
+          fileUrl: null,
+          uploading: false,
+          error: errMsg,
+          rawImage: pickedImage,
+        },
+      }));
+
+      Toast.show({
+        type: 'error',
+        text1: errMsg,
+      });
+    }
+  };
+
+  const handleCaptureCamera = async (isFrontCamera = false, targetDocKey = null) => {
     setShowPickerModal(false);
+    const docKey = targetDocKey || activeDocKeyRef.current || activeDocKey;
+    if (!docKey) {
+      console.warn('handleCaptureCamera: No docKey specified');
+      return;
+    }
+
     const hasPermission = await checkCameraPermission();
-    if (!hasPermission) return;
+    if (!hasPermission) {
+      return;
+    }
 
     try {
       const image = await ImagePicker.openCamera({
-        width: 1000,
-        height: 1000,
+        width: 1200,
+        height: 1200,
         cropping: false,
         includeBase64: true,
         useFrontCamera: isFrontCamera,
-        compressImageQuality: 0.75,
+        compressImageQuality: 0.8,
         mediaType: 'photo',
       });
 
-      if (image && image.data && activeDocKey) {
-        const base64Data = `data:${image.mime || 'image/jpeg'};base64,${image.data}`;
-        setDocuments((prev) => ({
-          ...prev,
-          [activeDocKey]: {
-            uri: image.path,
-            base64: base64Data,
-            mime: image.mime || 'image/jpeg',
-          },
-        }));
-        Toast.show({ type: 'success', text1: 'Image captured successfully' });
+      if (image && docKey) {
+        await uploadInstantDoc(docKey, image);
       }
     } catch (error) {
       if (
@@ -144,29 +297,26 @@ export default function KycVerificationScreen() {
     }
   };
 
-  const handlePickGallery = async () => {
+  const handlePickGallery = async (targetDocKey = null) => {
     setShowPickerModal(false);
+    const docKey = targetDocKey || activeDocKeyRef.current || activeDocKey;
+    if (!docKey) {
+      console.warn('handlePickGallery: No docKey specified');
+      return;
+    }
+
     try {
       const image = await ImagePicker.openPicker({
-        width: 1000,
-        height: 1000,
+        width: 1200,
+        height: 1200,
         cropping: false,
         includeBase64: true,
-        compressImageQuality: 0.75,
+        compressImageQuality: 0.8,
         mediaType: 'photo',
       });
 
-      if (image && image.data && activeDocKey) {
-        const base64Data = `data:${image.mime || 'image/jpeg'};base64,${image.data}`;
-        setDocuments((prev) => ({
-          ...prev,
-          [activeDocKey]: {
-            uri: image.path,
-            base64: base64Data,
-            mime: image.mime || 'image/jpeg',
-          },
-        }));
-        Toast.show({ type: 'success', text1: 'Image selected from gallery' });
+      if (image && docKey) {
+        await uploadInstantDoc(docKey, image);
       }
     } catch (error) {
       if (error.message !== 'User cancelled image selection') {
@@ -176,10 +326,11 @@ export default function KycVerificationScreen() {
   };
 
   const openPickerFor = (doc) => {
+    activeDocKeyRef.current = doc.key;
     setActiveDocKey(doc.key);
     if (doc.isLive) {
-      // Live selfie goes straight to camera
-      handleCaptureCamera(true);
+      // Live selfie goes straight to front camera with exact doc key
+      handleCaptureCamera(true, doc.key);
     } else {
       setShowPickerModal(true);
     }
@@ -189,11 +340,35 @@ export default function KycVerificationScreen() {
     setDocuments((prev) => ({ ...prev, [key]: null }));
   };
 
-  const completedCount = Object.values(documents).filter(Boolean).length;
-  const isAllComplete = completedCount === 5;
+  const handleRetryUpload = (docKey) => {
+    activeDocKeyRef.current = docKey;
+    setActiveDocKey(docKey);
+    const doc = documents[docKey];
+    if (doc?.rawImage) {
+      uploadInstantDoc(docKey, doc.rawImage);
+    } else {
+      const docConfig = DOC_TYPES.find((d) => d.key === docKey);
+      if (docConfig) {
+        openPickerFor(docConfig);
+      }
+    }
+  };
 
+  const requiredDocs = DOC_TYPES.filter((d) => d.required);
+  const completedRequiredCount = requiredDocs.filter(
+    (d) => !!documents[d.key]?.fileName
+  ).length;
+  const isAllComplete = completedRequiredCount === requiredDocs.length;
+  const isAnyUploading = Object.values(documents).some((d) => d?.uploading);
+  const totalUploadedCount = Object.values(documents).filter((d) => !!d?.fileName).length;
+
+  /**
+   * Final Registration Submit (Step 3):
+   * Sends saved file_name strings instead of heavy Base64 strings!
+   * Calls POST /app/post_signupPro (step 3)
+   */
   const handleSubmitStep3 = async () => {
-    if (!workerId) {
+    if (!workerId && !userPhone) {
       Toast.show({
         type: 'error',
         text1: 'Worker ID is missing. Please restart registration.',
@@ -201,23 +376,31 @@ export default function KycVerificationScreen() {
       return;
     }
 
-    if (!documents.aadhaar_front) {
+    if (isAnyUploading) {
+      Toast.show({
+        type: 'info',
+        text1: 'Please wait, documents are still uploading...',
+      });
+      return;
+    }
+
+    if (!documents.aadhaar_front?.fileName) {
       Toast.show({ type: 'error', text1: 'Please upload Aadhaar Card Front' });
       return;
     }
-    if (!documents.aadhaar_back) {
+    if (!documents.aadhaar_back?.fileName) {
       Toast.show({ type: 'error', text1: 'Please upload Aadhaar Card Back' });
       return;
     }
-    if (!documents.pan_front) {
+    if (!documents.pan_front?.fileName) {
       Toast.show({ type: 'error', text1: 'Please upload PAN Card Front' });
       return;
     }
-    if (!documents.pan_back) {
+    if (!documents.pan_back?.fileName) {
       Toast.show({ type: 'error', text1: 'Please upload PAN Card Back' });
       return;
     }
-    if (!documents.live_photo) {
+    if (!documents.live_photo?.fileName) {
       Toast.show({ type: 'error', text1: 'Please take a Live Camera Selfie' });
       return;
     }
@@ -226,31 +409,48 @@ export default function KycVerificationScreen() {
 
     try {
       const payload = {
-        step: '3',
-        worker_id: String(workerId),
-        aadhaar_front: documents.aadhaar_front.base64,
-        aadhaar_back: documents.aadhaar_back.base64,
-        pan_front: documents.pan_front.base64,
-        pan_back: documents.pan_back.base64,
-        live_photo: documents.live_photo.base64,
+        step: 3,
+        worker_id: String(workerId || ''),
+        phone: String(userPhone || ''),
+        ...(parsedUser?.name ? { name: parsedUser.name } : {}),
+        ...(parsedUser?.email ? { email: parsedUser.email } : {}),
+        ...(parsedUser?.gender ? { gender: parsedUser.gender } : {}),
+        ...(parsedUser?.dob ? { dob: parsedUser.dob } : {}),
+        ...(parsedUser?.religion ? { religion: parsedUser.religion } : {}),
+        aadhaar_front: documents.aadhaar_front.fileName,
+        aadhaar_back: documents.aadhaar_back.fileName,
+        pan_front: documents.pan_front.fileName,
+        pan_back: documents.pan_back.fileName,
+        live_image: documents.live_photo.fileName,
+        live_photo: documents.live_photo.fileName, // backward compatibility
+        ...(aadhaarNumber.trim() ? { aadhaar_number: aadhaarNumber.replace(/\s+/g, '') } : {}),
+        ...(panNumber.trim() ? { pan_number: panNumber.trim().toUpperCase() } : {}),
       };
 
-      const response = await callApi({
+      let response = await callApi({
         api: '/signupPro',
-        method: 'CUSTOM_POST',
+        method: 'POST',
         data: payload,
       });
+
+      // Fallback if signupPro is mapped as post_signupPro
+      if (!response || (response.status === 0 && response.message?.includes('404'))) {
+        response = await callApi({
+          api: '/signupPro',
+          method: 'POST',
+          data: payload,
+        });
+      }
 
       const resData = response?.response;
 
       if (response?.status === 1 || resData?.status === 'OK') {
         Toast.show({
           type: 'success',
-          text1: 'Application submitted! Waiting for admin approval.',
+          text1: resData?.message || 'Application submitted! Waiting for admin approval.',
         });
 
         setTimeout(() => {
-          // Provider must remain on the wait screen until admin approves in the admin panel
           navigation.replace('Verification', {
             finalData: JSON.stringify({
               worker_id: workerId,
@@ -263,7 +463,7 @@ export default function KycVerificationScreen() {
           resData?.errors?.[0]?.message ||
           resData?.message ||
           response?.message ||
-          'Failed to upload documents';
+          'Failed to complete registration';
         Toast.show({
           type: 'error',
           text1: errMsg,
@@ -302,34 +502,86 @@ export default function KycVerificationScreen() {
       >
         <Text style={styles.title}>KYC Verification</Text>
         <Text style={styles.subtitle}>
-          Upload government-issued IDs and take a live selfie to verify your provider profile.
+          Upload government-issued IDs and take a live selfie to verify your provider profile. Photos are uploaded instantly for fast processing.
         </Text>
 
         {/* Progress Card */}
         <View style={styles.progressCard}>
           <View style={styles.progressHeader}>
             <Text style={styles.progressTitle}>Documents Uploaded</Text>
-            <Text style={styles.progressCount}>{completedCount}/5</Text>
+            <Text style={styles.progressCount}>
+              {completedRequiredCount}/{requiredDocs.length} Required {totalUploadedCount > completedRequiredCount ? `(${totalUploadedCount} Total)` : ''}
+            </Text>
           </View>
           <View style={styles.progressBarTrack}>
             <View
               style={[
                 styles.progressBarFill,
-                { width: `${(completedCount / 5) * 100}%` },
+                { width: `${(completedRequiredCount / requiredDocs.length) * 100}%` },
               ]}
             />
           </View>
         </View>
 
+        {/* Optional Document Numbers Section */}
+        <View style={styles.idInputsSection}>
+          <Text style={styles.sectionHeaderTitle}>Document Numbers (Optional)</Text>
+
+          {/* Aadhaar Number Input */}
+          <View style={styles.inputWrapper}>
+            <View style={styles.inputIconBox}>
+              <Icon name="card-outline" size={18} color="#1BA9A2" />
+            </View>
+            <TextInput
+              style={styles.textInputField}
+              placeholder="Aadhaar Number (12 digits)"
+              placeholderTextColor="#9CA3AF"
+              value={aadhaarNumber}
+              onChangeText={(text) => {
+                // Keep digits and auto-format with space every 4 digits
+                const cleaned = text.replace(/[^0-9]/g, '').slice(0, 12);
+                const parts = cleaned.match(/.{1,4}/g);
+                setAadhaarNumber(parts ? parts.join(' ') : cleaned);
+              }}
+              keyboardType="number-pad"
+              maxLength={14}
+            />
+          </View>
+
+          {/* PAN Card Number Input */}
+          <View style={styles.inputWrapper}>
+            <View style={styles.inputIconBox}>
+              <Icon name="shield-outline" size={18} color="#1BA9A2" />
+            </View>
+            <TextInput
+              style={styles.textInputField}
+              placeholder="PAN Card Number (e.g. ABCDE1234F)"
+              placeholderTextColor="#9CA3AF"
+              value={panNumber}
+              onChangeText={(text) => setPanNumber(text.toUpperCase().slice(0, 10))}
+              autoCapitalize="characters"
+              maxLength={10}
+            />
+          </View>
+        </View>
+
         {/* List of Documents */}
+        <Text style={styles.sectionHeaderTitle}>Upload Documents</Text>
+
         {DOC_TYPES.map((doc) => {
-          const uploaded = documents[doc.key];
+          const docState = documents[doc.key];
+          const isUploaded = !!docState?.fileName;
+          const isUploading = !!docState?.uploading;
+          const hasError = !!docState?.error;
+
           return (
             <View
               key={doc.key}
               style={[
                 styles.docCard,
-                uploaded && styles.docCardUploaded,
+                isUploaded && styles.docCardUploaded,
+                isUploading && styles.docCardUploading,
+                hasError && styles.docCardError,
                 doc.isLive && styles.docCardLive,
               ]}
             >
@@ -337,22 +589,58 @@ export default function KycVerificationScreen() {
                 <View
                   style={[
                     styles.iconBox,
-                    uploaded && styles.iconBoxUploaded,
+                    isUploaded && styles.iconBoxUploaded,
+                    isUploading && styles.iconBoxUploading,
+                    hasError && styles.iconBoxError,
                     doc.isLive && styles.iconBoxLive,
                   ]}
                 >
-                  <Icon
-                    name={uploaded ? 'checkmark-circle' : doc.icon}
-                    size={22}
-                    color={uploaded ? '#10B981' : doc.isLive ? '#3B82F6' : '#1BA9A2'}
-                  />
+                  {isUploading ? (
+                    <ActivityIndicator size="small" color="#1BA9A2" />
+                  ) : (
+                    <Icon
+                      name={
+                        isUploaded
+                          ? 'checkmark-circle'
+                          : hasError
+                          ? 'alert-circle'
+                          : doc.icon
+                      }
+                      size={22}
+                      color={
+                        isUploaded
+                          ? '#10B981'
+                          : hasError
+                          ? '#EF4444'
+                          : doc.isLive
+                          ? '#3B82F6'
+                          : '#1BA9A2'
+                      }
+                    />
+                  )}
                 </View>
+
                 <View style={styles.docInfo}>
                   <View style={styles.docTitleRow}>
-                    <Text style={styles.docTitle}>{doc.title}</Text>
+                    <Text style={styles.docTitle}>
+                      {doc.title} {!doc.required && <Text style={styles.optionalText}>(Optional)</Text>}
+                    </Text>
+
+                    {/* Status Badge */}
                     {doc.isLive && (
                       <View style={styles.liveBadge}>
                         <Text style={styles.liveBadgeText}>LIVE CAMERA</Text>
+                      </View>
+                    )}
+                    {isUploaded && (
+                      <View style={styles.uploadedBadge}>
+                        <Icon name="checkmark" size={12} color="#10B981" />
+                        <Text style={styles.uploadedBadgeText}>Uploaded</Text>
+                      </View>
+                    )}
+                    {isUploading && (
+                      <View style={styles.uploadingBadge}>
+                        <Text style={styles.uploadingBadgeText}>Uploading...</Text>
                       </View>
                     )}
                   </View>
@@ -361,28 +649,53 @@ export default function KycVerificationScreen() {
               </View>
 
               {/* Preview Thumbnail or Upload Button */}
-              {uploaded ? (
+              {docState?.uri ? (
                 <View style={styles.previewContainer}>
-                  <Image
-                    source={{ uri: uploaded.uri }}
-                    style={styles.previewImage}
-                    resizeMode="cover"
-                  />
+                  <View style={styles.previewImageWrapper}>
+                    <Image
+                      source={{ uri: docState.uri }}
+                      style={styles.previewImage}
+                      resizeMode="cover"
+                    />
+                    {isUploading && (
+                      <View style={styles.previewUploadingOverlay}>
+                        <ActivityIndicator size="small" color="#ffffff" />
+                        <Text style={styles.previewUploadingText}>Uploading...</Text>
+                      </View>
+                    )}
+                  </View>
+
                   <View style={styles.previewActions}>
-                    <TouchableOpacity
-                      style={styles.retakeBtn}
-                      onPress={() => openPickerFor(doc)}
-                    >
-                      <Icon name="refresh-outline" size={16} color="#1BA9A2" />
-                      <Text style={styles.retakeText}>Retake</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={styles.deleteBtn}
-                      onPress={() => removeDoc(doc.key)}
-                    >
-                      <Icon name="trash-outline" size={16} color="#EF4444" />
-                      <Text style={styles.deleteText}>Remove</Text>
-                    </TouchableOpacity>
+                    {hasError && (
+                      <TouchableOpacity
+                        style={styles.retryBtn}
+                        onPress={() => handleRetryUpload(doc.key)}
+                        disabled={isUploading}
+                      >
+                        <Icon name="refresh-outline" size={16} color="#DC2626" />
+                        <Text style={styles.retryText}>Retry</Text>
+                      </TouchableOpacity>
+                    )}
+
+                    {!isUploading && isUploaded && (
+                      <TouchableOpacity
+                        style={styles.retakeBtn}
+                        onPress={() => openPickerFor(doc)}
+                      >
+                        <Icon name="camera-reverse-outline" size={16} color="#1BA9A2" />
+                        <Text style={styles.retakeText}>Retake</Text>
+                      </TouchableOpacity>
+                    )}
+
+                    {!isUploading && (
+                      <TouchableOpacity
+                        style={styles.deleteBtn}
+                        onPress={() => removeDoc(doc.key)}
+                      >
+                        <Icon name="trash-outline" size={16} color="#EF4444" />
+                        <Text style={styles.deleteText}>Remove</Text>
+                      </TouchableOpacity>
+                    )}
                   </View>
                 </View>
               ) : (
@@ -406,6 +719,16 @@ export default function KycVerificationScreen() {
                   </Text>
                 </TouchableOpacity>
               )}
+
+              {/* Error Message if upload failed */}
+              {hasError && (
+                <View style={styles.errorNotice}>
+                  <Icon name="alert-circle-outline" size={14} color="#EF4444" />
+                  <Text style={styles.errorNoticeText}>
+                    {docState.error || 'Upload failed. Tap Retry.'}
+                  </Text>
+                </View>
+              )}
             </View>
           );
         })}
@@ -422,15 +745,15 @@ export default function KycVerificationScreen() {
         <TouchableOpacity
           style={[
             styles.submitButton,
-            !isAllComplete && styles.submitButtonDisabled,
+            (!isAllComplete || isAnyUploading || submitting) && styles.submitButtonDisabled,
           ]}
           onPress={handleSubmitStep3}
-          disabled={!isAllComplete || submitting}
+          disabled={!isAllComplete || isAnyUploading || submitting}
           activeOpacity={0.85}
         >
           <LinearGradient
             colors={
-              isAllComplete
+              isAllComplete && !isAnyUploading
                 ? ['#1BA9A2', '#0A736F']
                 : ['#D1D5DB', '#9CA3AF']
             }
@@ -442,9 +765,11 @@ export default function KycVerificationScreen() {
               <ActivityIndicator size="small" color="#ffffff" />
             ) : (
               <Text style={styles.submitBtnText}>
-                {isAllComplete
+                {isAnyUploading
+                  ? 'Uploading Documents...'
+                  : isAllComplete
                   ? 'Complete Registration'
-                  : `Upload All (${completedCount}/5 Complete)`}
+                  : `Upload Required Docs (${completedRequiredCount}/${requiredDocs.length})`}
               </Text>
             )}
           </LinearGradient>
@@ -463,9 +788,9 @@ export default function KycVerificationScreen() {
 
             <TouchableOpacity
               style={styles.modalOption}
-              onPress={() => handleCaptureCamera(false)}
+              onPress={() => handleCaptureCamera(false, activeDocKeyRef.current)}
             >
-              <View style={[styles.modalIconBox, { backgroundColor: '#E0F2FE' }]}>
+              <View style={[styles.modalIconBox, styles.modalIconBoxCamera]}>
                 <Icon name="camera-outline" size={22} color="#0284C7" />
               </View>
               <View>
@@ -476,9 +801,9 @@ export default function KycVerificationScreen() {
 
             <TouchableOpacity
               style={styles.modalOption}
-              onPress={handlePickGallery}
+              onPress={() => handlePickGallery(activeDocKeyRef.current)}
             >
-              <View style={[styles.modalIconBox, { backgroundColor: '#F0FDF4' }]}>
+              <View style={[styles.modalIconBox, styles.modalIconBoxGallery]}>
                 <Icon name="image-outline" size={22} color="#16A34A" />
               </View>
               <View>
@@ -580,6 +905,36 @@ const styles = StyleSheet.create({
     backgroundColor: '#1BA9A2',
     borderRadius: 4,
   },
+  sectionHeaderTitle: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: '#374151',
+    marginBottom: 12,
+    marginTop: 4,
+  },
+  idInputsSection: {
+    marginBottom: 18,
+  },
+  inputWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F9FAFB',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+    paddingHorizontal: 12,
+    marginBottom: 10,
+  },
+  inputIconBox: {
+    marginRight: 10,
+  },
+  textInputField: {
+    flex: 1,
+    height: 48,
+    fontSize: 14,
+    color: '#111827',
+    fontWeight: '500',
+  },
   docCard: {
     backgroundColor: '#ffffff',
     borderRadius: 16,
@@ -596,6 +951,14 @@ const styles = StyleSheet.create({
   docCardUploaded: {
     borderColor: '#10B981',
     backgroundColor: '#F0FDF4',
+  },
+  docCardUploading: {
+    borderColor: '#1BA9A2',
+    backgroundColor: '#F9FFFE',
+  },
+  docCardError: {
+    borderColor: '#EF4444',
+    backgroundColor: '#FEF2F2',
   },
   docCardLive: {
     borderColor: '#93C5FD',
@@ -617,6 +980,12 @@ const styles = StyleSheet.create({
   iconBoxUploaded: {
     backgroundColor: '#D1FAE5',
   },
+  iconBoxUploading: {
+    backgroundColor: '#E6F7F6',
+  },
+  iconBoxError: {
+    backgroundColor: '#FEE2E2',
+  },
   iconBoxLive: {
     backgroundColor: '#DBEAFE',
   },
@@ -628,11 +997,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     marginBottom: 2,
+    flexWrap: 'wrap',
+    gap: 6,
   },
   docTitle: {
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: '700',
     color: '#111827',
+  },
+  optionalText: {
+    fontSize: 12,
+    fontWeight: '400',
+    color: '#6B7280',
   },
   liveBadge: {
     backgroundColor: '#EFF6FF',
@@ -647,10 +1023,36 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#2563EB',
   },
+  uploadedBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 3,
+    backgroundColor: '#D1FAE5',
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 6,
+  },
+  uploadedBadgeText: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: '#065F46',
+  },
+  uploadingBadge: {
+    backgroundColor: '#CCFBF1',
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 6,
+  },
+  uploadingBadgeText: {
+    fontSize: 11,
+    fontWeight: '600',
+    color: '#0D9488',
+  },
   docSubtitle: {
     fontSize: 12,
     color: '#6B7280',
     lineHeight: 16,
+    marginTop: 2,
   },
   uploadBtn: {
     flexDirection: 'row',
@@ -685,15 +1087,48 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#E5E7EB',
   },
-  previewImage: {
+  previewImageWrapper: {
+    position: 'relative',
     width: 80,
     height: 60,
     borderRadius: 8,
+    overflow: 'hidden',
     backgroundColor: '#F3F4F6',
+  },
+  previewImage: {
+    width: '100%',
+    height: '100%',
+  },
+  previewUploadingOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0,0,0,0.45)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  previewUploadingText: {
+    color: '#ffffff',
+    fontSize: 9,
+    fontWeight: '600',
+    marginTop: 3,
   },
   previewActions: {
     flexDirection: 'row',
-    gap: 12,
+    alignItems: 'center',
+    gap: 8,
+  },
+  retryBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 8,
+    paddingHorizontal: 10,
+    borderRadius: 8,
+    backgroundColor: '#FEE2E2',
+    gap: 4,
+  },
+  retryText: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#DC2626',
   },
   retakeBtn: {
     flexDirection: 'row',
@@ -721,6 +1156,17 @@ const styles = StyleSheet.create({
   deleteText: {
     fontSize: 13,
     fontWeight: '600',
+    color: '#EF4444',
+  },
+  errorNotice: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    marginTop: 8,
+    paddingHorizontal: 4,
+  },
+  errorNoticeText: {
+    fontSize: 12,
     color: '#EF4444',
   },
   noteBox: {
@@ -797,6 +1243,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 14,
+  },
+  modalIconBoxCamera: {
+    backgroundColor: '#E0F2FE',
+  },
+  modalIconBoxGallery: {
+    backgroundColor: '#F0FDF4',
   },
   modalOptionTitle: {
     fontSize: 16,

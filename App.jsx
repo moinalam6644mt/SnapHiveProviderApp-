@@ -11,6 +11,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Platform } from 'react-native';
 import { CallProvider } from './src/context/CallContext';
 import RNCallKeep from 'react-native-callkeep';
+import { AppConfigProvider } from './src/context/AppConfigContext';
 import {
   navigationRef,
   navigate,
@@ -121,19 +122,21 @@ export default function App() {
   }
 
   return (
-    <CallProvider>
-      <AuthProvider>
-        <BookingProvider>
-          <OtpSharedProvider>
-            <NavigationContainer
-              ref={navigationRef}
-              onReady={handleNavigationReady}>
-              <RootNavigator />
-            </NavigationContainer>
-          </OtpSharedProvider>
-          <Toast config={toastConfig} />
-        </BookingProvider>
-      </AuthProvider>
-    </CallProvider>
+    <AppConfigProvider>
+      <CallProvider>
+        <AuthProvider>
+          <BookingProvider>
+            <OtpSharedProvider>
+              <NavigationContainer
+                ref={navigationRef}
+                onReady={handleNavigationReady}>
+                <RootNavigator />
+              </NavigationContainer>
+            </OtpSharedProvider>
+            <Toast config={toastConfig} />
+          </BookingProvider>
+        </AuthProvider>
+      </CallProvider>
+    </AppConfigProvider>
   );
 }

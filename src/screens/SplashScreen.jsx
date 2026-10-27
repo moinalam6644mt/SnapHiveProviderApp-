@@ -12,6 +12,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { ShieldCheck } from 'lucide-react-native';
 import { AuthContext } from '../context/AuthContext';
+import { useAppConfig } from '../context/AppConfigContext';
 import LinearGradient from 'react-native-linear-gradient';
 import { theme } from '../styles/globalStyles';
 
@@ -20,6 +21,7 @@ const { width } = Dimensions.get('window');
 export default function SplashScreen() {
   const navigation = useNavigation();
   const { isLoggedIn } = useContext(AuthContext);
+  const { currentInstalledVersion } = useAppConfig();
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const scaleAnim = useRef(new Animated.Value(0.8)).current;
@@ -116,6 +118,7 @@ export default function SplashScreen() {
               <Text style={styles.trustedText}>Join <Text style={styles.boldText}>1,000+</Text> Professionals</Text>
             </View>
           </View>
+          <Text style={styles.versionSplashText}>v{currentInstalledVersion || '1.1.0'}</Text>
         </Animated.View>
       </View>
     </LinearGradient>
@@ -204,5 +207,11 @@ const styles = StyleSheet.create({
   boldText: {
     fontFamily: 'Sora-Bold',
     color: '#10b981',
+  },
+  versionSplashText: {
+    color: '#64748b',
+    fontSize: 12,
+    fontFamily: 'Montserrat-Regular',
+    marginTop: 14,
   },
 });

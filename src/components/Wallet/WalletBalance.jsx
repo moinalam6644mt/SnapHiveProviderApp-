@@ -11,10 +11,13 @@ import LinearGradient from "react-native-linear-gradient";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { AuthContext } from "../../context/AuthContext";
 import { AuthUser } from "../../../api/authUser";
+import { useAppConfig } from "../../context/AppConfigContext";
 
 const WalletBalance = ({ walletData }) => {
   const navigation = useNavigation();
   const { userId } = useContext(AuthContext);
+  const { appInfo, businessRules } = useAppConfig();
+  const currencySymbol = appInfo?.currency_symbol || "₹";
   const { callApi } = AuthUser();
   const [balance, setBalance] = useState(walletData?.balance ?? null);
   const [loading, setLoading] = useState(balance === null);
@@ -78,7 +81,7 @@ const WalletBalance = ({ walletData }) => {
         <Text style={styles.label}>Wallet Balance</Text>
         <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 5 }}>
           <Text style={[styles.amount, { marginTop: 0 }]}>
-            ₹{loading ? "..." : displayBalance}
+            {currencySymbol}{loading ? "..." : displayBalance}
           </Text>
           {loading && (
             <ActivityIndicator size="small" color="#1e1b4b" style={{ marginLeft: 8 }} />

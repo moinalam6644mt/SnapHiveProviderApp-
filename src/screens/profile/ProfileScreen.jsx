@@ -30,6 +30,7 @@ import ProfileSkeleton from "../../components/Profile/ProfileSkeleton";
 
 import { AuthUser } from "../../../api/authUser";
 import { AuthContext } from "../../context/AuthContext";
+import { useAppConfig } from "../../context/AppConfigContext";
 
 import { theme } from '../../styles/globalStyles';
 const ProfileScreen = () => {
@@ -38,6 +39,7 @@ const ProfileScreen = () => {
   const [refreshing, setRefreshing] = useState(false);
   const { callApi } = AuthUser();
   const { userId } = useContext(AuthContext);
+  const { currentInstalledVersion, support } = useAppConfig();
 
   const getProfile = async () => {
     try {
@@ -114,6 +116,13 @@ const ProfileScreen = () => {
 
           <MenuOptions />
           <LogOutButton />
+
+          <View style={styles.appFooter}>
+            <Text style={styles.appFooterText}>SnapHive Partner • v{currentInstalledVersion}</Text>
+            {support?.email && (
+              <Text style={styles.appFooterSub}>{support.email}</Text>
+            )}
+          </View>
         </ScrollView>
       )}
     </SafeAreaView>
@@ -123,6 +132,22 @@ const ProfileScreen = () => {
 export default ProfileScreen;
 
 const styles = StyleSheet.create({
+  appFooter: {
+    alignItems: 'center',
+    marginTop: verticalScale(20),
+    marginBottom: verticalScale(10),
+  },
+  appFooterText: {
+    color: '#94a3b8',
+    fontSize: 12,
+    fontFamily: 'Sora-SemiBold',
+  },
+  appFooterSub: {
+    color: '#cbd5e1',
+    fontSize: 11,
+    fontFamily: 'Montserrat-Regular',
+    marginTop: 3,
+  },
   safeArea: {
     flex: 1,
     backgroundColor: "#ffffff",

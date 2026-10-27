@@ -26,6 +26,7 @@ import { useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 
 import { CFSession, CFEnvironment } from 'cashfree-pg-api-contract';
+import { useAppConfig } from '../../context/AppConfigContext';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
@@ -36,6 +37,8 @@ const PaymentMethodDrawer = ({
   orderId,
   sessionId,
 }) => {
+  const { appInfo } = useAppConfig();
+  const currencySymbol = appInfo?.currency_symbol || '₹';
   const slideAnim = useRef(new Animated.Value(SCREEN_HEIGHT)).current;
   const navigation = useNavigation();
 
@@ -159,7 +162,7 @@ const PaymentMethodDrawer = ({
             <View>
               <Text style={styles.headerTitle}>Select Payment Method</Text>
               <Text style={styles.headerSubTitle}>
-                Amount to recharge: ₹{amount}
+                Amount to recharge: {currencySymbol}{amount}
               </Text>
             </View>
           </View>

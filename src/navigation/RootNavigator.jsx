@@ -8,27 +8,53 @@ import HomeNavigator from './HomeNavigator';
 import NotFound from '../screens/NotFound';
 import {AuthContext} from '../context/AuthContext';
 import {CallContext} from '../context/CallContext';
+import {useAppConfig} from '../context/AppConfigContext';
 import CallScreen from "../screens/Calling/CallScreen";
 import IncomingCallModal from '../components/Calling/IncomingCallModal';
+import MaintenanceScreen from '../screens/system/MaintenanceScreen';
+import ForceUpdateScreen from '../screens/system/ForceUpdateScreen';
+import {Modal} from 'react-native';
 
 const Stack = createNativeStackNavigator();
 
 export default function RootNavigator() {
   const {isLoggedIn, isLoading, userId} = useContext(AuthContext);
   const {incomingCall} = useContext(CallContext);
+  const {
+    isLoadingConfig,
+    isMaintenance,
+    isForceUpdate,
+    isOptionalUpdate,
+    dismissOptionalUpdate,
+  } = useAppConfig();
+
   const [showSplash, setShowSplash] = React.useState(true);
 
   useEffect(() => {
     if (!isLoggedIn) {
       setShowSplash(true);
-      setTimeout(() => {
+      const timer = setTimeout(() => {
         setShowSplash(false);
       }, 1500);
+      return () => clearTimeout(timer);
+    } else {
+      setShowSplash(false);
     }
   }, [isLoggedIn]);
 
-  if (isLoading || showSplash) {
+  // 1. Loading Splash State
+  if (isLoading || isLoadingConfig || showSplash) {
     return <SplashScreen />;
+  }
+
+  // 2. Scheduled Maintenance Blocker
+  if (isMaintenance) {
+    return <MaintenanceScreen />;
+  }
+
+  // 3. Mandatory Force Update Blocker
+  if (isForceUpdate) {
+    return <ForceUpdateScreen isOptional={false} />;
   }
 
   const isCallValid =
@@ -38,15 +64,28 @@ export default function RootNavigator() {
 
   return (
     <>
-    <Stack.Navigator screenOptions={{headerShown: false}}>
-      {isLoggedIn ? (
-        <Stack.Screen name="Main" component={HomeNavigator} />
-      ) : (
-        <Stack.Screen name="Auth" component={AuthNavigator} />
+      <Stack.Navigator screenOptions={{headerShown: false}}>
+        {isLoggedIn ? (
+          <Stack.Screen name="Main" component={HomeNavigator} />
+        ) : (
+          <Stack.Screen name="Auth" component={AuthNavigator} />
+        )}
+        <Stack.Screen name="NotFound" component={NotFound} />
+        <Stack.Screen name="CallScreen" component={CallScreen} />
+      </Stack.Navigator>
+
+      {/* Optional Update Modal (can be dismissed by partner) */}
+      {isOptionalUpdate && (
+        <Modal
+          visible={true}
+          animationType="slide"
+          presentationStyle="fullScreen"
+          onRequestClose={dismissOptionalUpdate}
+        >
+          <ForceUpdateScreen isOptional={true} onClose={dismissOptionalUpdate} />
+        </Modal>
       )}
-      <Stack.Screen name="NotFound" component={NotFound} />
-      <Stack.Screen name="CallScreen" component={CallScreen} />
-    </Stack.Navigator>
+
       {isCallValid && <IncomingCallModal />}
     </>
   );

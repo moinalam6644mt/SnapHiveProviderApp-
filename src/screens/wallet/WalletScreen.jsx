@@ -10,7 +10,7 @@ import {
   RefreshControl,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { ChevronRight } from 'lucide-react-native';
+import { ChevronRight, AlertCircle, Info } from 'lucide-react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import WalletBalance from '../../components/Wallet/WalletBalance';
@@ -18,6 +18,7 @@ import EarningsCards from '../../components/Wallet/EarningsCards';
 import RedeemHistory from '../../components/Wallet/RedeemHistory';
 
 import { AuthContext } from '../../context/AuthContext';
+import { useAppConfig } from '../../context/AppConfigContext';
 import { AuthUser } from '../../../api/authUser';
 import PusherService from '../../services/PusherService';
 import Toast from 'react-native-toast-message';
@@ -37,6 +38,10 @@ const WalletScreen = () => {
   const route = useRoute();
   
   const { userId } = useContext(AuthContext);
+  const { appInfo, businessRules } = useAppConfig();
+  const currencySymbol = appInfo?.currency_symbol || '₹';
+  const minBalanceLimit = businessRules?.min_wallet_balance_limit ?? -300;
+  const minWithdrawal = businessRules?.min_withdrawal_limit ?? 500;
   const { callApi } = AuthUser();
 
   const getWalletData = async()=>{
@@ -216,6 +221,27 @@ useEffect(()=>{
             >
             <WalletBalance walletData={walletData} />
 
+            {/* Negative balance warning if below min_wallet_balance_limit (-₹300) */}
+            {walletData?.balance !== undefined && parseFloat(walletData.balance) <= minBalanceLimit && (
+              <View style={styles.limitWarningBox}>
+                <AlertCircle size={18} color="#ef4444" style={{ marginRight: 8, marginTop: 1 }} />
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.limitWarningTitle}>Minimum Balance Limit Reached</Text>
+                  <Text style={styles.limitWarningText}>
+                    Your balance is at or below {currencySymbol}{minBalanceLimit}. Please recharge your wallet to continue receiving new job assignments.
+                  </Text>
+                </View>
+              </View>
+            )}
+
+            {/* Business rules info pill */}
+            <View style={styles.rulesInfoBox}>
+              <Info size={15} color="#308695" style={{ marginRight: 6 }} />
+              <Text style={styles.rulesInfoText}>
+                Min withdrawal limit: {currencySymbol}{minWithdrawal} • Commission: {businessRules?.platform_commission_percent ?? 15}%
+              </Text>
+            </View>
+
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Earnings</Text>
         </View>
@@ -282,5 +308,42 @@ const styles = StyleSheet.create({
 
   seeAllBtn: {
     marginLeft: 'auto',
+  },
+  limitWarningBox: {
+    flexDirection: 'row',
+    backgroundColor: '#fef2f2',
+    borderWidth: 1,
+    borderColor: '#fecaca',
+    borderRadius: 14,
+    padding: 12,
+    marginTop: 15,
+  },
+  limitWarningTitle: {
+    color: '#b91c1c',
+    fontSize: 13,
+    fontFamily: 'Sora-Bold',
+    marginBottom: 2,
+  },
+  limitWarningText: {
+    color: '#7f1d1d',
+    fontSize: 12,
+    fontFamily: 'Montserrat-Regular',
+    lineHeight: 18,
+  },
+  rulesInfoBox: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#f0fdfa',
+    borderWidth: 1,
+    borderColor: '#ccfbf1',
+    borderRadius: 12,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    marginTop: 12,
+  },
+  rulesInfoText: {
+    color: '#0f766e',
+    fontSize: 12,
+    fontFamily: 'Montserrat-Regular',
   },
 });

@@ -378,12 +378,40 @@ export default function CompleteProfileScreen() {
         setIsLocating(false);
       },
       (error) => {
+        // Fallback to network/cell tower if GPS high accuracy timed out
+        if (error.code === 3) {
+          Geolocation.getCurrentPosition(
+            async (fallbackPos) => {
+              const { latitude: lat, longitude: lng } = fallbackPos.coords;
+              setLatitude(lat);
+              setLongitude(lng);
+              try {
+                const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${GOOGLE_API_KEY}`;
+                const res = await axios.get(url);
+                if (res.data.status === 'OK' && res.data.results.length > 0) {
+                  parseGoogleAddress(res.data.results[0], res.data.results[0].formatted_address);
+                }
+              } catch (err) {
+                console.log("Reverse Geocode Error:", err.message);
+              }
+              setIsLocating(false);
+            },
+            (fallbackErr) => {
+              console.log("Geolocation fallback error:", fallbackErr.message);
+              setCoordError(true);
+              setIsLocating(false);
+              Toast.show({ type: "error", text1: "Could not get current location" });
+            },
+            { enableHighAccuracy: false, timeout: 15000, maximumAge: 30000 }
+          );
+          return;
+        }
         console.log("Geolocation error:", error.message);
         setCoordError(true);
         setIsLocating(false);
         Toast.show({ type: "error", text1: "Could not get current location" });
       },
-      { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 10000 }
     );
   };
 
@@ -453,14 +481,27 @@ export default function CompleteProfileScreen() {
     const serviceIds = selectedServices.map((s) => s.category_subchild_id || s.id);
 
     const payload = {
+      ...parsedData,
       step: "2",
       phone: phone,
+      name: parsedData?.name || "",
+      email: parsedData?.email || "",
+      gender: parsedData?.gender === "Female" || parsedData?.gender === "F" ? "F" : "M",
+      dob: parsedData?.dob || "",
+      religion: parsedData?.religion || "",
+      alt_phone: parsedData?.alt_phone || "",
+      whatsapp: parsedData?.whatsapp || "",
+      password: parsedData?.password || "",
       worker_address: fullAddress,
+      worker_flat: houseNo.trim(),
+      worker_street: street.trim(),
       worker_city: city.trim(),
       worker_state: selectedStateId,
       worker_pincode: postalCode.trim(),
       worker_landmark: landmark.trim(),
+      service_id: serviceIds,
       worker_services: serviceIds,
+      services: serviceIds,
       ...(profileImage && { logo: profileImage }),
     };
 
