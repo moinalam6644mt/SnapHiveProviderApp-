@@ -4,7 +4,7 @@
  * Current installed application version.
  * Keep in sync with android/app/build.gradle versionName and iOS CFBundleShortVersionString.
  */
-export const CURRENT_APP_VERSION = '1.1.0';
+export const CURRENT_APP_VERSION = '1.6.0';
 
 export const CONFIG_CACHE_KEY = '@snap_worker_app_config_cache_v1';
 export const API_CONFIG_URL = 'https://snaphive.online/app/app_config?app_type=worker';

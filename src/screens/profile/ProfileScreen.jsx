@@ -118,7 +118,7 @@ const ProfileScreen = () => {
           <LogOutButton />
 
           <View style={styles.appFooter}>
-            <Text style={styles.appFooterText}>SnapHive Partner • v{currentInstalledVersion}</Text>
+            <Text style={styles.appFooterText}>SnapHive Provider • v{currentInstalledVersion}</Text>
             {support?.email && (
               <Text style={styles.appFooterSub}>{support.email}</Text>
             )}

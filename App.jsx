@@ -10,7 +10,7 @@ import { OtpSharedProvider } from './src/context/OtpSharedContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Platform } from 'react-native';
 import { CallProvider } from './src/context/CallContext';
-import RNCallKeep from 'react-native-callkeep';
+// import RNCallKeep from 'react-native-callkeep';
 import { AppConfigProvider } from './src/context/AppConfigContext';
 import {
   navigationRef,
@@ -74,12 +74,12 @@ const toastConfig = {
   )
 };
 
-// ─── Setup CallKeep Listeners ───────────────────────────────────────────────
-RNCallKeep.addEventListener('answerCall', ({ callUUID }) => {
-  RNCallKeep.backToForeground();
-  // Get call data from somewhere or navigate
-  // But wait, we need incomingCall data. This will be handled in App component
-});
+// ─── Setup CallKeep Listeners (Disabled for now - normal in-app calling used)
+// RNCallKeep.addEventListener('answerCall', ({ callUUID }) => {
+//   RNCallKeep.backToForeground();
+//   // Get call data from somewhere or navigate
+//   // But wait, we need incomingCall data. This will be handled in App component
+// });
 
 export default function App() {
   const [isReady, setIsReady] = useState(false);

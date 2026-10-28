@@ -121,13 +121,13 @@ const ICard = ({ bookingDetails, providerDetails }) => {
           <View style={styles.infoRow}>
             <MapPin size={12} color="#F26522" />
             <Text style={styles.detailText}>
-              48/93/115, KRISHNA NAGAR, KOLKATA-104
+              Eraqi Street,South Bazar,Andal,West Bengal,713321
             </Text>
           </View>
         </View>
 
         <Text style={styles.copyright}>
-          © 2026 maidfort. All Rights Reserved.
+          © 2026 Snaphive. All Rights Reserved.
         </Text>
       </View>
     </View>

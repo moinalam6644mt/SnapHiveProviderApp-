@@ -57,16 +57,6 @@ const DOC_TYPES = [
     allowGallery: true,
     required: true,
   },
-  {
-    key: 'live_photo',
-    type: 'live_image',
-    title: 'Live Camera Selfie',
-    subtitle: 'Take a clear, well-lit live selfie using your front camera',
-    icon: 'camera-outline',
-    allowGallery: false, // Live capture only for fraud prevention
-    isLive: true,
-    required: true,
-  },
 ];
 
 export default function KycVerificationScreen() {
@@ -91,7 +81,6 @@ export default function KycVerificationScreen() {
     aadhaar_back: null,
     pan_front: null,
     pan_back: null,
-    live_photo: null,
   });
 
   const [aadhaarNumber, setAadhaarNumber] = useState(parsedUser?.aadhaar_number || '');
@@ -400,11 +389,6 @@ export default function KycVerificationScreen() {
       Toast.show({ type: 'error', text1: 'Please upload PAN Card Back' });
       return;
     }
-    if (!documents.live_photo?.fileName) {
-      Toast.show({ type: 'error', text1: 'Please take a Live Camera Selfie' });
-      return;
-    }
-
     setSubmitting(true);
 
     try {
@@ -421,10 +405,6 @@ export default function KycVerificationScreen() {
         aadhaar_back: documents.aadhaar_back.fileName,
         pan_front: documents.pan_front.fileName,
         pan_back: documents.pan_back.fileName,
-        live_image: documents.live_photo.fileName,
-        live_photo: documents.live_photo.fileName, // backward compatibility
-        ...(aadhaarNumber.trim() ? { aadhaar_number: aadhaarNumber.replace(/\s+/g, '') } : {}),
-        ...(panNumber.trim() ? { pan_number: panNumber.trim().toUpperCase() } : {}),
       };
 
       let response = await callApi({
@@ -519,48 +499,6 @@ export default function KycVerificationScreen() {
                 styles.progressBarFill,
                 { width: `${(completedRequiredCount / requiredDocs.length) * 100}%` },
               ]}
-            />
-          </View>
-        </View>
-
-        {/* Optional Document Numbers Section */}
-        <View style={styles.idInputsSection}>
-          <Text style={styles.sectionHeaderTitle}>Document Numbers (Optional)</Text>
-
-          {/* Aadhaar Number Input */}
-          <View style={styles.inputWrapper}>
-            <View style={styles.inputIconBox}>
-              <Icon name="card-outline" size={18} color="#1BA9A2" />
-            </View>
-            <TextInput
-              style={styles.textInputField}
-              placeholder="Aadhaar Number (12 digits)"
-              placeholderTextColor="#9CA3AF"
-              value={aadhaarNumber}
-              onChangeText={(text) => {
-                // Keep digits and auto-format with space every 4 digits
-                const cleaned = text.replace(/[^0-9]/g, '').slice(0, 12);
-                const parts = cleaned.match(/.{1,4}/g);
-                setAadhaarNumber(parts ? parts.join(' ') : cleaned);
-              }}
-              keyboardType="number-pad"
-              maxLength={14}
-            />
-          </View>
-
-          {/* PAN Card Number Input */}
-          <View style={styles.inputWrapper}>
-            <View style={styles.inputIconBox}>
-              <Icon name="shield-outline" size={18} color="#1BA9A2" />
-            </View>
-            <TextInput
-              style={styles.textInputField}
-              placeholder="PAN Card Number (e.g. ABCDE1234F)"
-              placeholderTextColor="#9CA3AF"
-              value={panNumber}
-              onChangeText={(text) => setPanNumber(text.toUpperCase().slice(0, 10))}
-              autoCapitalize="characters"
-              maxLength={10}
             />
           </View>
         </View>

@@ -5,7 +5,7 @@
 import {AppRegistry} from 'react-native';
 import App from './App';
 import {name as appName} from './app.json';
-import RNCallKeep from 'react-native-callkeep';
+// import RNCallKeep from 'react-native-callkeep';
 import { getMessaging, setBackgroundMessageHandler } from '@react-native-firebase/messaging';
 
 // Register background handler for Push Notifications
@@ -13,7 +13,8 @@ setBackgroundMessageHandler(getMessaging(), async remoteMessage => {
   console.log('Message handled in the background!', remoteMessage);
 });
 
-// Setup CallKeep Options
+// Setup CallKeep Options (Disabled for now - normal in-app calling used)
+/*
 const callKeepOptions = {
   ios: {
     appName: 'SnapHiveProvider',
@@ -49,5 +50,6 @@ AppRegistry.registerHeadlessTask('RNCallKeepBackgroundMessage', () => (taskData)
   }
   return Promise.resolve();
 });
+*/
 
 AppRegistry.registerComponent(appName, () => App);

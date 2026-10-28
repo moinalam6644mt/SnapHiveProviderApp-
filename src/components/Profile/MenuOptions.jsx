@@ -145,7 +145,7 @@ const MenuOptions = () => {
                   </View>
                   <View style={styles.actionTextBox}>
                     <Text style={styles.actionTitle}>Call Helpline</Text>
-                    <Text style={styles.actionSub}>{support?.phone || "+91 79033 71185"}</Text>
+                    <Text style={styles.actionSub}>{support?.phone || "+91 9333772433"}</Text>
                   </View>
                   <ChevronRight size={18} color="#94a3b8" />
                 </TouchableOpacity>

@@ -270,11 +270,6 @@ const styles = StyleSheet.create({
     gap: moderateScale(12),
     width: '100%',
   },
-  buttonWrapper: {
-    marginTop: verticalScale(10),
-    width: '100%',
-    // paddingHorizontal: horizontalScale(10),
-  },
   mapContainer: {
     height: verticalScale(180),
     marginVertical: verticalScale(10),

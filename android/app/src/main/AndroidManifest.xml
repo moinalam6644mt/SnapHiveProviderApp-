@@ -18,8 +18,9 @@
   <uses-permission android:name="android.permission.VIBRATE" />
   <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
   <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-  <uses-permission android:name="android.permission.FOREGROUND_SERVICE_PHONE_CALL" />
-  <uses-permission android:name="android.permission.BIND_TELECOM_CONNECTION_SERVICE" />
+  <!-- Background calling permissions disabled for now to bypass Play Console FOREGROUND_SERVICE_PHONE_CALL policy -->
+  <!-- <uses-permission android:name="android.permission.FOREGROUND_SERVICE_PHONE_CALL" /> -->
+  <!-- <uses-permission android:name="android.permission.BIND_TELECOM_CONNECTION_SERVICE" /> -->
   <uses-permission android:name="android.permission.READ_PHONE_STATE" />
   <uses-permission android:name="android.permission.CALL_PHONE" />
   <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
@@ -52,8 +53,7 @@
       </intent-filter>
     </activity>
 
-    
-
+    <!-- Background Calling Services (Disabled for now - in-app calling used)
     <service
       android:name="com.myreleaseapp.CallKeepHeadlessService"
       android:enabled="true"
@@ -70,6 +70,7 @@
       </intent-filter>
     </service>
     <service android:name="io.wazo.callkeep.RNCallKeepBackgroundMessagingService" />
+    -->
 
   </application>
 </manifest>
